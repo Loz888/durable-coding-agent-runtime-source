@@ -14,12 +14,12 @@ the same database names. CI's ci-only-password is a disposable service-container
 credential, not a deployment or user secret.
 
 ## Suites
-- test_unit.sh runs complete PostgreSQL-independent package suites: distributed,
+- test_unit.sh runs complete PostgreSQL-independent package suites: cmd/day21-eval, eval21, distributed,
   eval16, executor, internal/testdb, observability, repair17/18/20, repodiag and
   runtimecore. Mixed packages run fully in the integration job.
 - test.sh ./... runs every root-module test with real PostgreSQL.
 - test.sh -race ./... runs the same suite under the race detector.
-- go test -count=10 -timeout 600s ./repair20 repeats the repair loop.
+- go test -count=10 -timeout 900s ./repair20 ./durable ./repair19 repeats the core packages.
 - go test -count=1 -timeout 300s ./durable ./repair19 ./internal/integration20
   exercises combined authorization, persistence and recovery.
 
@@ -53,3 +53,15 @@ prevents a fresh runner's compiler work from consuming a fixture's strict
 execution timeout. This preparation executes no acceptance cases; the full
 race suite still executes every test, checks JSON results and rejects SKIP.
 Runtime deadlines, Lease guards and all assertions remain unchanged.
+
+## Day 21 and output isolation
+
+day21_accept.sh captures exactly the 12 required TestDay21Capture subtests,
+recomputes committed summary/report files and scores a fresh dataset.
+The full suite, Mock/crash demos and unit runner unset DAY21_RUNS_OUT to avoid
+appending duplicate observations to another capture. The accept script passes
+that variable only to the one capture command.
+
+Ordinary/race/coverage use a 360-second timeout; ten repetitions of core fault
+tests use 900 seconds. Timeouts do not remove any test or assertion.
+See [evaluation](evaluation.md) for report reproduction and fresh capture.

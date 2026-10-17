@@ -30,3 +30,17 @@ calls the same public CodingHandler. These are bounded integration demos, not
 a daemon load benchmark. Rename and Commit remain separate; unknown file bytes,
 missing/replaced Worktrees, hostile writers, power loss and multi-host recovery
 are not made safe by declaring the demo successful.
+
+## Distinct fault windows
+
+| Experiment | Failure / takeover boundary | What it proves |
+| --- | --- | --- |
+| Day 19 legacy CLI | -inject-sigkill after Rename and before Patch result persistence | Intent/hash reconciliation; its legacy lab uses direct ownership changes rather than real Queue takeover |
+| Day 19 Store unit test | TestDay19CrashBetweenRenameAndResult returns an injected hook error | The Rename/result gap is recoverable; this unit test is explicitly not a real SIGKILL |
+| Four-state matrix | Owned child is killed after prepared, applied, verified_pass or verified_fail is durable | Recovery per committed state with actual ClaimBatch takeover |
+| Day 20 checkpoint gap | TestDay20RealSIGKILLBeforeCheckpoint kills its own child after verified_pass, before final Agent checkpoint | Patch verdict survives and a real new owner finishes the checkpoint without another model call |
+| Day 21 evaluation | Seed verified_pass, expire only the test lease, claim as Worker B | Deterministic cached-result takeover measurements; no SIGKILL is injected here |
+
+The Rename/result gap and verified-result/final-checkpoint gap are different.
+The current demo runs the real four-state matrix and Day 20 checkpoint test;
+retained Day 19 CLI/unit results are not substituted for those real-claim tests.

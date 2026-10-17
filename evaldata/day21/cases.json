@@ -1,0 +1,25 @@
+{
+  "cases": [
+    {
+      "case_id": "divide-repair",
+      "kind": "repair",
+      "trials": 3
+    },
+    {
+      "case_id": "baseline-pass",
+      "kind": "already_passed",
+      "trials": 3
+    },
+    {
+      "case_id": "two-round-exhaust",
+      "kind": "budget_exhausted",
+      "trials": 3,
+      "max_rounds": 2
+    },
+    {
+      "case_id": "verified-pass-takeover",
+      "kind": "recovery",
+      "trials": 3
+    }
+  ]
+}

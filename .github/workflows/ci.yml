@@ -20,6 +20,7 @@ jobs:
         with:
           go-version-file: go.mod
           cache-dependency-path: go.sum
+      - run: python3 scripts/scan_secrets.py --mode head
       - run: ./scripts/check_fmt.sh
       - run: env -u DEEPSEEK_API_KEY go vet ./...
       - run: go build ./...
@@ -90,3 +91,6 @@ jobs:
         run: |
           ./scripts/demo_mock.sh
           ./scripts/demo_crash_recovery.sh
+      - name: Day 21 capture and recorded evaluation reproduction
+        if: matrix.mode == 'integration'
+        run: ./scripts/day21_accept.sh

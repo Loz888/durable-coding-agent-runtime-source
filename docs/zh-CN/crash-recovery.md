@@ -44,3 +44,17 @@ Mock 测试入口驱动现有 Scheduler.execute；
 Rename 与 Commit 仍是分开的操作。
 演示通过不代表未知文件内容、丢失或被替换的 Worktree、
 恶意并发写入、断电或跨主机恢复已经得到安全处理。
+
+## 不同的故障窗口
+
+| 实验 | 注入位置或接管方式 | 结论范围 |
+| --- | --- | --- |
+| Day19 旧 CLI | -inject-sigkill 在 Rename 后、补丁结果入库前终止自身进程 | 意图与哈希恢复；旧实验用直接所有权变更，不是队列真实接管 |
+| Day19 Store 单测 | TestDay19CrashBetweenRenameAndResult 返回注入的钩子错误 | 检查 Rename 与结果持久化间隙，单测本身不是真实 SIGKILL |
+| 四状态矩阵 | 在 prepared、applied、verified_pass、verified_fail 持久化后终止专用子进程 | 真实 ClaimBatch 接管下的状态恢复 |
+| Day20 最终检查点窗口 | verified_pass 已保存、最终 Agent 检查点前真实 SIGKILL | 补丁判定存活，新的真实持有者无需模型即可完成检查点 |
+| Day21 评测恢复 | 先保存 verified_pass，仅使自身 Run 租约过期，再以 Worker B 领取 | 测量确定性的缓存结果接管；该场景没有 SIGKILL |
+
+Rename/结果之间的间隙，与已验证结果/最终检查点之间的间隙不同。
+当前崩溃 Demo 执行真实四状态矩阵和 Day20 检查点测试，
+不以旧 Day19 实验替代真实队列接管验证。

@@ -43,3 +43,11 @@ contend on the same Run row. Guarded Rename is followed by authority/hash
 validation before result commit. Model calls and Go tests run outside those
 row-lock transactions. This is a trusted single-writer/shared-local-filesystem
 model, not a sandbox or filesystem/database distributed transaction.
+
+## Evaluation boundary
+
+eval21.Score aggregates validated Observation records; cmd/day21-eval parses
+manifests/JSONL and writes reports. Neither adds another Scheduler or Repair Loop.
+TestDay21Capture drives the existing Scheduler with deterministic proposals and
+collects independent baseline, Worktree-test, source-cleanliness and checkpoint evidence.
+See [evaluation](evaluation.md).

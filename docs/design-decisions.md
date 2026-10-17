@@ -20,5 +20,6 @@ in a later checkpoint. A pending call can replay after crash: durable ordering
 does not guarantee arbitrary external-side-effect exactly-once. Controlled
 Patch effects permit more specific recovery via Before/After SHA.
 
-No software license has been selected for this repository. The documented
-trusted-code execution boundary still applies.
+No open-source license was selected automatically. Before publication, the
+owner must decide licensing, exposure of history/contact information and the
+documented trusted-code boundary.

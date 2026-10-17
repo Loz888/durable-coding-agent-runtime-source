@@ -3,9 +3,9 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 source scripts/lib/test_env.sh
 require_test_databases
-unset DEEPSEEK_API_KEY
+unset DEEPSEEK_API_KEY DAY21_RUNS_OUT
 log="$(mktemp "${TMPDIR:-/tmp}/agent-runtime-tests.XXXXXX.jsonl")"
 echo "Test evidence: $log"
 if (( $# == 0 )); then set -- ./...; fi
-go test -json -count=1 -timeout 300s "$@" | tee "$log"
+go test -json -count=1 -timeout 360s "$@" | tee "$log"
 python3 scripts/check_test_results.py "$log"

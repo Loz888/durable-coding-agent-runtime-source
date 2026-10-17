@@ -1,0 +1,43 @@
+{
+  "total_runs": 12,
+  "scenario_passed": 12,
+  "repair_passed": 3,
+  "repair_total": 3,
+  "recovery_passed": 3,
+  "recovery_total": 3,
+  "false_claims": 0,
+  "positive_claims": 9,
+  "total_rounds": 12,
+  "total_model_calls": 9,
+  "token_known_runs": 0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "p50_latency_ms": 400,
+  "p95_latency_ms": 1403,
+  "cases": [
+    {
+      "case_id": "divide-repair",
+      "kind": "repair",
+      "pass": 3,
+      "total": 3
+    },
+    {
+      "case_id": "baseline-pass",
+      "kind": "already_passed",
+      "pass": 3,
+      "total": 3
+    },
+    {
+      "case_id": "two-round-exhaust",
+      "kind": "budget_exhausted",
+      "pass": 3,
+      "total": 3
+    },
+    {
+      "case_id": "verified-pass-takeover",
+      "kind": "recovery",
+      "pass": 3,
+      "total": 3
+    }
+  ]
+}

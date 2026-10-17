@@ -1,0 +1,1003 @@
+{
+  "description": "Selected Day21 inputs and corresponding release hashes. Local configuration, build artifacts and logs are excluded.",
+  "module": "runtime-app",
+  "source_file_count": 166,
+  "files": [
+    {
+      "path": "cmd/day10-coordinator/main.go",
+      "original_sha256": "0ca058c284bea59bd2d9f8d63d3dd2aee228479759386bae37e5461b23f66dde",
+      "release_sha256": "0ca058c284bea59bd2d9f8d63d3dd2aee228479759386bae37e5461b23f66dde",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day10-worker/main.go",
+      "original_sha256": "e5979117ad4b97c7e83f3118faafcf5237caed16bee8129152eed2ffbc851497",
+      "release_sha256": "e5979117ad4b97c7e83f3118faafcf5237caed16bee8129152eed2ffbc851497",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day11-repo-agent/main.go",
+      "original_sha256": "eb190b01dff85ed79301d5801d1459b7c794c261d018ae1b8d7f144a3c432ca6",
+      "release_sha256": "eb190b01dff85ed79301d5801d1459b7c794c261d018ae1b8d7f144a3c432ca6",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day12-durable-agent/main.go",
+      "original_sha256": "ddf7b21df79a2b4f69908727b90ad4690945c2ca04081f42bc8f09430856b45a",
+      "release_sha256": "ddf7b21df79a2b4f69908727b90ad4690945c2ca04081f42bc8f09430856b45a",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day13-leased-agent/main.go",
+      "original_sha256": "b1d73044e9a172c851941bbb1c94d367b7a3b577a61643dfae65c1278fd63de1",
+      "release_sha256": "b1d73044e9a172c851941bbb1c94d367b7a3b577a61643dfae65c1278fd63de1",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day14-submit/main.go",
+      "original_sha256": "1a84ab8eb453912d3b1ab24a165fe1f057bc19d40a41b3bb44d2ffca0a6ff749",
+      "release_sha256": "1a84ab8eb453912d3b1ab24a165fe1f057bc19d40a41b3bb44d2ffca0a6ff749",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day14-worker/main.go",
+      "original_sha256": "f1b489357d378474d46a52061f1058f6e39b84a5dd11c9e280761af0174caef7",
+      "release_sha256": "9ad574174f2815b5c7422d1b913223dd04b2fc465b7acb5752fca5ec315ab47d",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "cmd/day15-report/main.go",
+      "original_sha256": "450e39ea274bae47c9e59dfcc5cd5c492c3fd8b82ae39325eb88342d85b1682c",
+      "release_sha256": "450e39ea274bae47c9e59dfcc5cd5c492c3fd8b82ae39325eb88342d85b1682c",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day16-eval/main.go",
+      "original_sha256": "712e7c429a7d73f6c9fe226b420da10df551d71b2bf9f7768749b939fae3342c",
+      "release_sha256": "712e7c429a7d73f6c9fe226b420da10df551d71b2bf9f7768749b939fae3342c",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day17-patch/main.go",
+      "original_sha256": "85d4932957fdd6fba715802d101754c3cf73c26b4db046ab2343eac8d280b33b",
+      "release_sha256": "85d4932957fdd6fba715802d101754c3cf73c26b4db046ab2343eac8d280b33b",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day18-repair/main.go",
+      "original_sha256": "a2e97585e59657f3662b642f936a06311d1b6a701ab6aad385509cb665a50495",
+      "release_sha256": "a2e97585e59657f3662b642f936a06311d1b6a701ab6aad385509cb665a50495",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day19-patch/main.go",
+      "original_sha256": "a0c05f9dc7f1272bafde4ccf45655f85f9d1ae37826c5a13b2d5d0ab7010becc",
+      "release_sha256": "59700f6c4dcf9f325f7694cad1eb766edc635285f3807b8e34e9e76821db3487",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "cmd/day21-eval/main.go",
+      "original_sha256": "63fc1000258cb12f8b5e8dd6817ebee0bdad7cd6cf1bdab8cbaaef33164ba51f",
+      "release_sha256": "63fc1000258cb12f8b5e8dd6817ebee0bdad7cd6cf1bdab8cbaaef33164ba51f",
+      "merge_action": "add"
+    },
+    {
+      "path": "cmd/day21-eval/main_test.go",
+      "original_sha256": "2aa2f0c6a21e85df3ccd44f6d8fc0a1e147fc8e8abc08b438a3c924165eb6f7b",
+      "release_sha256": "2aa2f0c6a21e85df3ccd44f6d8fc0a1e147fc8e8abc08b438a3c924165eb6f7b",
+      "merge_action": "add"
+    },
+    {
+      "path": "cmd/day6-demo/main.go",
+      "original_sha256": "043e08ed4d2ce5ea5d7be57e2d5817c3a404f177634e7d82bce38bb24aa0663b",
+      "release_sha256": "043e08ed4d2ce5ea5d7be57e2d5817c3a404f177634e7d82bce38bb24aa0663b",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day7-demo/main.go",
+      "original_sha256": "f89aa67b478aa638eab2a124efc754c6dccfa799c83378c80d1e15fbeb3ac0f5",
+      "release_sha256": "f89aa67b478aa638eab2a124efc754c6dccfa799c83378c80d1e15fbeb3ac0f5",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day8-server/config.go",
+      "original_sha256": "1e0e0adf0316009d655af62bab9db3b2ca9062357fac8f02c044d685404412ac",
+      "release_sha256": "1e0e0adf0316009d655af62bab9db3b2ca9062357fac8f02c044d685404412ac",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day8-server/config_test.go",
+      "original_sha256": "3020245f44ddefd12f100271b07ded54dde57eaeb76d99a578d56685d1c0d576",
+      "release_sha256": "3020245f44ddefd12f100271b07ded54dde57eaeb76d99a578d56685d1c0d576",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day8-server/main.go",
+      "original_sha256": "b2f610f6ab21c8d41c4a406d2fcf7ea8c0271c8dac2e0373345060450e926bb3",
+      "release_sha256": "b2f610f6ab21c8d41c4a406d2fcf7ea8c0271c8dac2e0373345060450e926bb3",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/day8-server/main_test.go",
+      "original_sha256": "04262bf7049fe57556cf20be335b8986a5b06de718f7e36c0a641b4ec55dcb49",
+      "release_sha256": "04262bf7049fe57556cf20be335b8986a5b06de718f7e36c0a641b4ec55dcb49",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/router-demo/main.go",
+      "original_sha256": "292bf398f900eea212100617c096882ba17ce2d4865622b29ca0878d478f6f77",
+      "release_sha256": "292bf398f900eea212100617c096882ba17ce2d4865622b29ca0878d478f6f77",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/runtime/main.go",
+      "original_sha256": "371cb2387f14c862179fffcb9dc66db2b22b9d5dfeace16eda27c245b05de473",
+      "release_sha256": "371cb2387f14c862179fffcb9dc66db2b22b9d5dfeace16eda27c245b05de473",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/shell-demo/main.go",
+      "original_sha256": "bf958b110c2e474535b170e2657b0a6fba27f011d8f314a5adbd20c0d06d27c2",
+      "release_sha256": "bf958b110c2e474535b170e2657b0a6fba27f011d8f314a5adbd20c0d06d27c2",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "cmd/worker-benchmark/main.go",
+      "original_sha256": "8c3c0e72dcd4be53a02c99f8fc635c63d1cb93413c2df62fb4a2b60270e2d116",
+      "release_sha256": "8c3c0e72dcd4be53a02c99f8fc635c63d1cb93413c2df62fb4a2b60270e2d116",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "day13_lease_lab.sh",
+      "original_sha256": "d81942e4ae973b1f3d61d990b728ee8542cc6695f70deb575361bfb69224f08f",
+      "release_sha256": "2e848b6c3d9c47adf2d5cbc49144b578bc13b8eec50478e640ece72a34acc072",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "day15fault/fault.go",
+      "original_sha256": "dea95f8af05062fba9f9b73c8198eebea509b02200f8dfdced1351d4dbcfcf8a",
+      "release_sha256": "dea95f8af05062fba9f9b73c8198eebea509b02200f8dfdced1351d4dbcfcf8a",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "distributed/coordinator.go",
+      "original_sha256": "6f9cbd3775448c5068d8b437c710b1fb256b52fc7a219eca9643554563f5e178",
+      "release_sha256": "6f9cbd3775448c5068d8b437c710b1fb256b52fc7a219eca9643554563f5e178",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "distributed/coordinator_test.go",
+      "original_sha256": "1dd47f29a82229e6b4cf182811bc20f99a4c5f4b33a152dc558db6ec94f5e5e8",
+      "release_sha256": "1dd47f29a82229e6b4cf182811bc20f99a4c5f4b33a152dc558db6ec94f5e5e8",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "distributed/http.go",
+      "original_sha256": "ac1568edcdcc83e70c232ccc3b1e4a54774b7c802794c01913cc2f509622dc17",
+      "release_sha256": "ac1568edcdcc83e70c232ccc3b1e4a54774b7c802794c01913cc2f509622dc17",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "distributed/lease_expiry_test.go",
+      "original_sha256": "eb38f5f2e22d8ab43ac79edd4af6368628f274bec8932d921b370d80d8dabde1",
+      "release_sha256": "eb38f5f2e22d8ab43ac79edd4af6368628f274bec8932d921b370d80d8dabde1",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/coding.go",
+      "original_sha256": "b37e85870fdd141bc67a79fe7bf369db2721b229a8e02b95a0fd7407bb43a4ef",
+      "release_sha256": "b37e85870fdd141bc67a79fe7bf369db2721b229a8e02b95a0fd7407bb43a4ef",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/day20_integration_test.go",
+      "original_sha256": "41a3433b01d8ff68d8ad7f4c7633237ff8fd8b784d473e0b59c4bdcf481bad3b",
+      "release_sha256": "41a3433b01d8ff68d8ad7f4c7633237ff8fd8b784d473e0b59c4bdcf481bad3b",
+      "merge_action": "copy-day21"
+    },
+    {
+      "path": "durable/day21_capture_test.go",
+      "original_sha256": "883510ffd979f7372c3605aae4afa0268e09190962f969b4122b7eda3904e92c",
+      "release_sha256": "883510ffd979f7372c3605aae4afa0268e09190962f969b4122b7eda3904e92c",
+      "merge_action": "add"
+    },
+    {
+      "path": "durable/failure.go",
+      "original_sha256": "ee4802533586604df7964fb88662aa69ffc0a67906fa8a14f1c415f21ebbadb6",
+      "release_sha256": "ee4802533586604df7964fb88662aa69ffc0a67906fa8a14f1c415f21ebbadb6",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/fenced_store.go",
+      "original_sha256": "da0996bc9f155f67c3c738740189843ecd5743d704a98559715eb1038f7ab301",
+      "release_sha256": "da0996bc9f155f67c3c738740189843ecd5743d704a98559715eb1038f7ab301",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/lease.go",
+      "original_sha256": "e59e79df2d83b4dd1ee2fb36a91337ca2d08554e24b09799dfa048864aedda02",
+      "release_sha256": "e59e79df2d83b4dd1ee2fb36a91337ca2d08554e24b09799dfa048864aedda02",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/lease_test.go",
+      "original_sha256": "a93c9dc316ed1c4b8f71410471d8d4272850ea6f0be60d656cdd0f1a22079f4f",
+      "release_sha256": "a93c9dc316ed1c4b8f71410471d8d4272850ea6f0be60d656cdd0f1a22079f4f",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/postgres.go",
+      "original_sha256": "04ae9206d0c7c4ed76a95831f2f5cd7df106614b7c83125d126ba007eafefedf",
+      "release_sha256": "04ae9206d0c7c4ed76a95831f2f5cd7df106614b7c83125d126ba007eafefedf",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/postgres_test.go",
+      "original_sha256": "333c4144a81900f6bb95b03ba2459361df38dc30c430205121c9361dfbe5909d",
+      "release_sha256": "333c4144a81900f6bb95b03ba2459361df38dc30c430205121c9361dfbe5909d",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/pre20_budget_test.go",
+      "original_sha256": "eb05e3c79c57e57f5e0808108121b5e041840ee31c2b9f8a91e640c9d3aeb34a",
+      "release_sha256": "eb05e3c79c57e57f5e0808108121b5e041840ee31c2b9f8a91e640c9d3aeb34a",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/pre20_scheduler_test.go",
+      "original_sha256": "c6ab82e9fb1bd8ef86e54e1dd8af4668f04280dfadf8357c71dd61073dfa2ba6",
+      "release_sha256": "c6ab82e9fb1bd8ef86e54e1dd8af4668f04280dfadf8357c71dd61073dfa2ba6",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/queue.go",
+      "original_sha256": "bd6076e5063ba415048d9eb760348c9ca7fe134b4ca2810c358b1a05a5502686",
+      "release_sha256": "bd6076e5063ba415048d9eb760348c9ca7fe134b4ca2810c358b1a05a5502686",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/queue_test.go",
+      "original_sha256": "f0b88cad2f88829c46188152b5e8c67c1618a434cb0f359a478313ed330d4d45",
+      "release_sha256": "f0b88cad2f88829c46188152b5e8c67c1618a434cb0f359a478313ed330d4d45",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/runner.go",
+      "original_sha256": "e5e5a0b1f0527f7dd90974e7b63d3836280ee357b40407611c3d6b47c0f421f3",
+      "release_sha256": "e5e5a0b1f0527f7dd90974e7b63d3836280ee357b40407611c3d6b47c0f421f3",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/runner_test.go",
+      "original_sha256": "86bc54fc2fdb1176453dfa69bc6debe6c13f3665d95044a455b3173dce3f1d2b",
+      "release_sha256": "86bc54fc2fdb1176453dfa69bc6debe6c13f3665d95044a455b3173dce3f1d2b",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/scheduler.go",
+      "original_sha256": "d0f6bcd9ba086f4787be3abd809b1379a04ec9bc167772b6d004d7bd9b39205a",
+      "release_sha256": "d0f6bcd9ba086f4787be3abd809b1379a04ec9bc167772b6d004d7bd9b39205a",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "durable/types.go",
+      "original_sha256": "6509384c5b041f79a1cae60d5259acbe19966d7eca60a3f37c938c23a0c99513",
+      "release_sha256": "6509384c5b041f79a1cae60d5259acbe19966d7eca60a3f37c938c23a0c99513",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "eval16/eval.go",
+      "original_sha256": "484ecdc3e53df140125168726746b47d698f2ff518adf72bec266baae8cf8f9c",
+      "release_sha256": "484ecdc3e53df140125168726746b47d698f2ff518adf72bec266baae8cf8f9c",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "eval16/eval_test.go",
+      "original_sha256": "689feec055904120d1f5b3b2861294a2b0b2d33ce77bc30b40a7dd329dd64613",
+      "release_sha256": "689feec055904120d1f5b3b2861294a2b0b2d33ce77bc30b40a7dd329dd64613",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "eval21/score.go",
+      "original_sha256": "2c27bb18c071789d12317c7e9c4f6dedd5f6066ccd0cc85167d1ab547aca40e0",
+      "release_sha256": "2c27bb18c071789d12317c7e9c4f6dedd5f6066ccd0cc85167d1ab547aca40e0",
+      "merge_action": "add"
+    },
+    {
+      "path": "eval21/score_test.go",
+      "original_sha256": "140bfe079809f2f74914bbce88051be9ef28bc05cf1fedb1079bf3b749db16e5",
+      "release_sha256": "140bfe079809f2f74914bbce88051be9ef28bc05cf1fedb1079bf3b749db16e5",
+      "merge_action": "add"
+    },
+    {
+      "path": "evaldata/cases.json",
+      "original_sha256": "4bdd4df303c46a76ad4af22f1054e6a0cb688976d5009f41fec61ae5d7e6ba92",
+      "release_sha256": "4bdd4df303c46a76ad4af22f1054e6a0cb688976d5009f41fec61ae5d7e6ba92",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "evaldata/day21/cases.json",
+      "original_sha256": "42ba6e347e42c4cdbae14ff56b28c1d6addfba6764ab5b2223256c12e97bac74",
+      "release_sha256": "42ba6e347e42c4cdbae14ff56b28c1d6addfba6764ab5b2223256c12e97bac74",
+      "merge_action": "add"
+    },
+    {
+      "path": "evaldata/day21/report.md",
+      "original_sha256": "d43012b5dc549673ea9cefbf8401eed667cd43b8cffaa801d58e7aa11eebf45d",
+      "release_sha256": "d43012b5dc549673ea9cefbf8401eed667cd43b8cffaa801d58e7aa11eebf45d",
+      "merge_action": "add"
+    },
+    {
+      "path": "evaldata/day21/runs.jsonl",
+      "original_sha256": "eb7b6ac2d87dcb625b023e7b865dfbdd0d602d9d17ef8bf00b622942603c6126",
+      "release_sha256": "eb7b6ac2d87dcb625b023e7b865dfbdd0d602d9d17ef8bf00b622942603c6126",
+      "merge_action": "add"
+    },
+    {
+      "path": "evaldata/day21/summary.json",
+      "original_sha256": "3240f8bd0e6950d04fc3387ff0644be25012693f7d34fda0f1c281d373c8a264",
+      "release_sha256": "3240f8bd0e6950d04fc3387ff0644be25012693f7d34fda0f1c281d373c8a264",
+      "merge_action": "add"
+    },
+    {
+      "path": "evaldata/fixtures/clean-pass/go.mod",
+      "original_sha256": "36caa880c9b8aebb26ca920f20c8caf23d5defa2e8a6f23b1d863e0ad57bd5a1",
+      "release_sha256": "36caa880c9b8aebb26ca920f20c8caf23d5defa2e8a6f23b1d863e0ad57bd5a1",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "evaldata/fixtures/clean-pass/sum.go",
+      "original_sha256": "3f888bc5b2a1ab812de551e70bfecd2a0a9eed071ac2a482664063667410227c",
+      "release_sha256": "0d3879f800639afcc3f2b8fa63034bfdf798a261fe3d1e7bdc7dc9c8beaa2d2c",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "evaldata/fixtures/clean-pass/sum_test.go",
+      "original_sha256": "e16c0621d7b6e383e072d799019d4dd0fa25952e62da82eba64df69c298a7366",
+      "release_sha256": "ca4cf39f0cd1f1ea97fdb5714563492880d7800e821504e0c529d7cd19e6d360",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "evaldata/fixtures/compile-error/calc.go",
+      "original_sha256": "cda434874fc2817a68b05627008e757f516068ae5c4e1b445c8e146f19cd2c03",
+      "release_sha256": "689af9de210801e0da7e15dfdff4695aabce7a2b2e5bd4c2db3d3a4404090146",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "evaldata/fixtures/compile-error/calc_test.go",
+      "original_sha256": "d19d031f7840bf7632224bc6949c859311b5173ed8b89dc0c982159a1c9193dd",
+      "release_sha256": "712a0ba9a47038623fcec2e299d5ff180fe387ba2cb1d9280b8625235875ea9d",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "evaldata/fixtures/compile-error/go.mod",
+      "original_sha256": "457fba3dd39056a09da0b6677a574f711a944f11e129f917796a508997a36e56",
+      "release_sha256": "457fba3dd39056a09da0b6677a574f711a944f11e129f917796a508997a36e56",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "evaldata/fixtures/divide-assert/go.mod",
+      "original_sha256": "b954038640cfffb078c9ef1de11c9b17d0c66051e3c5a3415c91e58b1dd591b6",
+      "release_sha256": "b954038640cfffb078c9ef1de11c9b17d0c66051e3c5a3415c91e58b1dd591b6",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "evaldata/fixtures/divide-assert/math.go",
+      "original_sha256": "0845bd37dcbbb6115d40c1ebf28cd69b31a81d1d006daaa93aeb20bc4df9db25",
+      "release_sha256": "ddd57249366da3ab3c36e968d1fbb12a87196f69a27f8d750ef6575b51dc3eb4",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "evaldata/fixtures/divide-assert/math_test.go",
+      "original_sha256": "49884dc2ecdba03cb8bdbe56e0413c6b1a3936c2fd891c2de8f0fada08da1720",
+      "release_sha256": "d00d1b029a1e97c37e3afacb4c7c229720085e149776ddbe2623b1a67a8b9e54",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "evaldata/fixtures/nil-panic/go.mod",
+      "original_sha256": "f89aa1d9881eb2e698c9c7e538b411998133877db410f5aa48e4c1f9a0ddd080",
+      "release_sha256": "f89aa1d9881eb2e698c9c7e538b411998133877db410f5aa48e4c1f9a0ddd080",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "evaldata/fixtures/nil-panic/person.go",
+      "original_sha256": "10e90e5be692b0340d062ffecf81e339a834342482c47357dc8cf88f55259a15",
+      "release_sha256": "ed00743f6f87abb37020dbc921ff8e815d3915d16409d60cf318fd4bcf685def",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "evaldata/fixtures/nil-panic/person_test.go",
+      "original_sha256": "f8b2c629a245a85ebae1e2258208ff63f827030cfe8fe67abdd567d4aa3c77ce",
+      "release_sha256": "627ec914e8456fe831038f07b5519ceab7bcf8a1f64be8f7783caa6e21e45c31",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "evaldata/fixtures/sort-assert/go.mod",
+      "original_sha256": "b227310a5ffc2d4ec3be1c045d890eec15d542f6008caa9782524e11c78c103f",
+      "release_sha256": "b227310a5ffc2d4ec3be1c045d890eec15d542f6008caa9782524e11c78c103f",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "evaldata/fixtures/sort-assert/sort.go",
+      "original_sha256": "1a5b5ef00567c68d7190798cbc3078f8c8038a78812450e202d7b657be0924a7",
+      "release_sha256": "dbf1256a8bfd292b49d3a706f9ebbe5e7bf4f59e1e927705779ba66e1f79b6a7",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "evaldata/fixtures/sort-assert/sort_test.go",
+      "original_sha256": "f5e96b94e88a5dd19a5a3a542d0704222716fbec1bac4709a4b4d5623b66e371",
+      "release_sha256": "18e05f8bf2d4f061bd3947b7071fa74795351d7455871acfb55cc17889261778",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "executor/delay.go",
+      "original_sha256": "2d27f0b4fb7d783eb8d1588fba9b8dea9757a774785a81943b7aa52b0ecb09e8",
+      "release_sha256": "2d27f0b4fb7d783eb8d1588fba9b8dea9757a774785a81943b7aa52b0ecb09e8",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "executor/errors.go",
+      "original_sha256": "59695651eb18d75e299bf70b04413ab19c947b2e48b780a6bd4793bf020e33fc",
+      "release_sha256": "59695651eb18d75e299bf70b04413ab19c947b2e48b780a6bd4793bf020e33fc",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "executor/executor.go",
+      "original_sha256": "c8a04f6e2dfd7d499b8b31946502bce99f64c2bf6d6c308ccab047ea777811e3",
+      "release_sha256": "c8a04f6e2dfd7d499b8b31946502bce99f64c2bf6d6c308ccab047ea777811e3",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "executor/registry.go",
+      "original_sha256": "c2b3b3fbcb8d61f596e861d987b959522e0d2a117ba9b247d20226049069739a",
+      "release_sha256": "c2b3b3fbcb8d61f596e861d987b959522e0d2a117ba9b247d20226049069739a",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "executor/registry_test.go",
+      "original_sha256": "62258886096f03755068fc1caf526732400c623f5adbb84b540f4671fa8c3a27",
+      "release_sha256": "62258886096f03755068fc1caf526732400c623f5adbb84b540f4671fa8c3a27",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "executor/shell.go",
+      "original_sha256": "38ab885046be8c598cde7ba1f13a6436cf8893c6a55737eac2552fd0471933d2",
+      "release_sha256": "38ab885046be8c598cde7ba1f13a6436cf8893c6a55737eac2552fd0471933d2",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "executor/shell_test.go",
+      "original_sha256": "03154179c1690a64b7751e84a57ab6efc39e955c0b4cd3ece64bc722c3fb5179",
+      "release_sha256": "03154179c1690a64b7751e84a57ab6efc39e955c0b4cd3ece64bc722c3fb5179",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "executor/uppercase.go",
+      "original_sha256": "675a2cdc110e10a24380e548547bb8e2ec983dbfe8f08d059b94894f753e7fb4",
+      "release_sha256": "675a2cdc110e10a24380e548547bb8e2ec983dbfe8f08d059b94894f753e7fb4",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "go.mod",
+      "original_sha256": "9bce7779f8fd5a9a9ed452ff1786636088bc29cc3635c2d647a9bb2ed86f8a99",
+      "release_sha256": "9bce7779f8fd5a9a9ed452ff1786636088bc29cc3635c2d647a9bb2ed86f8a99",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "go.sum",
+      "original_sha256": "a5e7a8db07eba28dbde48bf9a54c4e9084a5a95ded581c0ff44c08b74e3dfe69",
+      "release_sha256": "a5e7a8db07eba28dbde48bf9a54c4e9084a5a95ded581c0ff44c08b74e3dfe69",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "httpapi/persistence_integration_test.go",
+      "original_sha256": "39b811f83e517b04750338405e6dadfcfef18741a9e752b05cde7b2c8354cc8f",
+      "release_sha256": "39b811f83e517b04750338405e6dadfcfef18741a9e752b05cde7b2c8354cc8f",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "httpapi/result_collector.go",
+      "original_sha256": "e9831b08bde7dd1b16f7131a7163595f53a48387bea95d455975beb3f1d18c02",
+      "release_sha256": "e9831b08bde7dd1b16f7131a7163595f53a48387bea95d455975beb3f1d18c02",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "httpapi/result_collector_test.go",
+      "original_sha256": "b0d4e474e916e19e6ae7f09ae619d68fd2eb436bef917e196bada2c64fed8bc9",
+      "release_sha256": "b0d4e474e916e19e6ae7f09ae619d68fd2eb436bef917e196bada2c64fed8bc9",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "httpapi/service.go",
+      "original_sha256": "999a288773c5874ad3d03bf5ab041222ef16d0d76e64f01e30eb90a26567ad5f",
+      "release_sha256": "999a288773c5874ad3d03bf5ab041222ef16d0d76e64f01e30eb90a26567ad5f",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "httpapi/service_test.go",
+      "original_sha256": "7ae7bdc68121d62a296a0b1af60782e0769fd12e5d1c8fbe89cf0b400dce29b8",
+      "release_sha256": "7ae7bdc68121d62a296a0b1af60782e0769fd12e5d1c8fbe89cf0b400dce29b8",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "httpapi/store.go",
+      "original_sha256": "51481349c5b0809db5976e0d2ba32e9859d67f36d7ddac2006cd5da1e47b2ede",
+      "release_sha256": "51481349c5b0809db5976e0d2ba32e9859d67f36d7ddac2006cd5da1e47b2ede",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "internal/integration20/fixtures_test.go",
+      "original_sha256": "fb1dc6c3a04625c822e6ce5087e9e00d8e227355b7e98cd6c848bf49a1516258",
+      "release_sha256": "fb1dc6c3a04625c822e6ce5087e9e00d8e227355b7e98cd6c848bf49a1516258",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "internal/integration20/pre20_recovery_test.go",
+      "original_sha256": "46282da49be32d3866173e10402367760af44a57f649a119b68f80a21f7162e8",
+      "release_sha256": "46282da49be32d3866173e10402367760af44a57f649a119b68f80a21f7162e8",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "internal/testdb/config.go",
+      "original_sha256": "1f2c7d44d9dd5f0e7dcf27b87898616c36e486fbc546b9f2f42af0e966964b5c",
+      "release_sha256": "1f2c7d44d9dd5f0e7dcf27b87898616c36e486fbc546b9f2f42af0e966964b5c",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "internal/testdb/config_test.go",
+      "original_sha256": "20ab297cccaca118402cc6c1033a370b1c4f20d2c37a6bd0a13b9b09ed76ae1a",
+      "release_sha256": "20ab297cccaca118402cc6c1033a370b1c4f20d2c37a6bd0a13b9b09ed76ae1a",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "internal/testdb/postgres.go",
+      "original_sha256": "3d07fac0cca1f5708c81afba91b5dededfd49e348262e51eca7b52cb61ca2ba9",
+      "release_sha256": "3d07fac0cca1f5708c81afba91b5dededfd49e348262e51eca7b52cb61ca2ba9",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "internal/testdb/queue_lock.go",
+      "original_sha256": "1d4d304cdb38a69a6295a0a9db2bc079862062ea9749dc5c2561ca88d9b5f544",
+      "release_sha256": "1d4d304cdb38a69a6295a0a9db2bc079862062ea9749dc5c2561ca88d9b5f544",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "migrations/001_agent_runs.sql",
+      "original_sha256": "1aa884f83c15879449b78eaf969156c131f882d6fb9035ced66ba36b9884d3b5",
+      "release_sha256": "1aa884f83c15879449b78eaf969156c131f882d6fb9035ced66ba36b9884d3b5",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "migrations/002_agent_lease.sql",
+      "original_sha256": "884912d715a0b7a876a964190c1a207956e8c264d74a8cc37865fddebbe18ff2",
+      "release_sha256": "884912d715a0b7a876a964190c1a207956e8c264d74a8cc37865fddebbe18ff2",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "migrations/003_agent_scheduler.sql",
+      "original_sha256": "cb17537d8e8d7c1abf2fb2da2002184452e781fe981c68561bec89a5d6be6f72",
+      "release_sha256": "cb17537d8e8d7c1abf2fb2da2002184452e781fe981c68561bec89a5d6be6f72",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "migrations/004_agent_reliability.sql",
+      "original_sha256": "74284a2d340d6169ebacb940747027bd9d4fe975c985f983cfbf31cc611f3855",
+      "release_sha256": "74284a2d340d6169ebacb940747027bd9d4fe975c985f983cfbf31cc611f3855",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "migrations/005_durable_patch.sql",
+      "original_sha256": "c2d32907a9ac0359e5ac614b172ea9c5d51aa4fd970ee4efb063f35c48716c6f",
+      "release_sha256": "c2d32907a9ac0359e5ac614b172ea9c5d51aa4fd970ee4efb063f35c48716c6f",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "migrations/006_repair_binding.sql",
+      "original_sha256": "c9221cbaad9372dbcd6545e9f8a00e2b67936d7f6926a7841a3003acb5bd8cd6",
+      "release_sha256": "c9221cbaad9372dbcd6545e9f8a00e2b67936d7f6926a7841a3003acb5bd8cd6",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "observability/collector.go",
+      "original_sha256": "db9bf0a3fbb251b8a6d48d301ccd50e008ae4f3e33bd33d4899690c7e02ad7b4",
+      "release_sha256": "db9bf0a3fbb251b8a6d48d301ccd50e008ae4f3e33bd33d4899690c7e02ad7b4",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "observability/collector_test.go",
+      "original_sha256": "e4cf16ee3737268c1f8129c71ad483b787927055b67c66641baad415ddf70bcd",
+      "release_sha256": "e4cf16ee3737268c1f8129c71ad483b787927055b67c66641baad415ddf70bcd",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "observability/logger.go",
+      "original_sha256": "4bee36d0d5ccd180d2745871eed41b29188bd4ee15e92e72a9da532a126d953d",
+      "release_sha256": "4bee36d0d5ccd180d2745871eed41b29188bd4ee15e92e72a9da532a126d953d",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "persistence/TESTING.md",
+      "original_sha256": "d8576c21428c135ae15d9cebfc779a84065661cdcb6062c9aea18e27417bc564",
+      "release_sha256": "cbbfbb197136f6b22df66c3872671af2a5a63d51d9efca4fc1a7a1045ffec477",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "persistence/migrate.go",
+      "original_sha256": "dfcc00d929403497191c4d4f9ad2c0aa7f13c98e77d66f082e78ee45ffcd2113",
+      "release_sha256": "dfcc00d929403497191c4d4f9ad2c0aa7f13c98e77d66f082e78ee45ffcd2113",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "persistence/postgres.go",
+      "original_sha256": "a0b1ab0a5861ffb1ab9f1e3cabfa00281eff37c0a19dfb76d6b1a4692acf5117",
+      "release_sha256": "a0b1ab0a5861ffb1ab9f1e3cabfa00281eff37c0a19dfb76d6b1a4692acf5117",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "persistence/schema.go",
+      "original_sha256": "43def9cb0ba591a2d993b1867f09184a243c66df79698393f5d2d31a4ab80a23",
+      "release_sha256": "43def9cb0ba591a2d993b1867f09184a243c66df79698393f5d2d31a4ab80a23",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "persistence/schema.sql",
+      "original_sha256": "eb6a4db21d9f841363d0441de79a956c271356d24b80c72388e4bde007ee9847",
+      "release_sha256": "eb6a4db21d9f841363d0441de79a956c271356d24b80c72388e4bde007ee9847",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "persistence/task_store.go",
+      "original_sha256": "918e7a23b9ddc0ec6babbe289dbb11727ed48e9760001dd06c84475386560017",
+      "release_sha256": "918e7a23b9ddc0ec6babbe289dbb11727ed48e9760001dd06c84475386560017",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "persistence/task_store_test.go",
+      "original_sha256": "046a0128c726f407524d5587eeaff1a0b4a2cd78c81a6aab38c1fa7673c1d835",
+      "release_sha256": "046a0128c726f407524d5587eeaff1a0b4a2cd78c81a6aab38c1fa7673c1d835",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "reliability15/core.go",
+      "original_sha256": "28a501acb5e86fbe61e92837a8712b37b37c32d0084221bfd497c5e3bd7eef7b",
+      "release_sha256": "28a501acb5e86fbe61e92837a8712b37b37c32d0084221bfd497c5e3bd7eef7b",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "reliability15/core_test.go",
+      "original_sha256": "15fa34fd834a70d4aacc9b1089892d337fa5d202dbe290b687a9f0e3454649f7",
+      "release_sha256": "15fa34fd834a70d4aacc9b1089892d337fa5d202dbe290b687a9f0e3454649f7",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "reliability15/postgres.go",
+      "original_sha256": "60163c43680a029174355881a691064b11db826da65711de1769c6ff958e1cd1",
+      "release_sha256": "60163c43680a029174355881a691064b11db826da65711de1769c6ff958e1cd1",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "reliability15/postgres_test.go",
+      "original_sha256": "90ef183c2a4d1d2c37656855d7e9264e4e67ec17523934f7aa4968fface23be6",
+      "release_sha256": "90ef183c2a4d1d2c37656855d7e9264e4e67ec17523934f7aa4968fface23be6",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "reliability15/pre20_sweep_test.go",
+      "original_sha256": "4c697e97713094b6f14da9efb330141bfee582a3a638be148809dee170b38d0f",
+      "release_sha256": "4c697e97713094b6f14da9efb330141bfee582a3a638be148809dee170b38d0f",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair17/patch.go",
+      "original_sha256": "01ef5e113d1af042a693236deefa8856f4d22c86f33ae242f064e014d51354c0",
+      "release_sha256": "01ef5e113d1af042a693236deefa8856f4d22c86f33ae242f064e014d51354c0",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair17/pre20_boundary_test.go",
+      "original_sha256": "96f583a58307d329d52d9fe7bf8e27f9386ae3ea22391999489872b2087048da",
+      "release_sha256": "96f583a58307d329d52d9fe7bf8e27f9386ae3ea22391999489872b2087048da",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair17/repair_test.go",
+      "original_sha256": "b3ac099a9701678aa0c0670dbd85c48529081906a763db45af6d3eaa475ac1bd",
+      "release_sha256": "b3ac099a9701678aa0c0670dbd85c48529081906a763db45af6d3eaa475ac1bd",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair17/verify.go",
+      "original_sha256": "7ce4093540f74d2e50e1bc1d2b4584d4e9358c430b2b2d61883da16dba4f9020",
+      "release_sha256": "7ce4093540f74d2e50e1bc1d2b4584d4e9358c430b2b2d61883da16dba4f9020",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair17/workspace.go",
+      "original_sha256": "85b2f570f0fdfc59899ba1ac231c749f8740b28676d68345632c9fb927c0a807",
+      "release_sha256": "85b2f570f0fdfc59899ba1ac231c749f8740b28676d68345632c9fb927c0a807",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair18/deepseek.go",
+      "original_sha256": "8946a4b37ac47b58b2476c35365a3e98f4047ee1680c6de46e3d953f19f7ed2e",
+      "release_sha256": "8946a4b37ac47b58b2476c35365a3e98f4047ee1680c6de46e3d953f19f7ed2e",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair18/deepseek_test.go",
+      "original_sha256": "7242c5bf3b338112ed24218f45443b1b14cda8fa0dccdab30766eb052edc255c",
+      "release_sha256": "7242c5bf3b338112ed24218f45443b1b14cda8fa0dccdab30766eb052edc255c",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair18/loop.go",
+      "original_sha256": "98f42d4409830f6b1b5d59f2e117f1bb8a256dad53410a7d5cc0dabacf8de321",
+      "release_sha256": "98f42d4409830f6b1b5d59f2e117f1bb8a256dad53410a7d5cc0dabacf8de321",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair18/loop_test.go",
+      "original_sha256": "174090a97425073378c71cfd84ce743ea1976181443b778c127cf6c2ab9182b6",
+      "release_sha256": "174090a97425073378c71cfd84ce743ea1976181443b778c127cf6c2ab9182b6",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair19/protocol.go",
+      "original_sha256": "990695cca02d4502a628cc30d18c5bf81d9435739b3569d92f2235c4817636f5",
+      "release_sha256": "990695cca02d4502a628cc30d18c5bf81d9435739b3569d92f2235c4817636f5",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair19/protocol_test.go",
+      "original_sha256": "a16e5e07a9b3079f995fff6ed8049a4aee395701b419c6cc86447912413c301e",
+      "release_sha256": "a16e5e07a9b3079f995fff6ed8049a4aee395701b419c6cc86447912413c301e",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair19/store.go",
+      "original_sha256": "23e6276425815b72263bc0053db1547b84b145d79e0c076570b20cc3e671da9b",
+      "release_sha256": "23e6276425815b72263bc0053db1547b84b145d79e0c076570b20cc3e671da9b",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair19/store_test.go",
+      "original_sha256": "4b81298ecd8a15ca154d153b2d429884d3a1799cd895ebb34120883f8ecde434",
+      "release_sha256": "4b81298ecd8a15ca154d153b2d429884d3a1799cd895ebb34120883f8ecde434",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair20/postgres.go",
+      "original_sha256": "78d366b67ea85881f4588010e65e28fa0df791fe1d5431c1d2f9dadf3f79f218",
+      "release_sha256": "78d366b67ea85881f4588010e65e28fa0df791fe1d5431c1d2f9dadf3f79f218",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair20/runner.go",
+      "original_sha256": "918a572a62998649b156561bcf78e421a9fee2e2344e8b3c3c8f231b0aafd9f3",
+      "release_sha256": "918a572a62998649b156561bcf78e421a9fee2e2344e8b3c3c8f231b0aafd9f3",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repair20/runner_test.go",
+      "original_sha256": "41fcdfc173e390c8feb7a58875a70f3191ba36bd19984cc3cd32983363375fa9",
+      "release_sha256": "41fcdfc173e390c8feb7a58875a70f3191ba36bd19984cc3cd32983363375fa9",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repodiag/agent.go",
+      "original_sha256": "3cac18d524a12a42ae7dd923f592d3786f112b01151b96a067185e0a39ddaba4",
+      "release_sha256": "3cac18d524a12a42ae7dd923f592d3786f112b01151b96a067185e0a39ddaba4",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repodiag/day11_extra_test.go",
+      "original_sha256": "a537c97e47aaf744066668539a9feb359111b36100963fe34044781713e15a88",
+      "release_sha256": "a537c97e47aaf744066668539a9feb359111b36100963fe34044781713e15a88",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repodiag/day11_fault_test.go",
+      "original_sha256": "c7b76ffd91eb15a926d99045339616e416d77cfb6f9396fbd8dea9d46b73b817",
+      "release_sha256": "c7b76ffd91eb15a926d99045339616e416d77cfb6f9396fbd8dea9d46b73b817",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repodiag/deepseek.go",
+      "original_sha256": "2294bb03b6d214b54e9f3ff2474753e04bff13f67c5d902b82818302d31badae",
+      "release_sha256": "2294bb03b6d214b54e9f3ff2474753e04bff13f67c5d902b82818302d31badae",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repodiag/deepseek_test.go",
+      "original_sha256": "ef058f6e8e3db69ebdc6473cbd0ce1acdfef41bc18e5155de3d94dad7ac1cb61",
+      "release_sha256": "ef058f6e8e3db69ebdc6473cbd0ce1acdfef41bc18e5155de3d94dad7ac1cb61",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repodiag/repo_executor.go",
+      "original_sha256": "28056b90e3b1d39f4e27264315d18e9abff76603ad3c6c301f96503b18d3633c",
+      "release_sha256": "28056b90e3b1d39f4e27264315d18e9abff76603ad3c6c301f96503b18d3633c",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "repodiag/tools.go",
+      "original_sha256": "bc2a7a9d745ee68e0022bbf90629ce88a7452182d20084bc9f23d6fb67b99ce6",
+      "release_sha256": "bc2a7a9d745ee68e0022bbf90629ce88a7452182d20084bc9f23d6fb67b99ce6",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/backoff_test.go",
+      "original_sha256": "46eae5bf30d0c1cce55ecad3113af65c8476e1d1bdff457bf9f28413ab80925b",
+      "release_sha256": "46eae5bf30d0c1cce55ecad3113af65c8476e1d1bdff457bf9f28413ab80925b",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/day4_experiments_test.go",
+      "original_sha256": "782f6e82fc3f75cd30888eba361c33bcc7d4c94bd551dfd8b2df659aa840609e",
+      "release_sha256": "782f6e82fc3f75cd30888eba361c33bcc7d4c94bd551dfd8b2df659aa840609e",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/day7_lifecycle_test.go",
+      "original_sha256": "f19261937e0a221a0a4c1fc830790106fa932b012165089188574807292174eb",
+      "release_sha256": "f19261937e0a221a0a4c1fc830790106fa932b012165089188574807292174eb",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/error_kind.go",
+      "original_sha256": "dbe6370dd0bebe2be1000a969277a7beb9a94177a2a36ec06471fcf35587c9b2",
+      "release_sha256": "dbe6370dd0bebe2be1000a969277a7beb9a94177a2a36ec06471fcf35587c9b2",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/error_kind_test.go",
+      "original_sha256": "92710a777e5c385ee01f4db235c846df639021201c48f9fa37350ea93309ee1a",
+      "release_sha256": "92710a777e5c385ee01f4db235c846df639021201c48f9fa37350ea93309ee1a",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/result.go",
+      "original_sha256": "742e5d5bbc25c694d7ba328c90608807216ab8d7f9a6cf238529a6341ec12555",
+      "release_sha256": "742e5d5bbc25c694d7ba328c90608807216ab8d7f9a6cf238529a6341ec12555",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/retry.go",
+      "original_sha256": "ee37a36800dd404c102c65670295ff201e0d50b214dda3a3fef11febcabf9a98",
+      "release_sha256": "ee37a36800dd404c102c65670295ff201e0d50b214dda3a3fef11febcabf9a98",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/retry_day5_test.go",
+      "original_sha256": "ff9cd4912a355b727d68706f25b31e32d6a75c31cb9430d9c4b7d33d4fd9dd56",
+      "release_sha256": "ff9cd4912a355b727d68706f25b31e32d6a75c31cb9430d9c4b7d33d4fd9dd56",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/retry_execute.go",
+      "original_sha256": "d9b1241b386fdc951d535e512f889a43b2fcd60c7e9d30c11f266f64517eea2e",
+      "release_sha256": "d9b1241b386fdc951d535e512f889a43b2fcd60c7e9d30c11f266f64517eea2e",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/retry_execute_test.go",
+      "original_sha256": "fe22e6a09c530a03d6f7f7b2562b490d4766026dd7d16e9701daa84af87967b6",
+      "release_sha256": "fe22e6a09c530a03d6f7f7b2562b490d4766026dd7d16e9701daa84af87967b6",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/retry_test.go",
+      "original_sha256": "cc4b2ff1ced6f511defc6b76dfc44feab064e5f44927258bfef2b9ecbc8b3c52",
+      "release_sha256": "cc4b2ff1ced6f511defc6b76dfc44feab064e5f44927258bfef2b9ecbc8b3c52",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/runtime.go",
+      "original_sha256": "03c526a3920590eeee9fac2f5ab336fef3003ff6110ce341461b8d08a0898c96",
+      "release_sha256": "03c526a3920590eeee9fac2f5ab336fef3003ff6110ce341461b8d08a0898c96",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/runtime_test.go",
+      "original_sha256": "0317e15941255ab0ea7bfe69bb1afb244ccf4366a7667b883407d9e25922aaf9",
+      "release_sha256": "0317e15941255ab0ea7bfe69bb1afb244ccf4366a7667b883407d9e25922aaf9",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/state.go",
+      "original_sha256": "747c128b777c024a3494f2923e4ca36d00f5c9770e14a646034f0a4dd101e2f0",
+      "release_sha256": "747c128b777c024a3494f2923e4ca36d00f5c9770e14a646034f0a4dd101e2f0",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/state_test.go",
+      "original_sha256": "3265d3ddc9ff0bc51d831ea9630364f4bad5f8f720408830335db0a07657652f",
+      "release_sha256": "3265d3ddc9ff0bc51d831ea9630364f4bad5f8f720408830335db0a07657652f",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "runtimecore/worker.go",
+      "original_sha256": "a070e9916cc71a4259a05ff2389ca516449a66c0001b25a2b6f313ff9c59e8dd",
+      "release_sha256": "a070e9916cc71a4259a05ff2389ca516449a66c0001b25a2b6f313ff9c59e8dd",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "scripts/day12-env.sh",
+      "original_sha256": "045118ec40401f1198f56c62f4e0efb9b76c5efdc65fe9527c82de1ec0c367c5",
+      "release_sha256": "045118ec40401f1198f56c62f4e0efb9b76c5efdc65fe9527c82de1ec0c367c5",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "scripts/day15-faults.sh",
+      "original_sha256": "a3f8d4280fa2dbbec0baa6d385e96fca82fbc8216d95a222aa45097f8a602ac2",
+      "release_sha256": "b0c66d37d4af89adc155dc2751da95a82896564acfbba6f6eb0ce29b4f50a8a3",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "scripts/day15_audit.sh",
+      "original_sha256": "a9a7e6fc964e4e3709e964ad6691b148ca02df19546b9234e2e63866967813ba",
+      "release_sha256": "64bc4c821c845ab3b521411f9b2174bca48d5ab6faa6f78c0286926441f9f8c6",
+      "merge_action": "retain-portable-release"
+    },
+    {
+      "path": "scripts/day16_fixtures.sh",
+      "original_sha256": "f618cf2cc84d9d9b3b533d0b6af3e3b105f896a939256560db549f15da349470",
+      "release_sha256": "f618cf2cc84d9d9b3b533d0b6af3e3b105f896a939256560db549f15da349470",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "scripts/day17_demo.sh",
+      "original_sha256": "9b28a2006a71fed5586926a4e506c8a8fdd8211c5715a885367c1c8c551ab65f",
+      "release_sha256": "9b28a2006a71fed5586926a4e506c8a8fdd8211c5715a885367c1c8c551ab65f",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "scripts/day18_demo.sh",
+      "original_sha256": "5c3c2d8ca82254e49f3c8134dede5be84a7908e7149e527778ec3f88fc160b76",
+      "release_sha256": "5c3c2d8ca82254e49f3c8134dede5be84a7908e7149e527778ec3f88fc160b76",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "scripts/day19_demo.sh",
+      "original_sha256": "dc791fff71c40d3ec8fec02d9087e19e482f733e71cc32c1d38ac2e3bdfbb397",
+      "release_sha256": "dc791fff71c40d3ec8fec02d9087e19e482f733e71cc32c1d38ac2e3bdfbb397",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "scripts/day20_accept.sh",
+      "original_sha256": "39c185ffadb89229302d9b449cdf9e8ca94765236343ab2f4a636f5aa59b0b12",
+      "release_sha256": "39c185ffadb89229302d9b449cdf9e8ca94765236343ab2f4a636f5aa59b0b12",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "scripts/day21_accept.sh",
+      "original_sha256": "7292eef35872a4d1b74be3e89626c96bf19797f010b9aef5825989da190aa4f9",
+      "release_sha256": "4530d117ac45c7a64603dc218e18a3e05b69d811919138a63f257ba8f7cbe6e2",
+      "merge_action": "add"
+    },
+    {
+      "path": "scripts/experiment_a.sh",
+      "original_sha256": "567b04a10e4027f3e1109ce144e729b5c7e98aa6ac3b845f4e8afc57e9837d03",
+      "release_sha256": "567b04a10e4027f3e1109ce144e729b5c7e98aa6ac3b845f4e8afc57e9837d03",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "scripts/experiment_b.sh",
+      "original_sha256": "4197529e29f2e57e619b5f5672a56beceeb5ef7305a1ca0347f4c3b337296aa2",
+      "release_sha256": "4197529e29f2e57e619b5f5672a56beceeb5ef7305a1ca0347f4c3b337296aa2",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "scripts/test-postgres.sh",
+      "original_sha256": "a35ca8b02839e987c78f730653a1e5c3d138ee31a62ece5865e807ab2775a54c",
+      "release_sha256": "a35ca8b02839e987c78f730653a1e5c3d138ee31a62ece5865e807ab2775a54c",
+      "merge_action": "unchanged"
+    },
+    {
+      "path": "task/task.go",
+      "original_sha256": "9ee0f2abf876be4f5074ce0988f1f569060c1160b59228f707e53a3e8192143b",
+      "release_sha256": "9ee0f2abf876be4f5074ce0988f1f569060c1160b59228f707e53a3e8192143b",
+      "merge_action": "unchanged"
+    }
+  ]
+}

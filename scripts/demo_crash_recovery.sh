@@ -4,7 +4,7 @@ trap 'echo "FAIL: demo_crash_recovery (line $LINENO)" >&2' ERR
 cd "$(dirname "$0")/.."
 source scripts/lib/test_env.sh
 require_test_databases
-unset DEEPSEEK_API_KEY
+unset DEEPSEEK_API_KEY DAY21_RUNS_OUT
 log="$(mktemp "${TMPDIR:-/tmp}/agent-runtime-demo.XXXXXX.jsonl")"
 echo "real child SIGKILL -> durable Patch recovery -> real Epoch takeover -> final Checkpoint"
 echo "Evidence: $log"

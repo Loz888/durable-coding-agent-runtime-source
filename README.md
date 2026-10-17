@@ -2,11 +2,14 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-A [bilingual documentation showcase](https://github.com/Loz888/durable-coding-agent-runtime-showcase)
-is also available for a design-focused overview.
+[Documentation showcase](https://github.com/Loz888/durable-coding-agent-runtime-showcase)
+
+## Project overview
 
 A Go agent runtime with PostgreSQL-backed scheduling, fenced checkpoints and
 recoverable, single-file code repair in managed Git Worktrees.
+
+## Motivation
 
 **What should the next Worker do when the previous Worker changed a file but
 died before recording completion?** This project records Patch Intent before
@@ -14,7 +17,7 @@ writing, reconciles the current SHA-256 after takeover, and commits results
 only under a valid Lease/Epoch. A successful model response alone is not a
 durable execution protocol.
 
-## Implemented features
+## Key features
 
 - Concurrent tool runtime: registry, Workers, context cancellation, timeout,
   retry/backoff, error classification and in-process metrics.
@@ -27,6 +30,7 @@ durable execution protocol.
 - Durable Patch Intent/Result, cached verification and crash reconciliation.
 - Separate Claim, explicit-retry and logical-repair budgets.
 - Real PostgreSQL, concurrent-owner and child-process SIGKILL tests.
+- Day 21 deterministic Capture, strict scoring and auditable JSONL observations.
 
 Day-numbered packages retain the tested implementation history without twenty
 duplicate projects. The Go Module remains `runtime-app`. No unmeasured
@@ -52,10 +56,12 @@ flowchart TD
     CP --> Q
 ```
 
+[Source manifest](docs/source-manifest.json) ·
 [Architecture](docs/architecture.md) ·
 [Execution lifecycle](docs/execution-lifecycle.md) ·
 [Crash recovery](docs/crash-recovery.md) ·
 [Patch protocol](docs/patch-protocol.md) ·
+[Evaluation](docs/evaluation.md) ·
 [Testing](docs/testing.md) ·
 [Design decisions](docs/design-decisions.md)
 
@@ -70,8 +76,7 @@ sudo access to its administration account. If new test databases are needed,
 run sudo -v in your own terminal first; existing accessible test databases
 need no administration step.
 
-This source repository is public. Clone it with Git; keep actual database
-and model credentials outside version control.
+Clone the public source repository:
 
 ```bash
 git clone https://github.com/Loz888/durable-coding-agent-runtime-source.git
@@ -151,13 +156,54 @@ entry points. It is not a long-running daemon load test. These demonstrations
 do not prove power-loss safety, arbitrary external-side-effect exactly-once,
 distributed filesystem correctness or multi-host workspace reconstruction.
 
+## Evaluation results
+
+The recorded Day 21 Mock experiment covers four scenarios with three trials each:
+
+| Metric | Recorded result |
+| --- | ---: |
+| Scenario correctness | 12/12 |
+| Fresh repair | 3/3 |
+| Verified-result recovery | 3/3 |
+| Unsupported success claims | 0/9 claimed successes |
+| P50 / P95 | 400 / 1403 ms |
+
+This is controlled deterministic evaluation, not a real DeepSeek repair success
+rate or an open-world benchmark. Token usage is unknown, not measured as zero.
+Latency covers claim-to-checkpoint execution, excluding independent proof;
+recovery also excludes preparing Worker A's verified result.
+The nearest-rank P95 of 12 samples is the largest recorded duration.
+
+The [case manifest](evaldata/day21/cases.json), [observations](evaldata/day21/runs.jsonl),
+[summary](evaldata/day21/summary.json) and [generated report](evaldata/day21/report.md)
+are committed for review. [Evaluation methodology](docs/evaluation.md) explains
+denominators, proof rules, environment limits and offline report reproduction.
+
+After Quick Start database setup, run a fresh capture:
+
+```bash
+./scripts/day21_accept.sh
+```
+
+It uses the existing Scheduler and Patch Store and checks all 12 trials.
+Fresh output goes to a new external temporary directory. The committed dataset
+remains unchanged, and fresh timing is reported separately.
+
+## Design decisions
+
+The queue and checkpoints share PostgreSQL transactional authority.
+Epoch Fencing rejects stale owners, while Revision CAS orders checkpoint updates.
+Patch Intent and Before/After SHA reconcile the filesystem/SQL gap.
+Separate claim, retry and repair budgets prevent takeover from resetting limits.
+These choices have costs; see [design decisions](docs/design-decisions.md).
+
 ## Testing and CI
 
 After database setup:
 
 ```bash
-env -u DEEPSEEK_API_KEY go test -count=1 -timeout 300s ./...
-env -u DEEPSEEK_API_KEY go test -race -count=1 -timeout 300s ./...
+env -u DEEPSEEK_API_KEY go test -count=1 -timeout 360s ./...
+env -u DEEPSEEK_API_KEY go test -race -count=1 -timeout 360s ./...
 env -u DEEPSEEK_API_KEY go vet ./...
 
 # Strict JSON runners additionally reject every SKIP.
@@ -171,7 +217,8 @@ format/vet/build, database-independent tests, full PostgreSQL integration
 tests and a full race suite. PostgreSQL jobs create both fixed database names,
 apply migrations 001–006, and reject SKIP. No model key is injected.
 Check the actual [Actions runs](https://github.com/Loz888/durable-coding-agent-runtime-source/actions)
-for remote status; no static green status is asserted here.
+for remote status; no static green status is asserted here. CI also checks the
+Day 21 Capture and reproduces the recorded evaluation report.
 
 ## Repository map
 
@@ -187,7 +234,7 @@ for remote status; no static green status is asserted here.
 | repair19 / repair20 | Durable Patch Store and recovery-first repair agent |
 | persistence, httpapi | Persistent task API and result collection |
 | internal/integration20 | Independent cross-module recovery tests |
-| eval16, evaldata/fixtures | Evaluation utilities and curated test inputs |
+| eval16, eval21, evaldata | Diagnosis fixtures, deterministic Capture observations and strict scoring |
 | migrations, scripts, docs | Schema, reproducible entry points and design |
 
 Legacy scripts are retained. The old Day19 lab uses synthetic owner changes;
@@ -222,4 +269,4 @@ measured Worker-throughput benchmarks and multi-host Worktree recovery remain
 future work.
 
 简要说明：这是一个关注执行授权、持久化和崩溃恢复的 Go Agent 工程。
-Mock 与故障 Demo 无需真实模型密钥。本仓库公开源码，尚未选择软件 License。
+Mock 与故障 Demo 无需真实模型密钥。源码仓库已公开，尚未选择软件 License。

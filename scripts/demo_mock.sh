@@ -4,7 +4,7 @@ trap 'echo "FAIL: demo_mock (line $LINENO)" >&2' ERR
 cd "$(dirname "$0")/.."
 source scripts/lib/test_env.sh
 require_test_databases
-unset DEEPSEEK_API_KEY
+unset DEEPSEEK_API_KEY DAY21_RUNS_OUT
 log="$(mktemp "${TMPDIR:-/tmp}/agent-runtime-demo.XXXXXX.jsonl")"
 echo "real ClaimBatch -> existing Scheduler.execute -> CodingHandler -> Mock patch -> Go Test -> fenced Checkpoint"
 echo "Evidence: $log"

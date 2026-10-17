@@ -67,3 +67,15 @@ race CI 在完整竞态测试之前，先编译普通测试依赖。
 按照中文 README 配置专用数据库后，可以执行普通测试、竞态检测和 Demo。
 实时结果见 [Actions](https://github.com/Loz888/durable-coding-agent-runtime-source/actions)。
 原始本地执行日志不提交到 Git。
+
+## Day21 输出隔离与验收
+
+day21_accept.sh 检查全部 12 个 Capture 子场景，
+重算已提交的 summary/report，并独立评分本次采集的数据。
+普通测试、Mock/崩溃 Demo 和单元测试脚本会清除 DAY21_RUNS_OUT，
+避免将重复观测追加到另一轮采集文件。
+采集脚本仅为那一次 Capture 命令设置此变量。
+
+普通、竞态与覆盖率验收使用 360 秒超时；
+核心模块十轮回归使用 900 秒。调整超时不删除任何测试或断言。
+运行方法及数据解释见[评测文档](evaluation.md)。

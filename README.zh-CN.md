@@ -2,14 +2,15 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
+[双语文档展示版](https://github.com/Loz888/durable-coding-agent-runtime-showcase)
+
 一个使用 Go 构建的 Agent 工程项目，关注执行状态持久化、PostgreSQL 调度、
 租约校验，以及受控代码修复中的崩溃恢复。
 
-**本仓库公开实现源码、测试、数据库迁移和可执行 Demo。**
-建议先阅读架构与能力边界，再运行不需要真实模型 API Key 的 Mock 演示。
-数据库测试使用专用测试库；实际凭据保留在版本控制之外。
-
-仅阅读设计说明，可访问[双语文档展示版](https://github.com/Loz888/durable-coding-agent-runtime-showcase)。
+**本仓库公开实现源码与可复现实验。**
+仓库包含实现源码、测试、数据库迁移、可执行 Demo 与 Day21 评测记录。
+Mock 与故障恢复演示不需要真实模型 API Key；
+按下文克隆公开仓库并配置专用测试数据库即可运行。
 
 ## 项目解决什么问题
 
@@ -33,6 +34,7 @@ Worker 修改文件后，可能在记录完成状态之前崩溃。
 - 分别限制领取次数、显式重试次数和逻辑修复轮次。
 - 使用确定性的 Mock 提案，完成受控的单文件 Go 修复。
 - 真实 PostgreSQL、并发持有者和自建子进程 SIGKILL 测试。
+- Day21 确定性 Capture、严格评分和可复核的 JSONL 记录。
 
 项目未声明未经测量的吞吐量或延迟指标。
 
@@ -56,6 +58,8 @@ flowchart TD
     Checkpoint --> Queue
 ```
 
+[发布源码清单](docs/source-manifest.json)
+
 ## 阅读导航
 
 | 文档 | 主要内容 |
@@ -65,6 +69,7 @@ flowchart TD
 | [崩溃恢复](docs/zh-CN/crash-recovery.md) | Worker 退出后的接管与状态核对 |
 | [补丁协议](docs/zh-CN/patch-protocol.md) | 补丁意图、文件哈希、受保护写入与缓存判定 |
 | [设计取舍](docs/zh-CN/design-decisions.md) | 技术选择、代价与适用边界 |
+| [评测方法](docs/zh-CN/evaluation.md) | 四类场景、分母、延迟边界与重算步骤 |
 | [测试策略](docs/zh-CN/testing.md) | 实现中的测试场景与验收规则 |
 | [验证结果](docs/zh-CN/validation.md) | 已记录的结果及公开文档的验证范围 |
 
@@ -153,21 +158,37 @@ sequenceDiagram
 
 这些是有明确范围的集成测试场景，不能代替长期生产负载测试。
 
-## 验证结果概览
+## Day21 评测结果
 
-实现的已记录验证环境为 Linux/WSL、Go 1.27.1 和 PostgreSQL 16，
-未使用真实模型 API Key：
+已保存实验为 4 类确定性 Mock 场景，每类 3 次：
 
-| 已记录的测试集 | 通过的测试条目 | FAIL | SKIP |
-| --- | ---: | ---: | ---: |
-| 全项目测试 | 207 | 0 | 0 |
-| 全项目竞态检测 | 207 | 0 | 0 |
-| 不依赖数据库的测试集 | 127 | 0 | 0 |
+| 指标 | 已记录结果 |
+| --- | ---: |
+| 场景正确性 | 12/12 |
+| 新修复成功 | 3/3 |
+| 已验证结果恢复 | 3/3 |
+| 缺乏证据的成功声明 | 0/9 次成功声明 |
+| P50 / P95 | 400 / 1403 ms |
 
-条目数包含父测试、子测试和子进程辅助测试入口。
-以上是先前验证记录，条目统计包含父测试、子测试和子进程辅助入口。
-新仓库当前状态请以 [Actions](https://github.com/Loz888/durable-coding-agent-runtime-source/actions) 为准；
-详见[验证结果说明](docs/zh-CN/validation.md)。
+这不是 DeepSeek 在开放缺陷基准上的修复成功率。
+Token 用量未知；不能将汇总中的零理解为真实调用成本为零。
+延迟从领取开始到检查点处理结束，不包含独立证据核查；
+恢复场景还排除 Worker A 预先准备已验证补丁的时间。
+12 个样本的最近秩 P95 就是最大样本值。
+
+[场景](evaldata/day21/cases.json)、[观测](evaldata/day21/runs.jsonl)、
+[汇总](evaldata/day21/summary.json)和[生成报告](evaldata/day21/report.md)均可审查。
+[评测方法](docs/zh-CN/evaluation.md)解释分母、判定规则和局限。
+
+配置专用测试库后执行以下命令，可采集新一轮实验：
+
+```bash
+./scripts/day21_accept.sh
+```
+
+输出写入独立的新临时目录，保留已提交数据不变。
+本轮延迟单独报告，不替换 400/1403 ms 这一历史记录。
+完整验收结果见[验证说明](docs/zh-CN/validation.md)。
 
 ## 运行测试与 CI
 
@@ -203,4 +224,4 @@ env -u DEEPSEEK_API_KEY go vet ./...
 多文件补丁、沙箱隔离、更广泛的修复评估、OpenTelemetry、
 实测吞吐量基准和跨主机 Worktree 恢复，均属于后续工作。
 
-本仓库已公开源码，尚未选择软件 License。
+本仓库已公开，尚未选择软件 License。

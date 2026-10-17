@@ -682,6 +682,10 @@ func TestDay20RealSIGKILLBeforeCheckpoint(
 		)
 	}
 
+	// The parent may have resolved its DSN from .env.test. Keep the child
+	// independent of an exported variable so this path remains covered in CI.
+	t.Setenv("DAY12_TEST_DATABASE_URL", "")
+
 	// Child runs the actual CodingHandler,
 	// verifies the Patch, then SIGKILLs itself.
 	cmd := exec.Command(
@@ -692,6 +696,8 @@ func TestDay20RealSIGKILLBeforeCheckpoint(
 
 	cmd.Env = append(
 		os.Environ(),
+		// Use the same test database already validated by day13DB.
+		"DAY12_TEST_DATABASE_URL="+pool.Config().ConnString(),
 		"DAY20_CHILD=1",
 		"DAY20_SCHEMA="+schema,
 		"DAY20_RUN="+run.RunID,

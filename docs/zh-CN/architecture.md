@@ -59,3 +59,12 @@ Claim 与 Renew 竞争同一条 Run 记录。
 模型请求与 Go 测试在行锁事务之外运行。
 该方案依赖可信写入者与共享的本地文件系统；
 不提供沙箱，也不构成文件系统与数据库之间的分布式事务。
+
+## 评测边界
+
+eval21.Score 汇总经过校验的 Observation；
+cmd/day21-eval 读取场景清单与 JSONL，输出报告。
+它们不引入另一套 Scheduler 或 Repair Loop。
+TestDay21Capture 使用现有 Scheduler 和确定性提案，
+独立核查基线、Worktree 测试、原始仓库干净状态与检查点。
+详见[评测方法](evaluation.md)。
