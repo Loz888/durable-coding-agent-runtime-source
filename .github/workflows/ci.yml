@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    name: Format, vet and build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - run: ./scripts/check_fmt.sh
+      - run: env -u DEEPSEEK_API_KEY go vet ./...
+      - run: go build ./...
+
+  unit:
+    name: Database-independent tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - run: ./scripts/test_unit.sh
+
+  integration:
+    name: PostgreSQL tests and race detector
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [integration, race]
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: agent_runtime_day14_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DAY12_TEST_DATABASE_URL: postgres://postgres:ci-only-password@127.0.0.1:5432/agent_runtime_day14_test?sslmode=disable
+      TEST_DATABASE_URL: postgres://postgres:ci-only-password@127.0.0.1:5432/agent_runtime_test?sslmode=disable
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - name: Create second dedicated test database
+        env:
+          PGPASSWORD: ci-only-password
+        run: createdb -h 127.0.0.1 -U postgres agent_runtime_test
+      - name: Apply all migrations to the test database
+        run: ./scripts/setup_test_db.sh
+      - name: Full suite, rejecting SKIP
+        if: matrix.mode == 'integration'
+        run: ./scripts/test.sh ./...
+      - name: Warm normal test compiler cache for nested Go subprocesses
+        if: matrix.mode == 'race'
+        # -race builds an independent stdlib cache. Nested fixture 'go test'
+        # uses the normal cache; compile it before strict runtime deadlines.
+        # This is build preparation, never a substitute for the full suite below.
+        run: env -u DEEPSEEK_API_KEY go test -run '^$' ./...
+      - name: Race detector, rejecting SKIP
+        if: matrix.mode == 'race'
+        run: ./scripts/test.sh -race ./...
+      - name: Mock and crash recovery demos
+        if: matrix.mode == 'integration'
+        run: |
+          ./scripts/demo_mock.sh
+          ./scripts/demo_crash_recovery.sh

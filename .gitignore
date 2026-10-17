@@ -1,0 +1,47 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# Generated executables, databases and reports
+/bin/
+/dist/
+/build/
+/work/
+/worktrees/
+/experiments/
+/GITHUB_RELEASE_REPORT.md
+*.log
+*.tmp
+*.pid
+*.prof
+*.test
+*.cover
+*.coverprofile
+coverage.out
+coverage.html
+persistence-coverage.txt
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.sql.gz
+core
+core.[0-9]*
+__pycache__/
+
+# Keep the curated source fixtures; ignore run-specific worktrees and evaluation output
+/evaldata/day17-lab/
+/evaldata/day18-lab/
+/evaldata/day19-lab/
+/evaldata/day20-logs/
+/evaldata/archive/
+/evaldata/runs.jsonl
+/evaldata/judgments.jsonl
+/evaldata/report.md
+/day10-experiment-*-output/
+*-debug-backups/

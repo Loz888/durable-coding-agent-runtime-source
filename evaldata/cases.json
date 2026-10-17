@@ -1,0 +1,47 @@
+[
+  {
+    "id": "divide-assert",
+    "repo": "evaldata/fixtures/divide-assert",
+    "category": "assertion",
+    "has_bug": true,
+    "expect_go_test_pass": false,
+    "expected_root_cause": "Divide uses multiplication instead of division",
+    "expected_evidence": "math_test.go expects Divide(12,3)=4"
+  },
+  {
+    "id": "compile-error",
+    "repo": "evaldata/fixtures/compile-error",
+    "category": "compile",
+    "has_bug": true,
+    "expect_go_test_pass": false,
+    "expected_root_cause": "Undefined symbol missingNumber in calc.go",
+    "expected_evidence": "go test reports undefined: missingNumber"
+  },
+  {
+    "id": "nil-panic",
+    "repo": "evaldata/fixtures/nil-panic",
+    "category": "panic",
+    "has_bug": true,
+    "expect_go_test_pass": false,
+    "expected_root_cause": "Dereference nil pointer in NameLen",
+    "expected_evidence": "go test panic stack shows nil pointer dereference"
+  },
+  {
+    "id": "sort-assert",
+    "repo": "evaldata/fixtures/sort-assert",
+    "category": "assertion",
+    "has_bug": true,
+    "expect_go_test_pass": false,
+    "expected_root_cause": "SortAsc sorts descending rather than ascending",
+    "expected_evidence": "sort_test.go expected [1 2 3], got [3 2 1]"
+  },
+  {
+    "id": "clean-pass",
+    "repo": "evaldata/fixtures/clean-pass",
+    "category": "clean",
+    "has_bug": false,
+    "expect_go_test_pass": true,
+    "expected_root_cause": "No defect in passing sample",
+    "expected_evidence": "go test -count=1 ./... passes"
+  }
+]
