@@ -2,6 +2,9 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
+A [bilingual documentation showcase](https://github.com/Loz888/durable-coding-agent-runtime-showcase)
+is also available for a design-focused overview.
+
 A Go agent runtime with PostgreSQL-backed scheduling, fenced checkpoints and
 recoverable, single-file code repair in managed Git Worktrees.
 

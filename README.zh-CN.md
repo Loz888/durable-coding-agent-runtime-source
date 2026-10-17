@@ -65,7 +65,7 @@ flowchart TD
 | [崩溃恢复](docs/zh-CN/crash-recovery.md) | Worker 退出后的接管与状态核对 |
 | [补丁协议](docs/zh-CN/patch-protocol.md) | 补丁意图、文件哈希、受保护写入与缓存判定 |
 | [设计取舍](docs/zh-CN/design-decisions.md) | 技术选择、代价与适用边界 |
-| [测试策略](docs/zh-CN/testing.md) | 私有实现的测试场景与验收规则 |
+| [测试策略](docs/zh-CN/testing.md) | 实现中的测试场景与验收规则 |
 | [验证结果](docs/zh-CN/validation.md) | 已记录的结果及公开文档的验证范围 |
 
 ## 快速开始：先运行 Mock
