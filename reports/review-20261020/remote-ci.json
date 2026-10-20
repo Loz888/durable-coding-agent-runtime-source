@@ -1,0 +1,231 @@
+{
+  "date": "2026-10-20",
+  "repository": "Loz888/durable-coding-agent-runtime-source",
+  "scope": "Observed historical runs at the exact head SHA below; not a guarantee about future commits. Paid model calls disabled.",
+  "runs": [
+    {
+      "databaseId": 39413383698,
+      "headSha": "645c88ede05d569df1405c6cf65df2028e0986d7",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Loz888/durable-coding-agent-runtime-source/actions/runs/39413383698",
+      "createdAt": "2026-10-20T11:13:10Z",
+      "updatedAt": "2026-10-20T11:14:48Z",
+      "jobs": [
+        {
+          "name": "Database-independent tests",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run ./scripts/test_unit.sh",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "PostgreSQL tests and race detector (integration)",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+              "conclusion": "success"
+            },
+            {
+              "name": "Create second dedicated test database",
+              "conclusion": "success"
+            },
+            {
+              "name": "Apply all migrations to the test database",
+              "conclusion": "success"
+            },
+            {
+              "name": "Full suite, rejecting SKIP",
+              "conclusion": "success"
+            },
+            {
+              "name": "Warm normal test compiler cache for nested Go subprocesses",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Race detector, rejecting SKIP",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Mock and crash recovery demos",
+              "conclusion": "success"
+            },
+            {
+              "name": "Day 21 capture and recorded evaluation reproduction",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Stop containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "PostgreSQL tests and race detector (race)",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Initialize containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+              "conclusion": "success"
+            },
+            {
+              "name": "Create second dedicated test database",
+              "conclusion": "success"
+            },
+            {
+              "name": "Apply all migrations to the test database",
+              "conclusion": "success"
+            },
+            {
+              "name": "Full suite, rejecting SKIP",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Warm normal test compiler cache for nested Go subprocesses",
+              "conclusion": "success"
+            },
+            {
+              "name": "Race detector, rejecting SKIP",
+              "conclusion": "success"
+            },
+            {
+              "name": "Mock and crash recovery demos",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Day 21 capture and recorded evaluation reproduction",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Stop containers",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "Format, vet and build",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run python3 scripts/scan_secrets.py --mode head",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run ./scripts/check_fmt.sh",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run env -u DEEPSEEK_API_KEY go vet ./...",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run go build ./...",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

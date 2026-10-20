@@ -5,3 +5,5 @@
 本轮完整回归和 race 各 260 PASS / 0 FAIL / 0 SKIP；独立测试 138 PASS，格式/vet/build 通过。具体范围与源码身份见 docs/review-20261020/IMPLEMENTATION.md、reports/review-20261020/verification.json。前轮记录及历史模型测验不覆盖。
 
 当前模型继续 High；本轮付费调用 0，既有预算不重置。R1 逻辑调用结果复用、R2 最后 Claim 收尾、R4 全验证输入摘要和实际沙箱验收仍待下一轮，不能宣布全路线完成。
+
+实验、改进与远端证据汇总：[结果页](docs/review-20261020/RESULTS.md)。GitHub CI 按确切 head SHA 留存；历史模型结果与本轮工程检查分开。

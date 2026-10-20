@@ -28,11 +28,15 @@
 
 完成时长从 first_claimed_at 开始，不含初次领取前的排队等待，但包含之后的重试/接手等待；运行中统计不是 Worker CPU 或实际占用时长。不能把它称为提交到完成的 E2E。历史缺失时间不补造测量值，空平均的零占位须与 CompletedMeasurements/UnknownTerminalTimes 一起解释。
 
+## 实验结果与远端验证
+
+本轮与历史结果的分层、改进映射、源码身份和远端运行见 [RESULTS](RESULTS.md)及[逐次 CI 记录](../../reports/review-20261020/remote-ci.json)。历史原始报告不改写，远端通过只归属于记录中的确切 head SHA。
+
 ## 当前验收
 
 [机器记录](../../reports/review-20261020/verification.json)：普通全回归 **260 PASS / 0 FAIL / 0 SKIP**，race 同为 **260/0/0**；独立测试 138 PASS，格式、vet 和 build 通过。计数含 Go 父测试/子测试事件。全部在本轮隔离 PG16 专用测试库运行，不修改原数据库，不调用真实模型。
 
-最终代码对应[测试前源码哈希](source-manifest.json)。Mock/崩溃演示与 Day21 Capture 在本轮前一验证快照通过；最终提交的远端 CI 会再次运行其固定入口。历史真实单样本与 Day21 记录均保留，本轮不产生新的真实模型质量结论。
+最终代码对应[测试前源码哈希](source-manifest.json)。Mock/崩溃演示与 Day21 Capture 在前一验证快照通过，随后 645c88e 的远端 CI 已通过这些固定入口，见逐次 CI 记录。历史真实单样本与 Day21 记录均保留，本轮不产生新的真实模型质量结论。
 
 ## 已有能力复用与剩余范围
 

@@ -2,6 +2,10 @@
 
 [English](evaluation.md) | [简体中文](zh-CN/evaluation.md) | [Home](../README.md)
 
+## Evidence layers after the review
+
+The [current results page](review-20261020/RESULTS.md) separates review regression, this historical Mock capture and the archived live single-file repair. The structured diagnosis-v1 gate checks observed execution and references, not root-cause correctness. Neither a 260-event regression count nor a passing diagnostic verdict is a live-model accuracy denominator. The recorded Day21 data below are unchanged.
+
 ## What was measured
 
 The committed dataset is a recorded, deterministic Mock experiment:

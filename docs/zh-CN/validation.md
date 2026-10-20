@@ -2,6 +2,12 @@
 
 [English](../validation.md) | [简体中文](validation.md) | [中文首页](../../README.zh-CN.md)
 
+## 最新系统评审验收 · 2026-10-20
+
+全回归和 race 各 260 个测试/子测试事件通过，独立测试 138，通过且无 FAIL/SKIP；645c88e 的远端 PG、崩溃和 Capture 入口也通过。见[结果与范围](../review-20261020/RESULTS.md)、[本地记录](../../reports/review-20261020/verification.json)、[确切远端运行](../../reports/review-20261020/remote-ci.json)。本轮未重新测量覆盖率或付费模型质量，以下旧覆盖率不当作当前值。
+
+## 历史发布快照 · 2026-10-17
+
 2026-10-17 在独立发布目录执行验收，环境为 Linux/WSL、Go 1.27.1、
 PostgreSQL 16。没有提供真实模型 API Key，只使用两个固定专用测试数据库。
 
@@ -59,7 +65,7 @@ internal/integration20 只有测试，没有生产语句。
 ## 远程 CI 与边界
 
 实际远程结果以 [Actions](https://github.com/Loz888/durable-coding-agent-runtime-source/actions) 为准。
-CI 通过 TCP 连接 PostgreSQL 16，准备两个专用测试库，应用 001–006 迁移，
+CI 通过 TCP 连接 PostgreSQL 16，准备两个专用测试库，应用 001–009 迁移，
 执行全量普通与竞态测试、真实 Mock/崩溃 Demo 和 Day21 采集与报告重算。
 本地 WSL 使用对应 Unix Socket 连接，不能用本地通过冒充远程成功。
 

@@ -18,9 +18,17 @@ Mock 与故障恢复演示不需要真实模型 API Key；
 
 本轮修复终态时间冻结和统计口径，分开记录诊断执行状态与证据结论，统一模型错误/重试/未知费用契约，并归档失效 Day15 脚本。完整回归与 race 各 260 个测试/子测试事件通过。历史大模型测验保留，不将本轮模拟协议测试算作新模型质量成绩。
 
-## 2026-10-20 更新：已完成成果与当前试点
+[实验结果、改进与证据范围](docs/review-20261020/RESULTS.md) · [645c88e 远端验收记录](reports/review-20261020/remote-ci.json)
 
-[当前实现与验收](docs/pilot/STATUS.md) · [后续改进大纲](docs/pilot/IMPROVEMENT_OUTLINE.zh-CN.md)
+| 证据层次 | 已记录结果 |
+|---|---|
+| 本轮工程回归 / race | 各 260 个测试/子测试事件通过，0 FAIL、0 SKIP |
+| 历史 Day21 Mock | 12/12 受控场景；不代表真实模型正确率 |
+| 历史真实修复 | 一轮补丁后测试通过；完整模型配置未知 |
+
+## 前轮试点快照 · 2026-10-20
+
+[前轮试点实现与验收](docs/pilot/STATUS.md) · [后续改进大纲](docs/pilot/IMPROVEMENT_OUTLINE.zh-CN.md)
 
 保留原有队列、租约、Checkpoint 和补丁恢复；新增带身份的试点 API、幂等与取消、执行配置隔离、跨 Worker 模型准入与费用预留。
 已补入[历史真实 DeepSeek 修复记录](evaldata/historical/day18-deepseek/README.md)：一轮补丁后测试通过，输入 274 / 输出 94 Token。该记录不包含请求配置快照，不能算成当前 High 或 Max 的评测。

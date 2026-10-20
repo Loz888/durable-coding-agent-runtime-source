@@ -2,6 +2,10 @@
 
 [English](../evaluation.md) | [简体中文](evaluation.md) | [中文首页](../../README.zh-CN.md)
 
+## 评审后证据分层
+
+[当前结果汇总](../review-20261020/RESULTS.md)分别列出工程回归、本页历史 Mock 与真实单文件修复。新增 diagnosis-v1 闸门验证测试观察和引用一致性，不验证自由文本根因；260 个测试事件或 evidence_consistent 不是真实模型正确率分母。下方 Day21 原始数据不改。
+
 ## 评测对象
 
 已提交数据来自受控、确定性的 Mock 实验：四类场景，每类三次，

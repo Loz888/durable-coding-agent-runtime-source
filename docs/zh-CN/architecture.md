@@ -32,6 +32,9 @@ internal/integration20 仅用于测试，单向引用这些模块。
 | 004 | 增加预算、失败信息、时间字段与 run_events |
 | 005 | 创建 day19.repair_runs 与 patch_ops |
 | 006 | 增加 Worktree Identity 和表示因果顺序的 round_number |
+| 007 | 增加试点身份、登记仓库、幂等与 execution profile |
+| 008 | 增加跨 Worker 模型准入与持久费用预留 |
+| 009 | 增加 outcome_verdict 与 diagnostic_report，旧记录不追认为已验证 |
 
 HTTP 持久化通过 EnsureTaskSchema 管理独立的 tasks 结构；
 测试在随机的 runtime_test_* schema 中应用 schema.sql。
@@ -39,6 +42,10 @@ HTTP 持久化通过 EnsureTaskSchema 管理独立的 tasks 结构；
 生产事件以 (run_id, revision, event_type) 保证唯一。
 旧 Day15 测试夹具使用另一种结构，由 Store 识别。
 相同版本、相同类型的观测可能合并，因此不能将其理解为“每次尝试必有一条独立事件”。
+
+## 执行状态与诊断证据
+
+受保护的终态 Checkpoint 事务同时冻结 finished_at；统计分开完成、运行中与历史时间缺失。诊断 succeeded 仅表示流程完成，outcome_verdict 独立标识证据一致、缺证据或证据冲突；检查实际测试执行元数据、当前工具引用与持久化文本摘要，不证明自由文本根因。编码路径另记录 tests_passed/tests_failed。两种模型适配器共用 internal/providererr，详见[本轮实现](../review-20261020/IMPLEMENTATION.md)。
 
 ## Worktree 生命周期
 

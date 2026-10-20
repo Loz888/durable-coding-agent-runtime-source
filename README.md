@@ -15,11 +15,19 @@ recoverable, single-file code repair in managed Git Worktrees.
 
 Terminal checkpoint completion times now freeze atomically. Diagnostic execution status is separate from structured observation/evidence verdicts; the gate does not prove semantic root causes. Both model adapters share sanitized failure/retry/uncertain-charge semantics. The obsolete Day15 fault script is explicitly retired with its original text preserved. Full and race checks each pass 260 test/subtest events in dedicated databases; historical live-model records remain unchanged.
 
-## Current pilot update · 2026-10-20
+[Results, changes and evidence boundaries](docs/review-20261020/RESULTS.md) · [CI evidence at 645c88e](reports/review-20261020/remote-ci.json)
 
-[Current implementation and verification](docs/pilot/STATUS.md) · [已完成成果与后续缺口](docs/pilot/IMPROVEMENT_OUTLINE.zh-CN.md)
+| Evidence | Recorded outcome |
+|---|---|
+| Review regression / race | 260 / 260 passing test/subtest events; zero failures or skips |
+| Historical Day21 Mock | 12/12 controlled scenarios; not live-model accuracy |
+| Historical live repair | One patch, tests passed; exact model snapshot/effort unknown |
 
-The update retains the existing durable execution protocol and adds scoped API identities, cancellation, execution-profile separation and shared model admission/accounting. A [historical live DeepSeek repair](evaldata/historical/day18-deepseek/README.md) is now preserved separately from the Day21 Mock results. It succeeded after one patch with recorded usage of 274 input / 94 output tokens; exact model snapshot/effort was not captured. Container sandbox execution remains unverified without an engine. See the linked status page for supported boundaries and current verification.
+## Earlier pilot snapshot · 2026-10-20
+
+[Earlier pilot implementation and verification](docs/pilot/STATUS.md) · [已完成成果与后续缺口](docs/pilot/IMPROVEMENT_OUTLINE.zh-CN.md)
+
+The update retains the existing durable execution protocol and adds scoped API identities, cancellation, execution-profile separation and shared model admission/accounting. A [historical live DeepSeek repair](evaldata/historical/day18-deepseek/README.md) is now preserved separately from the Day21 Mock results. It succeeded after one patch with recorded usage of 274 input / 94 output tokens; exact model snapshot/effort was not captured. Container sandbox execution remains unverified without an engine. See the review results above for current verification; the pilot page retains its earlier snapshot.
 
 ## Motivation
 

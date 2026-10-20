@@ -73,5 +73,6 @@
       "cause": "first summary fallback referenced updated_at absent in the legacy fixture",
       "resolution": "unknown historical terminal timestamps are explicitly counted and excluded from duration averages; no legacy schema/test assertion weakened"
     }
-  ]
+  ],
+  "remote_ci_evidence": "remote-ci.json"
 }

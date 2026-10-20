@@ -21,13 +21,17 @@ No production module imports it or needs a private-test export bridge.
 Apply migrations in order: 001 creates day12.agent_runs/checkpoints; 002 adds
 Lease owner/Epoch/expiry; 003 adds queue/priority/availability/retry_count;
 004 adds budgets/failures/times/run_events; 005 creates day19 repair_runs and
-patch_ops; 006 adds Worktree Identity and causal round_number.
+patch_ops; 006 adds Worktree Identity and causal round_number; 007 adds scoped pilot identities and execution profiles; 008 adds shared model admission/accounting; 009 adds outcome_verdict and diagnostic_report.
 
 HTTP persistence uses its own tasks schema through EnsureTaskSchema; tests
 apply schema.sql in random runtime_test_* schemas.
 Production events are unique by (run_id, revision, event_type); a legacy Day15
 fixture has another shape, detected by Store. Equal-revision same-type
 observations may merge; this is not one guaranteed event per attempt.
+
+## Execution status and diagnostic evidence
+
+Terminal checkpoint writes freeze finished_at in the protected transaction. Duration summaries separate completed, still-running and unknown historical timestamps. Diagnostic succeeded means execution completed; outcome_verdict separately records evidence_consistent, insufficient_evidence or inconsistent_evidence. Structured reports check current tool-call references, persisted-output hashes and actual test execution metadata. This does not prove narrative root causes. Coding uses tests_passed/tests_failed. Both provider adapters share internal/providererr; details and tests are in the [review implementation](review-20261020/IMPLEMENTATION.md).
 
 ## Worktree lifecycle
 repair17.Prepare creates a detached Git Worktree with Run/baseline metadata

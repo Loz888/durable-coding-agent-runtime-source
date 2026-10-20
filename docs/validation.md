@@ -2,6 +2,12 @@
 
 [English](validation.md) | [简体中文](zh-CN/validation.md) | [Home](../README.md)
 
+## Latest review evidence · 2026-10-20
+
+Full and race suites each pass 260 test/subtest events; database-independent suites pass 138, with no failed or skipped tests. CI at 645c88e passes the existing PostgreSQL, crash and Capture entrypoints. See [results and scope](review-20261020/RESULTS.md), [local evidence](../reports/review-20261020/verification.json) and [exact remote runs](../reports/review-20261020/remote-ci.json). No new coverage percentages or paid-model measurements are inferred from these checks.
+
+## Historical release snapshot · 2026-10-17
+
 Local acceptance was executed on 2026-10-17 in the independent release checkout
 using Go 1.27.1, PostgreSQL 16 and Linux/WSL. No live model API key was provided.
 Only the two fixed dedicated test databases were used.
@@ -63,7 +69,7 @@ describe this recorded run and are not a performance or production-reliability m
 
 [Actions](https://github.com/Loz888/durable-coding-agent-runtime-source/actions) is the
 authoritative current remote status. CI prepares PostgreSQL 16 over TCP, creates
-both dedicated databases, applies migrations 001–006, then runs full ordinary
+both dedicated databases, applies migrations 001–009, then runs full ordinary
 and race suites, the real Mock/crash demos and Day 21 Capture/report reproduction.
 Local WSL validation used the corresponding Unix-socket connection.
 No local result alone is asserted as remote CI success.

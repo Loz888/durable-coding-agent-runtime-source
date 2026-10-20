@@ -7,7 +7,7 @@ README Quick Start creates agent_runtime_day14_test and agent_runtime_test.
 The role must own test databases or be able to create/drop schemas.
 
 Export DAY12_TEST_DATABASE_URL and TEST_DATABASE_URL. Never use production
-DATABASE_URL for tests. setup_test_db.sh checks exact names, applies 001–006
+DATABASE_URL for tests. setup_test_db.sh checks exact names, applies 001–009
 to the queue test database, and leaves task schema creation to isolated
 persistence tests. TCP DSNs can use TEST_USER:TEST_PASSWORD at localhost with
 the same database names. CI's ci-only-password is a disposable service-container
@@ -15,7 +15,7 @@ credential, not a deployment or user secret.
 
 ## Suites
 - test_unit.sh runs complete PostgreSQL-independent package suites: cmd/day21-eval, eval21, distributed,
-  eval16, executor, internal/testdb, observability, repair17/18/20, repodiag and
+  eval16, executor, internal/testdb, internal/providererr, internal/boundedlog, observability, repair17/18/20, repodiag and
   runtimecore. Mixed packages run fully in the integration job.
 - test.sh ./... runs every root-module test with real PostgreSQL.
 - test.sh -race ./... runs the same suite under the race detector.
