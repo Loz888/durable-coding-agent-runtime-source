@@ -9,6 +9,12 @@
 A Go agent runtime with PostgreSQL-backed scheduling, fenced checkpoints and
 recoverable, single-file code repair in managed Git Worktrees.
 
+## System review fixes · 2026-10-20
+
+[Review implementation and remaining scope](docs/review-20261020/IMPLEMENTATION.md) · [Machine verification](reports/review-20261020/verification.json)
+
+Terminal checkpoint completion times now freeze atomically. Diagnostic execution status is separate from structured observation/evidence verdicts; the gate does not prove semantic root causes. Both model adapters share sanitized failure/retry/uncertain-charge semantics. The obsolete Day15 fault script is explicitly retired with its original text preserved. Full and race checks each pass 260 test/subtest events in dedicated databases; historical live-model records remain unchanged.
+
 ## Current pilot update · 2026-10-20
 
 [Current implementation and verification](docs/pilot/STATUS.md) · [已完成成果与后续缺口](docs/pilot/IMPROVEMENT_OUTLINE.zh-CN.md)
@@ -221,7 +227,7 @@ env -u DEEPSEEK_API_KEY go vet ./...
 [CI](.github/workflows/ci.yml) reads the Go version from go.mod and provides
 format/vet/build, database-independent tests, full PostgreSQL integration
 tests and a full race suite. PostgreSQL jobs create both fixed database names,
-apply migrations 001–008, and reject SKIP. No model key is injected.
+apply migrations 001–009, and reject SKIP. No model key is injected.
 Check the actual [Actions runs](https://github.com/Loz888/durable-coding-agent-runtime-source/actions)
 for remote status; no static green status is asserted here. CI also checks the
 Day 21 Capture and reproduces the recorded evaluation report.

@@ -1,5 +1,7 @@
 # 当前实现与验收 / Current implementation and evidence
 
+> 后续系统评审修复与最新验收见 [review implementation](../review-20261020/IMPLEMENTATION.md)。本文保留试点升级快照范围。
+
 更新日期：2026-10-20。此页区分历史真实模型样本、确定性评测与当前试点代码；不将其合并为同一成功率。
 
 ## 已完成成果

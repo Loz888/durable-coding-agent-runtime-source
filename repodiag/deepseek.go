@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"runtime-app/internal/providererr"
 )
 
 // DeepSeekModel 实现现有的 Model 接口。
@@ -44,12 +46,10 @@ const deepSeekSystemPrompt = `
 - 不要请求执行 Shell 命令或修改代码。
 - 如果证据不足，明确说明不确定性。
 
-最终报告必须包含：
-1. 测试结果
-2. 错误位置
-3. 根本原因
-4. 修复建议
-5. 证据和局限性
+最终报告只输出 JSON：
+{"version":"diagnosis-v1","test_status":"passed|failed|not_run|unknown","evidence":[{"call_id":"真实工具调用ID","artifact_sha256":"工具输出提供的摘要"}],"locations":["相对路径"],"conclusion":"观察和诊断","limitations":["不确定性与边界"]}
+必须引用最后一次 run_go_tests 的真实结果；没执行测试时填 not_run，不得声称通过。根因推断不能冒充已验证事实。
+
 `
 
 // DeepSeek Chat Completions 的 FunctionCall。
@@ -389,14 +389,14 @@ func (m DeepSeekModel) Next(
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return Turn{}, err
+		return Turn{}, providererr.Transport(err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 
 		// Return a typed status without persisting possibly sensitive API bodies.
-		return Turn{}, &APIError{StatusCode: resp.StatusCode}
+		return Turn{}, &APIError{StatusCode: resp.StatusCode, Delay: providererr.ParseRetryAfter(resp.Header.Get("Retry-After"), time.Now())}
 	}
 
 	var response struct {
@@ -412,25 +412,20 @@ func (m DeepSeekModel) Next(
 	)
 
 	if err := decoder.Decode(&response); err != nil {
-		return Turn{}, fmt.Errorf(
-			"decode DeepSeek response: %w",
-			err,
-		)
+		return Turn{}, providererr.ResponseRead(err)
 	}
-
-	if len(response.Choices) == 0 {
-		return Turn{}, errors.New(
-			"DeepSeek returned no choices",
-		)
+	if err := decoder.Decode(new(any)); err != io.EOF {
+		return Turn{}, providererr.Invalid(providererr.InvalidOutput)
 	}
-
+	if len(response.Choices) != 1 {
+		return Turn{}, providererr.Invalid(providererr.InvalidOutput)
+	}
 	choice := response.Choices[0]
-
-	// 不把被截断的输出当作完整结果。
 	if choice.FinishReason == "length" {
-		return Turn{}, errors.New(
-			"DeepSeek response truncated by token limit",
-		)
+		return Turn{}, providererr.Invalid(providererr.Truncated)
+	}
+	if choice.FinishReason != "stop" && choice.FinishReason != "tool_calls" {
+		return Turn{}, providererr.Invalid(providererr.InvalidOutput)
 	}
 
 	message := choice.Message
@@ -493,15 +488,28 @@ func (m DeepSeekModel) Next(
 
 	if message.Content != nil {
 		turn.Text = *message.Content
+		if len(turn.Calls) == 0 && strings.HasPrefix(strings.TrimSpace(turn.Text), "{") {
+			report, err := DecodeDiagnostic(turn.Text)
+			if err != nil {
+				return Turn{}, providererr.Invalid(providererr.InvalidOutput)
+			}
+			turn.Diagnosis = report
+		}
 	}
 
 	return turn, nil
 }
 
 // APIError is classified by status; API response bodies are never logged here.
-type APIError struct{ StatusCode int }
-
-func (e *APIError) Error() string { return fmt.Sprintf("DeepSeek API HTTP %d", e.StatusCode) }
-func (e *APIError) Temporary() bool {
-	return e.StatusCode == 408 || e.StatusCode == 429 || e.StatusCode >= 500 && e.StatusCode <= 599
+type APIError struct {
+	StatusCode int
+	Delay      time.Duration
 }
+
+func (e *APIError) Error() string   { return fmt.Sprintf("DeepSeek API HTTP %d", e.StatusCode) }
+func (e *APIError) Temporary() bool { return providererr.HTTP(e.StatusCode, e.Delay).Temporary() }
+func (e *APIError) Category() providererr.Category {
+	return providererr.HTTP(e.StatusCode, e.Delay).Category()
+}
+func (e *APIError) MayHaveCharged() bool      { return true }
+func (e *APIError) RetryAfter() time.Duration { return e.Delay }

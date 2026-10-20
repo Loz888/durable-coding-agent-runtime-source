@@ -79,6 +79,15 @@ func (f FencedStore) Save(
 		return err
 	}
 
+	diagnosis, err := json.Marshal(s.Diagnosis)
+	if err != nil {
+		return err
+	}
+	verdict := s.OutcomeVerdict
+	if verdict == "" {
+		verdict = "not_evaluated"
+	}
+
 	tx, err := f.Pool.BeginTx(
 		ctx,
 		pgx.TxOptions{},
@@ -96,7 +105,10 @@ func (f FencedStore) Save(
 			turns = $3,
 			calls = $4,
 			final_text = $5,
-			updated_at = clock_timestamp()
+			finished_at = CASE WHEN $1 IN ('succeeded','failed') THEN COALESCE(finished_at, clock_timestamp()) ELSE finished_at END,
+			updated_at = clock_timestamp(),
+            outcome_verdict = $13,
+            diagnostic_report = $14::jsonb
 		WHERE run_id = $6
 		  AND revision = $7
 		  AND status = 'running'
@@ -119,6 +131,7 @@ func (f FencedStore) Save(
 		s.Goal,
 		f.Lease.Owner,
 		f.Lease.Epoch,
+		verdict, string(diagnosis),
 	)
 
 	if err != nil {

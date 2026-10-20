@@ -1,10 +1,7 @@
-# 当前进度（2026-10-20）
+# 当前进度（2026-10-20 · 系统评审修复）
 
-原阶段 A 审计保留在 BASELINE_AUDIT.md 与 reports/pilot/baseline.json；不再用基线状态描述当前实现。
+已完成报告第一轮核心问题与诊断证据闸门：原子 finished_at、分开的完成/运行/未知统计、统一 ProviderFailure、结构化诊断与真实工具引用检查、旧 Day15 脚本显式归档。新增迁移 009，先迁移后启动新代码。
 
-已完成试点 API 身份与所有权、幂等/取消、执行 profile 隔离、模型共享许可与保守费用账本、有界日志和沙箱适配代码。原 Queue/Scheduler/Lease/Patch Store 保留。
-历史真实 DeepSeek 单样本已脱敏归档；Day21 Mock 与 SIGKILL 恢复证据保留。当前默认 High；本次不付费、不重置预算。
+本轮完整回归和 race 各 260 PASS / 0 FAIL / 0 SKIP；独立测试 138 PASS，格式/vet/build 通过。具体范围与源码身份见 docs/review-20261020/IMPLEMENTATION.md、reports/review-20261020/verification.json。前轮记录及历史模型测验不覆盖。
 
-发布前验证结果与源码内容身份见 reports/pilot/github-update-20261020.json、docs/pilot/source-manifest.json。Docker 实际隔离与更广泛当前模式真实修复仍是缺口，不代表所有企业试点要求完成。
-
-下一步按 docs/pilot/IMPROVEMENT_OUTLINE.zh-CN.md 补齐缺口，复用已有实现与评测。
+当前模型继续 High；本轮付费调用 0，既有预算不重置。R1 逻辑调用结果复用、R2 最后 Claim 收尾、R4 全验证输入摘要和实际沙箱验收仍待下一轮，不能宣布全路线完成。

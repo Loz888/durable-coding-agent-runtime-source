@@ -1,0 +1,13 @@
+{
+  "original_git_blob": "7c9cf792648aa02c4f263bc91d19a427fc9ffede:scripts/day15-faults.sh",
+  "original_sha256": "b0c66d37d4af89adc155dc2751da95a82896564acfbba6f6eb0ce29b4f50a8a3",
+  "archived_copy": "../../experiments/legacy/day15-faults.sh.txt",
+  "identical_bytes": true,
+  "current_command": "explicitly exits 2 before executing historical SQL or fault hooks",
+  "current_experiments": [
+    "scripts/demo_mock.sh",
+    "scripts/demo_crash_recovery.sh"
+  ],
+  "observed_exit_code": 2,
+  "shell_syntax": "PASS"
+}

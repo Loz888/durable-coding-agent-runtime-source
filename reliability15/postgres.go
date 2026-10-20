@@ -345,14 +345,18 @@ func (s *Store) RecordCheckpoint(
 }
 
 type Summary struct {
-	Total           int64
-	Pending         int64
-	Running         int64
-	Succeeded       int64
-	Failed          int64
-	ExplicitRetries int64
-	GrantedAttempts int64
-	MeanRunSeconds  float64
+	Total                 int64
+	Pending               int64
+	Running               int64
+	Succeeded             int64
+	Failed                int64
+	ExplicitRetries       int64
+	GrantedAttempts       int64
+	MeanRunSeconds        float64
+	MeanCompletedSeconds  float64
+	MeanRunningSeconds    float64
+	CompletedMeasurements int64
+	UnknownTerminalTimes  int64
 }
 
 func (s *Store) QueueSummary(
@@ -389,14 +393,18 @@ func (s *Store) QueueSummary(
                         EPOCH FROM (
                             COALESCE(
                                 finished_at,
-                                clock_timestamp()
+                                CASE WHEN status IN ('succeeded','failed') THEN NULL ELSE clock_timestamp() END
                             ) - first_claimed_at
                         )
                     )
                 ) FILTER (
                     WHERE first_claimed_at IS NOT NULL
                 ),0
-            )::float8
+            )::float8,
+            COALESCE(avg(EXTRACT(EPOCH FROM (finished_at-first_claimed_at))) FILTER (WHERE status IN ('succeeded','failed') AND finished_at IS NOT NULL AND first_claimed_at IS NOT NULL),0)::float8,
+            COALESCE(avg(EXTRACT(EPOCH FROM (clock_timestamp()-first_claimed_at))) FILTER (WHERE status='running' AND first_claimed_at IS NOT NULL),0)::float8,
+            count(*) FILTER (WHERE status IN ('succeeded','failed') AND finished_at IS NOT NULL AND first_claimed_at IS NOT NULL),
+            count(*) FILTER (WHERE status IN ('succeeded','failed') AND finished_at IS NULL)
 
         FROM %s
         WHERE queue_enabled=TRUE
@@ -413,6 +421,7 @@ func (s *Store) QueueSummary(
 		&m.ExplicitRetries,
 		&m.GrantedAttempts,
 		&m.MeanRunSeconds,
+		&m.MeanCompletedSeconds, &m.MeanRunningSeconds, &m.CompletedMeasurements, &m.UnknownTerminalTimes,
 	)
 
 	return m, err

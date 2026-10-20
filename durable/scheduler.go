@@ -506,7 +506,7 @@ func (s *Scheduler) finishError(
 	defer done()
 	base, maxDelay := time.Second, 30*time.Second
 	var delayed interface{ RetryAfter() time.Duration }
-	if errors.As(cause, &delayed) && delayed.RetryAfter() <= time.Hour {
+	if errors.As(cause, &delayed) && delayed.RetryAfter() <= 24*time.Hour {
 		if delayed.RetryAfter() > base {
 			base = delayed.RetryAfter()
 		}

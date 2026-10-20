@@ -2,10 +2,11 @@ package repair18
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"strings"
+	"runtime-app/internal/providererr"
 	"testing"
 )
 
@@ -82,10 +83,9 @@ func TestDay18DeepSeekRejectBadResponse(
 		Request{Round: 1},
 	)
 
-	if err == nil ||
-		!strings.Contains(
-			err.Error(), "incomplete",
-		) {
-		t.Fatalf("err=%v", err)
+	var failure providererr.Failure
+	if !errors.As(err, &failure) || failure.Category() != providererr.Truncated || failure.Temporary() || !failure.MayHaveCharged() {
+		t.Fatalf("wrong truncated failure contract: %v", err)
 	}
+
 }

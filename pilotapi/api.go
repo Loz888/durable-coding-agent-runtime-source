@@ -188,7 +188,7 @@ func (s *Server) serve(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		// Raw history, paths, goal and error bodies deliberately excluded.
-		reply(w, 200, map[string]any{"run_id": id, "status": snap.Status, "revision": snap.Revision, "diagnosis_model_turns": snap.Turns, "tool_calls": snap.Calls, "cancel_requested": cancelled})
+		reply(w, 200, map[string]any{"run_id": id, "status": snap.Status, "execution_status": snap.Status, "outcome_verdict": snap.OutcomeVerdict, "revision": snap.Revision, "diagnosis_model_turns": snap.Turns, "tool_calls": snap.Calls, "cancel_requested": cancelled})
 		return
 	}
 	if len(parts) == 4 && parts[3] == "cancel" && r.Method == "POST" {

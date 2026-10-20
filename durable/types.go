@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+
+	"runtime-app/repodiag"
 )
 
 type Status string
@@ -53,10 +55,23 @@ type Snapshot struct {
 
 	History []json.RawMessage
 
-	Final string
+	Final          string
+	OutcomeVerdict string
+	Diagnosis      *repodiag.DiagnosticReport
 }
 
 func (s Snapshot) Validate() error {
+	switch s.OutcomeVerdict {
+	case "", "not_evaluated", "evidence_consistent", "insufficient_evidence", "inconsistent_evidence", "tests_passed", "tests_failed":
+	default:
+		return errors.New("invalid outcome verdict")
+	}
+	if err := s.Diagnosis.Validate(); err != nil {
+		return err
+	}
+	if s.OutcomeVerdict == "evidence_consistent" && s.Diagnosis == nil {
+		return errors.New("diagnostic verdict requires structured evidence")
+	}
 	if strings.TrimSpace(s.RunID) == "" ||
 		strings.TrimSpace(s.Repo) == "" ||
 		strings.TrimSpace(s.Goal) == "" ||

@@ -58,6 +58,9 @@ type ToolResult struct {
 	Arguments string `json:"arguments"`
 	Output    string `json:"output"`
 	IsError   bool   `json:"is_error"`
+	Executed  bool   `json:"executed"`
+	ExitCode  *int   `json:"exit_code,omitempty"`
+	TimedOut  bool   `json:"timed_out"`
 }
 
 func (w *Workspace) Execute(
@@ -259,6 +262,19 @@ func (w *Workspace) Execute(
 		cmd.Stderr = buffer
 
 		err := cmd.Run()
+		if err == nil {
+			code := 0
+			out.Executed = true
+			out.ExitCode = &code
+		} else {
+			var exited *exec.ExitError
+			if errors.As(err, &exited) {
+				code := exited.ExitCode()
+				out.Executed = true
+				out.ExitCode = &code
+			}
+		}
+		out.TimedOut = runCtx.Err() != nil
 
 		out.Output = buffer.String()
 

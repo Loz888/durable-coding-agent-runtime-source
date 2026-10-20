@@ -103,6 +103,7 @@ func (p PostgresStore) Load(
 
 	var s Snapshot
 	var history []byte
+	var diagnosis []byte
 
 	err := p.Pool.QueryRow(
 		ctx,
@@ -116,7 +117,7 @@ func (p PostgresStore) Load(
 			r.turns,
 			r.calls,
 			r.final_text,
-			c.history
+			c.history, r.outcome_verdict, r.diagnostic_report
 		FROM day12.agent_runs AS r
 		JOIN day12.checkpoints AS c
 			ON c.run_id = r.run_id
@@ -133,7 +134,7 @@ func (p PostgresStore) Load(
 		&s.Turns,
 		&s.Calls,
 		&s.Final,
-		&history,
+		&history, &s.OutcomeVerdict, &diagnosis,
 	)
 
 	if errors.Is(err, pgx.ErrNoRows) {
@@ -154,6 +155,9 @@ func (p PostgresStore) Load(
 		)
 	}
 
+	if err := json.Unmarshal(diagnosis, &s.Diagnosis); err != nil {
+		return Snapshot{}, fmt.Errorf("decode diagnostic report: %w", err)
+	}
 	return s, s.Validate()
 }
 
@@ -184,6 +188,15 @@ func (p PostgresStore) Save(
 		return err
 	}
 
+	diagnosis, err := json.Marshal(s.Diagnosis)
+	if err != nil {
+		return err
+	}
+	verdict := s.OutcomeVerdict
+	if verdict == "" {
+		verdict = "not_evaluated"
+	}
+
 	tx, err := p.Pool.BeginTx(
 		ctx,
 		pgx.TxOptions{},
@@ -202,7 +215,10 @@ func (p PostgresStore) Save(
 			turns = $3,
 			calls = $4,
 			final_text = $5,
-			updated_at = NOW()
+			finished_at = CASE WHEN $1 IN ('succeeded','failed') THEN COALESCE(finished_at, clock_timestamp()) ELSE finished_at END,
+			updated_at = clock_timestamp(),
+            outcome_verdict = $11,
+            diagnostic_report = $12::jsonb
 WHERE
     run_id = $6
     AND revision = $7
@@ -223,6 +239,7 @@ WHERE
 		s.Repo,
 		s.Provider,
 		s.Goal,
+		verdict, string(diagnosis),
 	)
 	if err != nil {
 		return err

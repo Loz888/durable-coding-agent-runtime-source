@@ -15,9 +15,10 @@ type ToolCall struct {
 }
 
 type Turn struct {
-	Items []json.RawMessage
-	Calls []ToolCall
-	Text  string
+	Items     []json.RawMessage
+	Calls     []ToolCall
+	Text      string
+	Diagnosis *DiagnosticReport
 }
 
 // 模型接口：真实模型与假模型统一实现。
@@ -37,10 +38,12 @@ type Agent struct {
 }
 
 type Report struct {
-	Goal   string       `json:"goal"`
-	Final  string       `json:"final"`
-	Status string       `json:"status"`
-	Steps  []ToolResult `json:"steps"`
+	Goal           string            `json:"goal"`
+	Final          string            `json:"final"`
+	Status         string            `json:"status"`
+	OutcomeVerdict string            `json:"outcome_verdict"`
+	Diagnosis      *DiagnosticReport `json:"diagnosis,omitempty"`
+	Steps          []ToolResult      `json:"steps"`
 }
 
 var ErrStepLimit = errors.New(
@@ -118,6 +121,8 @@ func (a *Agent) Run(
 
 			report.Final = turn.Text
 			report.Status = "succeeded"
+			report.Diagnosis = turn.Diagnosis
+			report.OutcomeVerdict = VerifyDiagnostic(turn.Diagnosis, history)
 
 			return report, nil
 		}
@@ -154,19 +159,14 @@ func (a *Agent) Run(
 
 			totalCalls++
 
-			output, _ := json.Marshal(
-				map[string]any{
-					"is_error": result.IsError,
-					"output":   result.Output,
-				},
-			)
+			output := result.OutputEnvelope()
 
 			// 用原始 call_id 配对调用结果。
 			item, _ := json.Marshal(
 				map[string]string{
 					"type":    "function_call_output",
 					"call_id": call.CallID,
-					"output":  string(output),
+					"output":  output,
 				},
 			)
 

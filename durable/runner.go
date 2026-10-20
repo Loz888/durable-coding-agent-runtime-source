@@ -142,18 +142,13 @@ func (r *Runner) Run(
 				return s, err
 			}
 
-			outputBytes, _ := json.Marshal(
-				map[string]any{
-					"output":   result.Output,
-					"is_error": result.IsError,
-				},
-			)
+			outputBytes := result.OutputEnvelope()
 
 			item, _ := json.Marshal(
 				map[string]string{
 					"type":    "function_call_output",
 					"call_id": call.CallID,
-					"output":  string(outputBytes),
+					"output":  outputBytes,
 				},
 			)
 
@@ -217,6 +212,8 @@ func (r *Runner) Run(
 
 			next.Status = Succeeded
 			next.Final = turn.Text
+			next.Diagnosis = turn.Diagnosis
+			next.OutcomeVerdict = repodiag.VerifyDiagnostic(turn.Diagnosis, s.History)
 			next.Turns++
 			next.Revision++
 

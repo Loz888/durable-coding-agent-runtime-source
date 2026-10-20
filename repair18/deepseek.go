@@ -8,9 +8,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
+
+	"runtime-app/internal/providererr"
 )
 
 const defaultEndpoint = "https://api.deepseek.com/chat/completions"
@@ -137,9 +138,13 @@ The runtime validates every patch.`
 	res, err := client.Do(req)
 	if err != nil {
 		return Suggestion{},
-			fmt.Errorf("provider request: %w", err)
+			providererr.Transport(err)
 	}
 	defer res.Body.Close()
+
+	if res.StatusCode != 200 {
+		return Suggestion{}, &ProviderError{Status: res.StatusCode, Delay: providererr.ParseRetryAfter(res.Header.Get("Retry-After"), time.Now())}
+	}
 
 	body, err := io.ReadAll(
 		io.LimitReader(
@@ -148,25 +153,12 @@ The runtime validates every patch.`
 		),
 	)
 	if err != nil {
-		return Suggestion{}, err
+		return Suggestion{}, providererr.ResponseRead(err)
 	}
 
 	if len(body) > 1024*1024 {
 		return Suggestion{},
-			errors.New("provider response too large")
-	}
-
-	if res.StatusCode != 200 {
-		delay := time.Duration(0)
-		if seconds, e := strconv.Atoi(res.Header.Get("Retry-After")); e == nil && seconds > 0 && seconds <= 86400 {
-			delay = time.Duration(seconds) * time.Second
-		} else if date, e := http.ParseTime(res.Header.Get("Retry-After")); e == nil {
-			delay = time.Until(date)
-			if delay < 0 {
-				delay = 0
-			}
-		}
-		return Suggestion{}, &ProviderError{Status: res.StatusCode, Delay: delay}
+			providererr.Invalid(providererr.InvalidOutput)
 	}
 
 	var completion struct {
@@ -184,21 +176,17 @@ The runtime validates every patch.`
 		} `json:"usage"`
 	}
 
-	if err := json.Unmarshal(
-		body, &completion,
-	); err != nil {
-		return Suggestion{},
-			fmt.Errorf(
-				"provider JSON envelope: %w", err,
-			)
+	if err := json.Unmarshal(body, &completion); err != nil {
+		return Suggestion{}, providererr.Invalid(providererr.InvalidOutput)
 	}
-
-	if len(completion.Choices) != 1 ||
-		completion.Choices[0].FinishReason != "stop" {
-		return Suggestion{},
-			errors.New(
-				"provider completion incomplete or unexpected",
-			)
+	if len(completion.Choices) != 1 {
+		return Suggestion{}, providererr.Invalid(providererr.InvalidOutput)
+	}
+	if completion.Choices[0].FinishReason == "length" {
+		return Suggestion{}, providererr.Invalid(providererr.Truncated)
+	}
+	if completion.Choices[0].FinishReason != "stop" {
+		return Suggestion{}, providererr.Invalid(providererr.InvalidOutput)
 	}
 
 	content := strings.TrimSpace(
@@ -206,33 +194,20 @@ The runtime validates every patch.`
 	)
 
 	if content == "" {
-		return Suggestion{},
-			errors.New(
-				"provider returned empty JSON output",
-			)
+		return Suggestion{}, providererr.Invalid(providererr.InvalidOutput)
 	}
-
-	dec := json.NewDecoder(
-		strings.NewReader(content),
-	)
+	dec := json.NewDecoder(strings.NewReader(content))
 	dec.DisallowUnknownFields()
-
 	var parsed struct {
 		Old    string `json:"old"`
 		New    string `json:"new"`
 		Reason string `json:"reason"`
 	}
-
 	if err := dec.Decode(&parsed); err != nil {
-		return Suggestion{},
-			fmt.Errorf(
-				"invalid model patch JSON: %w", err,
-			)
+		return Suggestion{}, providererr.Invalid(providererr.InvalidOutput)
 	}
-
 	if err := dec.Decode(new(any)); err != io.EOF {
-		return Suggestion{},
-			errors.New("trailing model JSON data")
+		return Suggestion{}, providererr.Invalid(providererr.InvalidOutput)
 	}
 
 	prompt, completionTokens := 0, 0
@@ -264,7 +239,9 @@ type ProviderError struct {
 func (e *ProviderError) Error() string {
 	return fmt.Sprintf("provider HTTP %d (body hidden)", e.Status)
 }
-func (e *ProviderError) Temporary() bool {
-	return e.Delay <= time.Hour && (e.Status == 429 || e.Status == 503 || e.Status == 408 || e.Status >= 500 && e.Status <= 599)
+func (e *ProviderError) Temporary() bool { return providererr.HTTP(e.Status, e.Delay).Temporary() }
+func (e *ProviderError) Category() providererr.Category {
+	return providererr.HTTP(e.Status, e.Delay).Category()
 }
+func (e *ProviderError) MayHaveCharged() bool      { return true }
 func (e *ProviderError) RetryAfter() time.Duration { return e.Delay }

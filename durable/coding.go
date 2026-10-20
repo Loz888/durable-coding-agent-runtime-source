@@ -151,8 +151,10 @@ func (h CodingHandler) Execute(
 
 	if outcome.Status == "exhausted" {
 		snapshot.Status = "failed"
+		snapshot.OutcomeVerdict = "tests_failed"
 	} else {
 		snapshot.Status = "succeeded"
+		snapshot.OutcomeVerdict = "tests_passed"
 	}
 
 	snapshot.Final = fmt.Sprintf(

@@ -1,0 +1,738 @@
+{
+  "baseline_commit": "7c9cf792648aa02c4f263bc91d19a427fc9ffede",
+  "identity": "file content hashes captured before final full/race verification; baseline commit is not the complete upgrade identity",
+  "files": [
+    {
+      "path": "cmd/day10-coordinator/main.go",
+      "sha256": "0ca058c284bea59bd2d9f8d63d3dd2aee228479759386bae37e5461b23f66dde"
+    },
+    {
+      "path": "cmd/day10-worker/main.go",
+      "sha256": "e5979117ad4b97c7e83f3118faafcf5237caed16bee8129152eed2ffbc851497"
+    },
+    {
+      "path": "cmd/day11-repo-agent/main.go",
+      "sha256": "eb190b01dff85ed79301d5801d1459b7c794c261d018ae1b8d7f144a3c432ca6"
+    },
+    {
+      "path": "cmd/day12-durable-agent/main.go",
+      "sha256": "ddf7b21df79a2b4f69908727b90ad4690945c2ca04081f42bc8f09430856b45a"
+    },
+    {
+      "path": "cmd/day13-leased-agent/main.go",
+      "sha256": "b1d73044e9a172c851941bbb1c94d367b7a3b577a61643dfae65c1278fd63de1"
+    },
+    {
+      "path": "cmd/day14-submit/main.go",
+      "sha256": "1a84ab8eb453912d3b1ab24a165fe1f057bc19d40a41b3bb44d2ffca0a6ff749"
+    },
+    {
+      "path": "cmd/day14-worker/main.go",
+      "sha256": "3959b07b1149f673723acebdc5ae7c577145f68bfe06ce5ea28106d31bf0fa30"
+    },
+    {
+      "path": "cmd/day15-report/main.go",
+      "sha256": "450e39ea274bae47c9e59dfcc5cd5c492c3fd8b82ae39325eb88342d85b1682c"
+    },
+    {
+      "path": "cmd/day16-eval/main.go",
+      "sha256": "712e7c429a7d73f6c9fe226b420da10df551d71b2bf9f7768749b939fae3342c"
+    },
+    {
+      "path": "cmd/day17-patch/main.go",
+      "sha256": "85d4932957fdd6fba715802d101754c3cf73c26b4db046ab2343eac8d280b33b"
+    },
+    {
+      "path": "cmd/day18-repair/main.go",
+      "sha256": "a2e97585e59657f3662b642f936a06311d1b6a701ab6aad385509cb665a50495"
+    },
+    {
+      "path": "cmd/day19-patch/main.go",
+      "sha256": "59700f6c4dcf9f325f7694cad1eb766edc635285f3807b8e34e9e76821db3487"
+    },
+    {
+      "path": "cmd/day21-eval/main.go",
+      "sha256": "63fc1000258cb12f8b5e8dd6817ebee0bdad7cd6cf1bdab8cbaaef33164ba51f"
+    },
+    {
+      "path": "cmd/day21-eval/main_test.go",
+      "sha256": "2aa2f0c6a21e85df3ccd44f6d8fc0a1e147fc8e8abc08b438a3c924165eb6f7b"
+    },
+    {
+      "path": "cmd/day6-demo/main.go",
+      "sha256": "043e08ed4d2ce5ea5d7be57e2d5817c3a404f177634e7d82bce38bb24aa0663b"
+    },
+    {
+      "path": "cmd/day7-demo/main.go",
+      "sha256": "f89aa67b478aa638eab2a124efc754c6dccfa799c83378c80d1e15fbeb3ac0f5"
+    },
+    {
+      "path": "cmd/day8-server/config.go",
+      "sha256": "1e0e0adf0316009d655af62bab9db3b2ca9062357fac8f02c044d685404412ac"
+    },
+    {
+      "path": "cmd/day8-server/config_test.go",
+      "sha256": "3020245f44ddefd12f100271b07ded54dde57eaeb76d99a578d56685d1c0d576"
+    },
+    {
+      "path": "cmd/day8-server/main.go",
+      "sha256": "b2f610f6ab21c8d41c4a406d2fcf7ea8c0271c8dac2e0373345060450e926bb3"
+    },
+    {
+      "path": "cmd/day8-server/main_test.go",
+      "sha256": "04262bf7049fe57556cf20be335b8986a5b06de718f7e36c0a641b4ec55dcb49"
+    },
+    {
+      "path": "cmd/pilot-api/main.go",
+      "sha256": "e73985dc182d455d102483dbad7bb5e46a9a9860ebc299cb44813f3ed35235bf"
+    },
+    {
+      "path": "cmd/pilot-token/main.go",
+      "sha256": "162f0c0cbb7b50f74b70b55cec0296b2b87d09bb082e4d8f6a5ddbd42f6682e9"
+    },
+    {
+      "path": "cmd/router-demo/main.go",
+      "sha256": "292bf398f900eea212100617c096882ba17ce2d4865622b29ca0878d478f6f77"
+    },
+    {
+      "path": "cmd/runtime/main.go",
+      "sha256": "371cb2387f14c862179fffcb9dc66db2b22b9d5dfeace16eda27c245b05de473"
+    },
+    {
+      "path": "cmd/shell-demo/main.go",
+      "sha256": "bf958b110c2e474535b170e2657b0a6fba27f011d8f314a5adbd20c0d06d27c2"
+    },
+    {
+      "path": "cmd/worker-benchmark/main.go",
+      "sha256": "8c3c0e72dcd4be53a02c99f8fc635c63d1cb93413c2df62fb4a2b60270e2d116"
+    },
+    {
+      "path": "day13_lease_lab.sh",
+      "sha256": "2e848b6c3d9c47adf2d5cbc49144b578bc13b8eec50478e640ece72a34acc072"
+    },
+    {
+      "path": "day15fault/fault.go",
+      "sha256": "dea95f8af05062fba9f9b73c8198eebea509b02200f8dfdced1351d4dbcfcf8a"
+    },
+    {
+      "path": "distributed/coordinator.go",
+      "sha256": "6f9cbd3775448c5068d8b437c710b1fb256b52fc7a219eca9643554563f5e178"
+    },
+    {
+      "path": "distributed/coordinator_test.go",
+      "sha256": "1dd47f29a82229e6b4cf182811bc20f99a4c5f4b33a152dc558db6ec94f5e5e8"
+    },
+    {
+      "path": "distributed/http.go",
+      "sha256": "ac1568edcdcc83e70c232ccc3b1e4a54774b7c802794c01913cc2f509622dc17"
+    },
+    {
+      "path": "distributed/lease_expiry_test.go",
+      "sha256": "eb38f5f2e22d8ab43ac79edd4af6368628f274bec8932d921b370d80d8dabde1"
+    },
+    {
+      "path": "durable/coding.go",
+      "sha256": "c0e64223eede143d9e615d51d4c5ebed5f7f68a9506083676405af955e5d5e23"
+    },
+    {
+      "path": "durable/day20_integration_test.go",
+      "sha256": "41a3433b01d8ff68d8ad7f4c7633237ff8fd8b784d473e0b59c4bdcf481bad3b"
+    },
+    {
+      "path": "durable/day21_capture_test.go",
+      "sha256": "883510ffd979f7372c3605aae4afa0268e09190962f969b4122b7eda3904e92c"
+    },
+    {
+      "path": "durable/diagnosis_review_test.go",
+      "sha256": "6cc2770acf6e91c20e5ac0e46c35cefe0abbd4e96a178317c40c1e48827cc154"
+    },
+    {
+      "path": "durable/failure.go",
+      "sha256": "ee4802533586604df7964fb88662aa69ffc0a67906fa8a14f1c415f21ebbadb6"
+    },
+    {
+      "path": "durable/fenced_store.go",
+      "sha256": "06d0fd0b9c62f0296d03c1ecabd15aa55f02696dcac710ab9c10c885176262b0"
+    },
+    {
+      "path": "durable/lease.go",
+      "sha256": "9f55bcc4743343536334236f05154b92e61346f390f02f18ca417a7c06b9f10a"
+    },
+    {
+      "path": "durable/lease_test.go",
+      "sha256": "a93c9dc316ed1c4b8f71410471d8d4272850ea6f0be60d656cdd0f1a22079f4f"
+    },
+    {
+      "path": "durable/postgres.go",
+      "sha256": "b2e13b0d31be39c3243f91be030dba873b1d8f4fb28417c1e7152e9c8dc167f2"
+    },
+    {
+      "path": "durable/postgres_test.go",
+      "sha256": "333c4144a81900f6bb95b03ba2459361df38dc30c430205121c9361dfbe5909d"
+    },
+    {
+      "path": "durable/pre20_budget_test.go",
+      "sha256": "eb05e3c79c57e57f5e0808108121b5e041840ee31c2b9f8a91e640c9d3aeb34a"
+    },
+    {
+      "path": "durable/pre20_scheduler_test.go",
+      "sha256": "93cb0e6040949bcd6cdc38377c0719f4a6e24bff8a66233cb89b5cc614ffc397"
+    },
+    {
+      "path": "durable/provider_contract_test.go",
+      "sha256": "6290ba474f0025165a6f4d15aecc4f97c8a6ed82770c04b9fd8328b332e9af22"
+    },
+    {
+      "path": "durable/queue.go",
+      "sha256": "2fa8688e47b43b57483b13855ff9aef7d869fe2d47f5fba9f554bf16ad0699da"
+    },
+    {
+      "path": "durable/queue_test.go",
+      "sha256": "f0b88cad2f88829c46188152b5e8c67c1618a434cb0f359a478313ed330d4d45"
+    },
+    {
+      "path": "durable/review_completion_test.go",
+      "sha256": "5d40f243f6f08dcf0e6bcf74cdfbc5d8066a980b3cbecea8f903e11276222b77"
+    },
+    {
+      "path": "durable/runner.go",
+      "sha256": "c7ed88d3b74a8288104ec2cfc95119d00b286d687dbb7118ae83e22f1f71d045"
+    },
+    {
+      "path": "durable/runner_test.go",
+      "sha256": "86bc54fc2fdb1176453dfa69bc6debe6c13f3665d95044a455b3173dce3f1d2b"
+    },
+    {
+      "path": "durable/scheduler.go",
+      "sha256": "89b9f4f0571b1408a7026ff22488acd17e3cc3e3233d6a851eb5c2581bd3b49b"
+    },
+    {
+      "path": "durable/types.go",
+      "sha256": "fd55ee5d3ed8f9a371b497d4a5c782fe73d35173df26db9c23bf3072bf5b9cce"
+    },
+    {
+      "path": "eval16/eval.go",
+      "sha256": "484ecdc3e53df140125168726746b47d698f2ff518adf72bec266baae8cf8f9c"
+    },
+    {
+      "path": "eval16/eval_test.go",
+      "sha256": "689feec055904120d1f5b3b2861294a2b0b2d33ce77bc30b40a7dd329dd64613"
+    },
+    {
+      "path": "eval21/score.go",
+      "sha256": "2c27bb18c071789d12317c7e9c4f6dedd5f6066ccd0cc85167d1ab547aca40e0"
+    },
+    {
+      "path": "eval21/score_test.go",
+      "sha256": "140bfe079809f2f74914bbce88051be9ef28bc05cf1fedb1079bf3b749db16e5"
+    },
+    {
+      "path": "evaldata/fixtures/clean-pass/sum.go",
+      "sha256": "0d3879f800639afcc3f2b8fa63034bfdf798a261fe3d1e7bdc7dc9c8beaa2d2c"
+    },
+    {
+      "path": "evaldata/fixtures/clean-pass/sum_test.go",
+      "sha256": "ca4cf39f0cd1f1ea97fdb5714563492880d7800e821504e0c529d7cd19e6d360"
+    },
+    {
+      "path": "evaldata/fixtures/compile-error/calc.go",
+      "sha256": "689af9de210801e0da7e15dfdff4695aabce7a2b2e5bd4c2db3d3a4404090146"
+    },
+    {
+      "path": "evaldata/fixtures/compile-error/calc_test.go",
+      "sha256": "712a0ba9a47038623fcec2e299d5ff180fe387ba2cb1d9280b8625235875ea9d"
+    },
+    {
+      "path": "evaldata/fixtures/divide-assert/math.go",
+      "sha256": "ddd57249366da3ab3c36e968d1fbb12a87196f69a27f8d750ef6575b51dc3eb4"
+    },
+    {
+      "path": "evaldata/fixtures/divide-assert/math_test.go",
+      "sha256": "d00d1b029a1e97c37e3afacb4c7c229720085e149776ddbe2623b1a67a8b9e54"
+    },
+    {
+      "path": "evaldata/fixtures/nil-panic/person.go",
+      "sha256": "ed00743f6f87abb37020dbc921ff8e815d3915d16409d60cf318fd4bcf685def"
+    },
+    {
+      "path": "evaldata/fixtures/nil-panic/person_test.go",
+      "sha256": "627ec914e8456fe831038f07b5519ceab7bcf8a1f64be8f7783caa6e21e45c31"
+    },
+    {
+      "path": "evaldata/fixtures/sort-assert/sort.go",
+      "sha256": "dbf1256a8bfd292b49d3a706f9ebbe5e7bf4f59e1e927705779ba66e1f79b6a7"
+    },
+    {
+      "path": "evaldata/fixtures/sort-assert/sort_test.go",
+      "sha256": "18e05f8bf2d4f061bd3947b7071fa74795351d7455871acfb55cc17889261778"
+    },
+    {
+      "path": "executor/delay.go",
+      "sha256": "2d27f0b4fb7d783eb8d1588fba9b8dea9757a774785a81943b7aa52b0ecb09e8"
+    },
+    {
+      "path": "executor/errors.go",
+      "sha256": "59695651eb18d75e299bf70b04413ab19c947b2e48b780a6bd4793bf020e33fc"
+    },
+    {
+      "path": "executor/executor.go",
+      "sha256": "c8a04f6e2dfd7d499b8b31946502bce99f64c2bf6d6c308ccab047ea777811e3"
+    },
+    {
+      "path": "executor/registry.go",
+      "sha256": "c2b3b3fbcb8d61f596e861d987b959522e0d2a117ba9b247d20226049069739a"
+    },
+    {
+      "path": "executor/registry_test.go",
+      "sha256": "62258886096f03755068fc1caf526732400c623f5adbb84b540f4671fa8c3a27"
+    },
+    {
+      "path": "executor/sandbox_linux.go",
+      "sha256": "a8de3aac20036b09135e7045de2d3bed0412d7689ee8074290406e015c6128ab"
+    },
+    {
+      "path": "executor/sandbox_linux_test.go",
+      "sha256": "219b72a0d8a59dc691bc1555fcb76440f19058fd1eb92278ce3948e1d67a6c33"
+    },
+    {
+      "path": "executor/shell.go",
+      "sha256": "38ab885046be8c598cde7ba1f13a6436cf8893c6a55737eac2552fd0471933d2"
+    },
+    {
+      "path": "executor/shell_test.go",
+      "sha256": "03154179c1690a64b7751e84a57ab6efc39e955c0b4cd3ece64bc722c3fb5179"
+    },
+    {
+      "path": "executor/uppercase.go",
+      "sha256": "675a2cdc110e10a24380e548547bb8e2ec983dbfe8f08d059b94894f753e7fb4"
+    },
+    {
+      "path": "httpapi/persistence_integration_test.go",
+      "sha256": "39b811f83e517b04750338405e6dadfcfef18741a9e752b05cde7b2c8354cc8f"
+    },
+    {
+      "path": "httpapi/result_collector.go",
+      "sha256": "e9831b08bde7dd1b16f7131a7163595f53a48387bea95d455975beb3f1d18c02"
+    },
+    {
+      "path": "httpapi/result_collector_test.go",
+      "sha256": "b0d4e474e916e19e6ae7f09ae619d68fd2eb436bef917e196bada2c64fed8bc9"
+    },
+    {
+      "path": "httpapi/service.go",
+      "sha256": "999a288773c5874ad3d03bf5ab041222ef16d0d76e64f01e30eb90a26567ad5f"
+    },
+    {
+      "path": "httpapi/service_test.go",
+      "sha256": "7ae7bdc68121d62a296a0b1af60782e0769fd12e5d1c8fbe89cf0b400dce29b8"
+    },
+    {
+      "path": "httpapi/store.go",
+      "sha256": "51481349c5b0809db5976e0d2ba32e9859d67f36d7ddac2006cd5da1e47b2ede"
+    },
+    {
+      "path": "internal/boundedlog/log.go",
+      "sha256": "5988ac1a5efebbcd24d04228550f6eba7ff88b657a6b1b2b2a36e018a6244e8d"
+    },
+    {
+      "path": "internal/boundedlog/log_test.go",
+      "sha256": "a98b324307a9c4167c5d4622b1d557d37f17076e603c761e27754171b8e80d89"
+    },
+    {
+      "path": "internal/integration20/fixtures_test.go",
+      "sha256": "fb1dc6c3a04625c822e6ce5087e9e00d8e227355b7e98cd6c848bf49a1516258"
+    },
+    {
+      "path": "internal/integration20/pre20_recovery_test.go",
+      "sha256": "46282da49be32d3866173e10402367760af44a57f649a119b68f80a21f7162e8"
+    },
+    {
+      "path": "internal/providererr/error.go",
+      "sha256": "4a901bd4725501018455966b585896d11318eb62e37638a3b9ffc02219ec5171"
+    },
+    {
+      "path": "internal/providererr/error_test.go",
+      "sha256": "f026db37aacf3d472487f5a17f465140eb707a10c153c9072ac9482ac5706956"
+    },
+    {
+      "path": "internal/testdb/config.go",
+      "sha256": "1f2c7d44d9dd5f0e7dcf27b87898616c36e486fbc546b9f2f42af0e966964b5c"
+    },
+    {
+      "path": "internal/testdb/config_test.go",
+      "sha256": "20ab297cccaca118402cc6c1033a370b1c4f20d2c37a6bd0a13b9b09ed76ae1a"
+    },
+    {
+      "path": "internal/testdb/postgres.go",
+      "sha256": "3d07fac0cca1f5708c81afba91b5dededfd49e348262e51eca7b52cb61ca2ba9"
+    },
+    {
+      "path": "internal/testdb/queue_lock.go",
+      "sha256": "1d4d304cdb38a69a6295a0a9db2bc079862062ea9749dc5c2561ca88d9b5f544"
+    },
+    {
+      "path": "migrations/001_agent_runs.sql",
+      "sha256": "1aa884f83c15879449b78eaf969156c131f882d6fb9035ced66ba36b9884d3b5"
+    },
+    {
+      "path": "migrations/002_agent_lease.sql",
+      "sha256": "884912d715a0b7a876a964190c1a207956e8c264d74a8cc37865fddebbe18ff2"
+    },
+    {
+      "path": "migrations/003_agent_scheduler.sql",
+      "sha256": "cb17537d8e8d7c1abf2fb2da2002184452e781fe981c68561bec89a5d6be6f72"
+    },
+    {
+      "path": "migrations/004_agent_reliability.sql",
+      "sha256": "74284a2d340d6169ebacb940747027bd9d4fe975c985f983cfbf31cc611f3855"
+    },
+    {
+      "path": "migrations/005_durable_patch.sql",
+      "sha256": "c2d32907a9ac0359e5ac614b172ea9c5d51aa4fd970ee4efb063f35c48716c6f"
+    },
+    {
+      "path": "migrations/006_repair_binding.sql",
+      "sha256": "c9221cbaad9372dbcd6545e9f8a00e2b67936d7f6926a7841a3003acb5bd8cd6"
+    },
+    {
+      "path": "migrations/007_pilot_identity.sql",
+      "sha256": "9be9bd2b085d665490867b9d4bafb4fd3af0c18d181f1f117fa2b7343bca550b"
+    },
+    {
+      "path": "migrations/008_model_budget.sql",
+      "sha256": "9334d270d5755dc75ea7b23403d99dc890ae612bc546b565845e8d7b8fe8486a"
+    },
+    {
+      "path": "migrations/009_outcome_verdict.sql",
+      "sha256": "0827e4a6d797b316597e95b70e72a8e84367dfcd698cba998b8bd3643e2c605a"
+    },
+    {
+      "path": "modelbudget/proposer.go",
+      "sha256": "4141403e12179bb3c752df1ebe020d8b3bd139ce45b1adbe34449b855cd0a135"
+    },
+    {
+      "path": "modelbudget/proposer_test.go",
+      "sha256": "cae67a9470fcbad4402e325440440aa19f38155532165a099e6ac0bca791eeec"
+    },
+    {
+      "path": "observability/collector.go",
+      "sha256": "db9bf0a3fbb251b8a6d48d301ccd50e008ae4f3e33bd33d4899690c7e02ad7b4"
+    },
+    {
+      "path": "observability/collector_test.go",
+      "sha256": "e4cf16ee3737268c1f8129c71ad483b787927055b67c66641baad415ddf70bcd"
+    },
+    {
+      "path": "observability/logger.go",
+      "sha256": "4bee36d0d5ccd180d2745871eed41b29188bd4ee15e92e72a9da532a126d953d"
+    },
+    {
+      "path": "persistence/migrate.go",
+      "sha256": "dfcc00d929403497191c4d4f9ad2c0aa7f13c98e77d66f082e78ee45ffcd2113"
+    },
+    {
+      "path": "persistence/postgres.go",
+      "sha256": "a0b1ab0a5861ffb1ab9f1e3cabfa00281eff37c0a19dfb76d6b1a4692acf5117"
+    },
+    {
+      "path": "persistence/schema.go",
+      "sha256": "43def9cb0ba591a2d993b1867f09184a243c66df79698393f5d2d31a4ab80a23"
+    },
+    {
+      "path": "persistence/schema.sql",
+      "sha256": "eb6a4db21d9f841363d0441de79a956c271356d24b80c72388e4bde007ee9847"
+    },
+    {
+      "path": "persistence/task_store.go",
+      "sha256": "918e7a23b9ddc0ec6babbe289dbb11727ed48e9760001dd06c84475386560017"
+    },
+    {
+      "path": "persistence/task_store_test.go",
+      "sha256": "046a0128c726f407524d5587eeaff1a0b4a2cd78c81a6aab38c1fa7673c1d835"
+    },
+    {
+      "path": "pilotapi/api.go",
+      "sha256": "54ce9fd49b628b75c39fb7bb1835de60095136ef881a606fc159244761a031fe"
+    },
+    {
+      "path": "pilotapi/api_test.go",
+      "sha256": "405fcdc953af323469fd1dcc2d2978e03a3fdca9611c0aa4ab510144d9103d10"
+    },
+    {
+      "path": "reliability15/core.go",
+      "sha256": "28a501acb5e86fbe61e92837a8712b37b37c32d0084221bfd497c5e3bd7eef7b"
+    },
+    {
+      "path": "reliability15/core_test.go",
+      "sha256": "15fa34fd834a70d4aacc9b1089892d337fa5d202dbe290b687a9f0e3454649f7"
+    },
+    {
+      "path": "reliability15/postgres.go",
+      "sha256": "d2bec8d6e050e6260d16d990207505420be0478e28b096780428a2b1fee71916"
+    },
+    {
+      "path": "reliability15/postgres_test.go",
+      "sha256": "90ef183c2a4d1d2c37656855d7e9264e4e67ec17523934f7aa4968fface23be6"
+    },
+    {
+      "path": "reliability15/pre20_sweep_test.go",
+      "sha256": "4c697e97713094b6f14da9efb330141bfee582a3a638be148809dee170b38d0f"
+    },
+    {
+      "path": "repair17/patch.go",
+      "sha256": "01ef5e113d1af042a693236deefa8856f4d22c86f33ae242f064e014d51354c0"
+    },
+    {
+      "path": "repair17/pre20_boundary_test.go",
+      "sha256": "96f583a58307d329d52d9fe7bf8e27f9386ae3ea22391999489872b2087048da"
+    },
+    {
+      "path": "repair17/repair_test.go",
+      "sha256": "b3ac099a9701678aa0c0670dbd85c48529081906a763db45af6d3eaa475ac1bd"
+    },
+    {
+      "path": "repair17/verify.go",
+      "sha256": "540d6bba39208c9a3aeeb4b45e49f5501360f5cec360503b0d30ff2077223654"
+    },
+    {
+      "path": "repair17/workspace.go",
+      "sha256": "85b2f570f0fdfc59899ba1ac231c749f8740b28676d68345632c9fb927c0a807"
+    },
+    {
+      "path": "repair18/deepseek.go",
+      "sha256": "7efc2d72214b49116dc9c131974ef104207b2956b4200694fac09fa75a58c071"
+    },
+    {
+      "path": "repair18/deepseek_test.go",
+      "sha256": "73f5ca24a1e4120f787769fe3d765b1e61e180e1f33e593577c2c675da758ac5"
+    },
+    {
+      "path": "repair18/loop.go",
+      "sha256": "09adca35136b12fd5f79b03edd3ed5a1f3acb5e6f29182de4ed4ed98d07941c5"
+    },
+    {
+      "path": "repair18/loop_test.go",
+      "sha256": "174090a97425073378c71cfd84ce743ea1976181443b778c127cf6c2ab9182b6"
+    },
+    {
+      "path": "repair19/protocol.go",
+      "sha256": "990695cca02d4502a628cc30d18c5bf81d9435739b3569d92f2235c4817636f5"
+    },
+    {
+      "path": "repair19/protocol_test.go",
+      "sha256": "a16e5e07a9b3079f995fff6ed8049a4aee395701b419c6cc86447912413c301e"
+    },
+    {
+      "path": "repair19/store.go",
+      "sha256": "0161af1b1bbc1f805d101d238c82a2facf9918fbdcc9b12a4392545d443d439f"
+    },
+    {
+      "path": "repair19/store_test.go",
+      "sha256": "4b81298ecd8a15ca154d153b2d429884d3a1799cd895ebb34120883f8ecde434"
+    },
+    {
+      "path": "repair20/postgres.go",
+      "sha256": "78d366b67ea85881f4588010e65e28fa0df791fe1d5431c1d2f9dadf3f79f218"
+    },
+    {
+      "path": "repair20/runner.go",
+      "sha256": "62f1499c26fdee26639071cd3483aad67fc37ab0de84a57f1da997582bbec545"
+    },
+    {
+      "path": "repair20/runner_test.go",
+      "sha256": "41fcdfc173e390c8feb7a58875a70f3191ba36bd19984cc3cd32983363375fa9"
+    },
+    {
+      "path": "repodiag/agent.go",
+      "sha256": "381b979b697ca66ced5f62b587742c9b7ae59a36df9f242227c6965bc7c27f0b"
+    },
+    {
+      "path": "repodiag/day11_extra_test.go",
+      "sha256": "a537c97e47aaf744066668539a9feb359111b36100963fe34044781713e15a88"
+    },
+    {
+      "path": "repodiag/day11_fault_test.go",
+      "sha256": "c7b76ffd91eb15a926d99045339616e416d77cfb6f9396fbd8dea9d46b73b817"
+    },
+    {
+      "path": "repodiag/deepseek.go",
+      "sha256": "3768bdbbba6f560935313bb10346f5857f2e7ba045a03308bb2bf08782d39a6b"
+    },
+    {
+      "path": "repodiag/deepseek_test.go",
+      "sha256": "1645420ad59c48c6839a8171e863ccfa535ace9e7ed3062da4ac4277138c65e9"
+    },
+    {
+      "path": "repodiag/diagnosis.go",
+      "sha256": "e000b4d98f876b845c410d054a72ac0c8f632d69c6cc31bbd2fd131d4bcebc13"
+    },
+    {
+      "path": "repodiag/diagnosis_test.go",
+      "sha256": "8c620acaf02e72a2151f9592ccb9037dd9b6bb93fd3f7a1d7c0d5cb4b33de07c"
+    },
+    {
+      "path": "repodiag/repo_executor.go",
+      "sha256": "28056b90e3b1d39f4e27264315d18e9abff76603ad3c6c301f96503b18d3633c"
+    },
+    {
+      "path": "repodiag/tools.go",
+      "sha256": "4bcc57e2c324940e09b6231803bfaf201c143fc66152df6f41ea2251a90e6d2a"
+    },
+    {
+      "path": "runtimecore/backoff_test.go",
+      "sha256": "46eae5bf30d0c1cce55ecad3113af65c8476e1d1bdff457bf9f28413ab80925b"
+    },
+    {
+      "path": "runtimecore/day4_experiments_test.go",
+      "sha256": "782f6e82fc3f75cd30888eba361c33bcc7d4c94bd551dfd8b2df659aa840609e"
+    },
+    {
+      "path": "runtimecore/day7_lifecycle_test.go",
+      "sha256": "f19261937e0a221a0a4c1fc830790106fa932b012165089188574807292174eb"
+    },
+    {
+      "path": "runtimecore/error_kind.go",
+      "sha256": "dbe6370dd0bebe2be1000a969277a7beb9a94177a2a36ec06471fcf35587c9b2"
+    },
+    {
+      "path": "runtimecore/error_kind_test.go",
+      "sha256": "92710a777e5c385ee01f4db235c846df639021201c48f9fa37350ea93309ee1a"
+    },
+    {
+      "path": "runtimecore/result.go",
+      "sha256": "742e5d5bbc25c694d7ba328c90608807216ab8d7f9a6cf238529a6341ec12555"
+    },
+    {
+      "path": "runtimecore/retry.go",
+      "sha256": "ee37a36800dd404c102c65670295ff201e0d50b214dda3a3fef11febcabf9a98"
+    },
+    {
+      "path": "runtimecore/retry_day5_test.go",
+      "sha256": "ff9cd4912a355b727d68706f25b31e32d6a75c31cb9430d9c4b7d33d4fd9dd56"
+    },
+    {
+      "path": "runtimecore/retry_execute.go",
+      "sha256": "d9b1241b386fdc951d535e512f889a43b2fcd60c7e9d30c11f266f64517eea2e"
+    },
+    {
+      "path": "runtimecore/retry_execute_test.go",
+      "sha256": "fe22e6a09c530a03d6f7f7b2562b490d4766026dd7d16e9701daa84af87967b6"
+    },
+    {
+      "path": "runtimecore/retry_test.go",
+      "sha256": "cc4b2ff1ced6f511defc6b76dfc44feab064e5f44927258bfef2b9ecbc8b3c52"
+    },
+    {
+      "path": "runtimecore/runtime.go",
+      "sha256": "03c526a3920590eeee9fac2f5ab336fef3003ff6110ce341461b8d08a0898c96"
+    },
+    {
+      "path": "runtimecore/runtime_test.go",
+      "sha256": "0317e15941255ab0ea7bfe69bb1afb244ccf4366a7667b883407d9e25922aaf9"
+    },
+    {
+      "path": "runtimecore/state.go",
+      "sha256": "747c128b777c024a3494f2923e4ca36d00f5c9770e14a646034f0a4dd101e2f0"
+    },
+    {
+      "path": "runtimecore/state_test.go",
+      "sha256": "3265d3ddc9ff0bc51d831ea9630364f4bad5f8f720408830335db0a07657652f"
+    },
+    {
+      "path": "runtimecore/worker.go",
+      "sha256": "a070e9916cc71a4259a05ff2389ca516449a66c0001b25a2b6f313ff9c59e8dd"
+    },
+    {
+      "path": "scripts/check_fmt.sh",
+      "sha256": "f62217909ef7e29a8531a65816fc2ba793a9e956da07152067eada71fd019d68"
+    },
+    {
+      "path": "scripts/check_test_results.py",
+      "sha256": "e1c5084c0c85735d3aa8f94d285c9737928d996440914b1e1af52408ea5a3d29"
+    },
+    {
+      "path": "scripts/create_test_databases.sh",
+      "sha256": "7bb8a0f91008a954a653912e7eb0d00dcd033d7879acb1fafbf9835ccb61afd6"
+    },
+    {
+      "path": "scripts/day12-env.sh",
+      "sha256": "045118ec40401f1198f56c62f4e0efb9b76c5efdc65fe9527c82de1ec0c367c5"
+    },
+    {
+      "path": "scripts/day15-faults.sh",
+      "sha256": "fd1fb6ec0157b8314ba0cb51261fab3c8e5e927bacc00ef082f24cddc6f5616c"
+    },
+    {
+      "path": "scripts/day15_audit.sh",
+      "sha256": "64bc4c821c845ab3b521411f9b2174bca48d5ab6faa6f78c0286926441f9f8c6"
+    },
+    {
+      "path": "scripts/day16_fixtures.sh",
+      "sha256": "f618cf2cc84d9d9b3b533d0b6af3e3b105f896a939256560db549f15da349470"
+    },
+    {
+      "path": "scripts/day17_demo.sh",
+      "sha256": "9b28a2006a71fed5586926a4e506c8a8fdd8211c5715a885367c1c8c551ab65f"
+    },
+    {
+      "path": "scripts/day18_demo.sh",
+      "sha256": "5c3c2d8ca82254e49f3c8134dede5be84a7908e7149e527778ec3f88fc160b76"
+    },
+    {
+      "path": "scripts/day19_demo.sh",
+      "sha256": "dc791fff71c40d3ec8fec02d9087e19e482f733e71cc32c1d38ac2e3bdfbb397"
+    },
+    {
+      "path": "scripts/day20_accept.sh",
+      "sha256": "39c185ffadb89229302d9b449cdf9e8ca94765236343ab2f4a636f5aa59b0b12"
+    },
+    {
+      "path": "scripts/day21_accept.sh",
+      "sha256": "4530d117ac45c7a64603dc218e18a3e05b69d811919138a63f257ba8f7cbe6e2"
+    },
+    {
+      "path": "scripts/demo_crash_recovery.sh",
+      "sha256": "47c2fb5d95a28ab748f67a6c33f87a99ddc0d21555f34ec3ae1f40605195ef2a"
+    },
+    {
+      "path": "scripts/demo_mock.sh",
+      "sha256": "0736443b94d29b9d1ee7c52b458eaa90ecd414c301255bd0b0705a30f4754314"
+    },
+    {
+      "path": "scripts/experiment_a.sh",
+      "sha256": "567b04a10e4027f3e1109ce144e729b5c7e98aa6ac3b845f4e8afc57e9837d03"
+    },
+    {
+      "path": "scripts/experiment_b.sh",
+      "sha256": "4197529e29f2e57e619b5f5672a56beceeb5ef7305a1ca0347f4c3b337296aa2"
+    },
+    {
+      "path": "scripts/lib/test_env.sh",
+      "sha256": "8578b15f3b9e30dc8dbbeaf6763261de96a5ea9039da478d87640623755f4724"
+    },
+    {
+      "path": "scripts/scan_secrets.py",
+      "sha256": "a30fb2360bb7faa40315b90dbc542475341118be463eb6d4d844177fd3d00682"
+    },
+    {
+      "path": "scripts/setup_test_db.sh",
+      "sha256": "f349f6c13cf2da7b81b6e8f999644678f8dbf84436c0e5a3ec46ad404a9b564b"
+    },
+    {
+      "path": "scripts/test-postgres.sh",
+      "sha256": "a35ca8b02839e987c78f730653a1e5c3d138ee31a62ece5865e807ab2775a54c"
+    },
+    {
+      "path": "scripts/test.sh",
+      "sha256": "f583184541846f3fc440ab02d0e4a289de843d8feab64aef9894a2d1dda5daa5"
+    },
+    {
+      "path": "scripts/test_unit.sh",
+      "sha256": "9e96017fbde0a83e1cf21f5a598b4b98b1433a95883ae1b611603763b1d41292"
+    },
+    {
+      "path": "task/task.go",
+      "sha256": "9ee0f2abf876be4f5074ce0988f1f569060c1160b59228f707e53a3e8192143b"
+    }
+  ]
+}

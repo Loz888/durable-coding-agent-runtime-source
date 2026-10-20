@@ -1,0 +1,77 @@
+{
+  "checks": {
+    "full": {
+      "status": "PASS",
+      "exit_code": 0,
+      "tests": {
+        "pass": 260,
+        "fail": 0,
+        "skip": 0
+      },
+      "failures": []
+    },
+    "race": {
+      "status": "PASS",
+      "exit_code": 0,
+      "tests": {
+        "pass": 260,
+        "fail": 0,
+        "skip": 0
+      },
+      "failures": []
+    },
+    "format": {
+      "status": "PASS",
+      "exit_code": 0
+    },
+    "unit": {
+      "status": "PASS",
+      "exit_code": 0,
+      "tests": {
+        "pass": 138,
+        "fail": 0,
+        "skip": 0
+      },
+      "failures": []
+    },
+    "vet": {
+      "status": "PASS",
+      "exit_code": 0
+    },
+    "build": {
+      "status": "PASS",
+      "exit_code": 0
+    }
+  },
+  "paid_calls": 0,
+  "environment": "owned isolated PostgreSQL16 cluster, TCP/SCRAM; dedicated test databases",
+  "baseline_commit": "7c9cf792648aa02c4f263bc91d19a427fc9ffede",
+  "status": "PASS",
+  "date": "2026-10-20",
+  "round": "review round 1 plus structured diagnostic evidence gate",
+  "source_manifest": "../../docs/review-20261020/source-manifest.json",
+  "source_manifest_sha256": "8e761e4dcd3362b5815b34875ee3e78a06e7ee826d9c492293ee719fe5568bf4",
+  "count_semantics": "Go pass/fail/skip events with Test present, including parent tests and subtests; not package counts",
+  "model_effort": "high",
+  "scope": [
+    "frozen completion timestamps",
+    "separate completed/running/unknown duration statistics",
+    "shared provider failure contract",
+    "structured observation and reference-integrity verdict",
+    "legacy Day15 script retirement"
+  ],
+  "remaining": [
+    "model logical-call response reuse and unknown-outcome crash matrix",
+    "last-claim verified-pass finalization policy",
+    "complete verification-input fingerprint",
+    "real container isolation acceptance",
+    "full artifact lifecycle and no-progress policy"
+  ],
+  "regressions_detected_and_fixed": [
+    {
+      "test": "TestDay15TransientFailureReschedule",
+      "cause": "first summary fallback referenced updated_at absent in the legacy fixture",
+      "resolution": "unknown historical terminal timestamps are explicitly counted and excluded from duration averages; no legacy schema/test assertion weakened"
+    }
+  ]
+}
