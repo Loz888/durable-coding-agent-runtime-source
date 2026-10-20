@@ -137,8 +137,8 @@ func (m LeaseManager) Renew(
 	err := m.Pool.QueryRow(ctx, `
 		UPDATE day12.agent_runs
 		SET
-			lease_until = clock_timestamp()
-				+ ($4::bigint * interval '1 microsecond'),
+			lease_until = GREATEST(lease_until, clock_timestamp()
+				+ ($4::bigint * interval '1 microsecond')),
 			updated_at = clock_timestamp()
 		WHERE run_id = $1
 		  AND lease_owner = $2

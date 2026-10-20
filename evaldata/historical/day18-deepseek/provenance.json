@@ -1,0 +1,19 @@
+{
+  "kind": "historical single live-model repair observation",
+  "original_result_sha256": "f8f38fa110aed567b117d148ae49ad7e41a05893e354225738c4222e8c630a49",
+  "redactions": [
+    "worktree absolute path"
+  ],
+  "fixture": "synthetic Divide arithmetic bug",
+  "recorded_status": "repaired",
+  "recorded_rounds": 1,
+  "recorded_prompt_tokens": 274,
+  "recorded_completion_tokens": 94,
+  "exact_model_snapshot": null,
+  "reasoning_effort": null,
+  "limits": [
+    "No request configuration snapshot or vendor request ID was recorded.",
+    "This is not a new High/Max pilot evaluation or an open-world repair success rate.",
+    "The result artifact is historical; the API was not called again for this publication."
+  ]
+}

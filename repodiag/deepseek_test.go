@@ -94,7 +94,8 @@ func TestDay11DeepSeekMultipleToolCalls(
 				}
 
 				var body struct {
-					Model string `json:"model"`
+					Model           string `json:"model"`
+					ReasoningEffort string `json:"reasoning_effort"`
 
 					Thinking struct {
 						Type string `json:"type"`
@@ -132,13 +133,16 @@ func TestDay11DeepSeekMultipleToolCalls(
 					)
 				}
 
-				if body.Thinking.Type != "disabled" {
+				if body.Thinking.Type != "enabled" {
 					t.Errorf(
 						"thinking=%s",
 						body.Thinking.Type,
 					)
 				}
 
+				if body.ReasoningEffort != "high" {
+					t.Errorf("reasoning_effort=%s", body.ReasoningEffort)
+				}
 				if len(body.Tools) != 3 {
 					t.Errorf(
 						"tools=%d, want 3",

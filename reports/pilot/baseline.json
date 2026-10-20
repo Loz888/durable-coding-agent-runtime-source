@@ -1,0 +1,26 @@
+{
+  "time": "2026-10-19T03:00:09.548284+00:00",
+  "source_sha": "ba93bccf6f689885b8833024cbaa2b4d29e90ed9",
+  "branch": "upgrade/internal-pilot-v1",
+  "deployment": "WSL2 Linux, PostgreSQL 16, single host; no Docker/Podman executable found",
+  "paid_calls_this_upgrade": 0,
+  "engineering": "PARTIAL",
+  "real_model": "NOT_RUN",
+  "operations": "NOT_RUN",
+  "quality_targets_frozen_before_changes": {
+    "security_negative_tests": "100% deny; no cross-identity disclosure",
+    "existing_regression": "zero failed/skipped tests",
+    "real_cases": ">=90% end-to-end; zero false success claims in frozen scope",
+    "benchmark": ">=99% accounted outcomes; no unbounded resource growth in 30 minutes",
+    "restore": "RPO snapshot boundary; RTO <= 10 minutes on local fixture"
+  },
+  "baseline": {
+    "pass": 225,
+    "fail": 1,
+    "skip": 0,
+    "command": "./scripts/test.sh ./...",
+    "exit_code": 1,
+    "evidence": "/tmp/agent-runtime-tests.ADf29H.jsonl",
+    "failure": "TestPre20HeartbeatCoversSlowInitialization: status running/revision 0"
+  }
+}

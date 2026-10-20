@@ -31,9 +31,10 @@ type Ref struct {
 }
 
 type Store struct {
-	Pool  *pgxpool.Pool
-	queue string
-	patch string
+	VerifyGo func(context.Context, string, time.Duration) (repair17.TestResult, error)
+	Pool     *pgxpool.Pool
+	queue    string
+	patch    string
 }
 
 type Intent struct {
@@ -710,7 +711,11 @@ func (s *Store) Verify(
 	}
 
 	// The DB transaction is no longer held.
-	test, err := repair17.VerifyGo(
+	verify := s.VerifyGo
+	if verify == nil {
+		verify = repair17.VerifyGo
+	}
+	test, err := verify(
 		ctx,
 		path,
 		timeout,

@@ -1,0 +1,5 @@
+{
+  "math.go": "package example\n\nfunc Divide(a, b int) int {\n\treturn a * b\n}\n",
+  "math_test.go": "package example\n\nimport \"testing\"\n\nfunc TestDivide(t *testing.T) {\n\tif got := Divide(12, 3); got != 4 {\n\t\tt.Fatalf(\n\t\t\t\"Divide(12,3)=%d, want 4\",\n\t\t\tgot,\n\t\t)\n\t}\n}\n",
+  "go.mod": "module example.com/day16-divide-assert\n\ngo 1.23\n"
+}

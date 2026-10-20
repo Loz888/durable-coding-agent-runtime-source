@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -89,10 +90,12 @@ The runtime validates every patch.`
 	)
 
 	payload := struct {
-		Model          string            `json:"model"`
-		Messages       []chatMessage     `json:"messages"`
-		ResponseFormat map[string]string `json:"response_format"`
-		MaxTokens      int               `json:"max_tokens"`
+		Model           string            `json:"model"`
+		Messages        []chatMessage     `json:"messages"`
+		ResponseFormat  map[string]string `json:"response_format"`
+		MaxTokens       int               `json:"max_tokens"`
+		Thinking        map[string]string `json:"thinking"`
+		ReasoningEffort string            `json:"reasoning_effort"`
 	}{
 		Model: model,
 		Messages: []chatMessage{
@@ -102,7 +105,9 @@ The runtime validates every patch.`
 		ResponseFormat: map[string]string{
 			"type": "json_object",
 		},
-		MaxTokens: 1600,
+		MaxTokens:       8192,
+		Thinking:        map[string]string{"type": "enabled"},
+		ReasoningEffort: "high",
 	}
 
 	data, err := json.Marshal(payload)
@@ -152,11 +157,16 @@ The runtime validates every patch.`
 	}
 
 	if res.StatusCode != 200 {
-		return Suggestion{},
-			fmt.Errorf(
-				"provider HTTP %d (body hidden)",
-				res.StatusCode,
-			)
+		delay := time.Duration(0)
+		if seconds, e := strconv.Atoi(res.Header.Get("Retry-After")); e == nil && seconds > 0 && seconds <= 86400 {
+			delay = time.Duration(seconds) * time.Second
+		} else if date, e := http.ParseTime(res.Header.Get("Retry-After")); e == nil {
+			delay = time.Until(date)
+			if delay < 0 {
+				delay = 0
+			}
+		}
+		return Suggestion{}, &ProviderError{Status: res.StatusCode, Delay: delay}
 	}
 
 	var completion struct {
@@ -168,8 +178,9 @@ The runtime validates every patch.`
 		} `json:"choices"`
 
 		Usage struct {
-			PromptTokens     int `json:"prompt_tokens"`
-			CompletionTokens int `json:"completion_tokens"`
+			PromptTokens     *int `json:"prompt_tokens"`
+			CompletionTokens *int `json:"completion_tokens"`
+			TotalTokens      *int `json:"total_tokens"`
 		} `json:"usage"`
 	}
 
@@ -224,11 +235,36 @@ The runtime validates every patch.`
 			errors.New("trailing model JSON data")
 	}
 
+	prompt, completionTokens := 0, 0
+	if completion.Usage.PromptTokens != nil {
+		prompt = *completion.Usage.PromptTokens
+	}
+	if completion.Usage.CompletionTokens != nil {
+		completionTokens = *completion.Usage.CompletionTokens
+	}
+	usageKnown := completion.Usage.PromptTokens != nil && completion.Usage.CompletionTokens != nil && completion.Usage.TotalTokens != nil && prompt >= 0 && completionTokens >= 0 && *completion.Usage.TotalTokens == prompt+completionTokens
+
 	return Suggestion{
-		Old:              parsed.Old,
-		New:              parsed.New,
-		Reason:           parsed.Reason,
-		PromptTokens:     completion.Usage.PromptTokens,
-		CompletionTokens: completion.Usage.CompletionTokens,
+		Old:               parsed.Old,
+		New:               parsed.New,
+		Reason:            parsed.Reason,
+		PromptTokens:      prompt,
+		CompletionTokens:  completionTokens,
+		UsageKnown:        usageKnown,
+		ProviderRequestID: res.Header.Get("X-Request-ID"),
 	}, nil
 }
+
+// No response body or private reasoning is included in this typed error.
+type ProviderError struct {
+	Status int
+	Delay  time.Duration
+}
+
+func (e *ProviderError) Error() string {
+	return fmt.Sprintf("provider HTTP %d (body hidden)", e.Status)
+}
+func (e *ProviderError) Temporary() bool {
+	return e.Delay <= time.Hour && (e.Status == 429 || e.Status == 503 || e.Status == 408 || e.Status >= 500 && e.Status <= 599)
+}
+func (e *ProviderError) RetryAfter() time.Duration { return e.Delay }

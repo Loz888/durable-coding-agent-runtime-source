@@ -65,3 +65,7 @@ that variable only to the one capture command.
 Ordinary/race/coverage use a 360-second timeout; ten repetitions of core fault
 tests use 900 seconds. Timeouts do not remove any test or assertion.
 See [evaluation](evaluation.md) for report reproduction and fresh capture.
+
+## Pilot integration database roles
+
+The new pilot API fixtures provision a separate restricted login with a random fixture-only password, including TCP/SCRAM CI. Their setup connection requires authority to create/manage test roles and grant access inside the two dedicated test databases. Run them in an isolated test PostgreSQL cluster or the provided CI service. Do not promote the production API role to run tests. The API itself refuses superuser/owner credentials.

@@ -74,7 +74,8 @@ type deepSeekMessage struct {
 
 	ToolCalls []deepSeekToolCall `json:"tool_calls,omitempty"`
 
-	ToolCallID string `json:"tool_call_id,omitempty"`
+	ToolCallID       string  `json:"tool_call_id,omitempty"`
+	ReasoningContent *string `json:"reasoning_content,omitempty"`
 }
 
 func stringPtr(s string) *string {
@@ -152,6 +153,7 @@ func convertDeepSeekHistory(
 			// 一轮模型可能产生多个 ToolCall。
 			// 必须合并为同一条 assistant 消息。
 			calls := []deepSeekToolCall{}
+			var reasoning *string
 
 			for i < len(history) {
 
@@ -171,9 +173,10 @@ func convertDeepSeekHistory(
 				}
 
 				var call struct {
-					Name      string `json:"name"`
-					CallID    string `json:"call_id"`
-					Arguments string `json:"arguments"`
+					Name              string  `json:"name"`
+					CallID            string  `json:"call_id"`
+					Arguments         string  `json:"arguments"`
+					ProviderReasoning *string `json:"provider_reasoning"`
 				}
 
 				if err := json.Unmarshal(
@@ -183,6 +186,9 @@ func convertDeepSeekHistory(
 					return nil, err
 				}
 
+				if call.ProviderReasoning != nil {
+					reasoning = call.ProviderReasoning
+				}
 				if call.CallID == "" || call.Name == "" {
 					return nil, errors.New(
 						"invalid function call history",
@@ -207,8 +213,9 @@ func convertDeepSeekHistory(
 			messages = append(
 				messages,
 				deepSeekMessage{
-					Role:      "assistant",
-					ToolCalls: calls,
+					Role:             "assistant",
+					ToolCalls:        calls,
+					ReasoningContent: reasoning,
 				},
 			)
 
@@ -334,13 +341,10 @@ func (m DeepSeekModel) Next(
 		"tools":       deepSeekTools(),
 		"tool_choice": "auto",
 
-		// 先用非思考模式验证工具调用协议。
-		// 思考模式需要保留 reasoning_content。
-		"thinking": map[string]string{
-			"type": "disabled",
-		},
-
-		"stream": false,
+		"stream":           false,
+		"thinking":         map[string]string{"type": "enabled"},
+		"reasoning_effort": "high",
+		"max_tokens":       8192,
 	}
 
 	data, err := json.Marshal(requestBody)
@@ -348,6 +352,9 @@ func (m DeepSeekModel) Next(
 		return Turn{}, err
 	}
 
+	if len(data) > 160000 {
+		return Turn{}, errors.New("provider context exceeds byte budget")
+	}
 	endpoint := m.Endpoint
 	if endpoint == "" {
 		endpoint = defaultDeepSeekEndpoint
@@ -427,6 +434,9 @@ func (m DeepSeekModel) Next(
 	}
 
 	message := choice.Message
+	if message.ReasoningContent != nil && len(*message.ReasoningContent) > 65536 {
+		return Turn{}, errors.New("provider protocol state exceeds bound")
+	}
 
 	turn := Turn{
 		Items: []json.RawMessage{},
@@ -452,6 +462,12 @@ func (m DeepSeekModel) Next(
 				"call_id":   c.ID,
 				"name":      c.Function.Name,
 				"arguments": c.Function.Arguments,
+				"provider_reasoning": func() string {
+					if message.ReasoningContent != nil {
+						return *message.ReasoningContent
+					}
+					return ""
+				}(),
 			},
 		)
 		if err != nil {

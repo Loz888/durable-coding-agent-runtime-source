@@ -1,58 +1,13 @@
 package repair17
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"os"
 	"os/exec"
-	"sync"
+	"runtime-app/internal/boundedlog"
 	"time"
 )
-
-// Bounded test output, maximum 64 KiB.
-type boundedOutput struct {
-	mu        sync.Mutex
-	buf       bytes.Buffer
-	cap       int
-	truncated bool
-}
-
-func (w *boundedOutput) Write(
-	p []byte,
-) (int, error) {
-	w.mu.Lock()
-	defer w.mu.Unlock()
-
-	n := len(p)
-	room := w.cap - w.buf.Len()
-
-	if room < 0 {
-		room = 0
-	}
-
-	if len(p) > room {
-		_, _ = w.buf.Write(p[:room])
-		w.truncated = true
-	} else {
-		_, _ = w.buf.Write(p)
-	}
-
-	return n, nil
-}
-
-func (w *boundedOutput) String() string {
-	w.mu.Lock()
-	defer w.mu.Unlock()
-
-	s := w.buf.String()
-
-	if w.truncated {
-		s += "\n...[output truncated at 64 KiB]"
-	}
-
-	return s
-}
 
 type TestResult struct {
 	Passed     bool   `json:"passed"`
@@ -101,9 +56,7 @@ func VerifyGo(
 
 	cmd.WaitDelay = 2 * time.Second
 
-	output := &boundedOutput{
-		cap: 64 * 1024,
-	}
+	output := boundedlog.New(64 * 1024)
 
 	cmd.Stdout = output
 	cmd.Stderr = output

@@ -24,7 +24,7 @@ func TestPre20HeartbeatCoversSlowInitialization(t *testing.T) {
 	if err != nil || len(jobs) != 1 {
 		t.Fatalf("claim %+v %v", jobs, err)
 	}
-	scheduler := Scheduler{Queue: q, Owner: "slow-init", TTL: 3 * time.Second, RenewEvery: 100 * time.Millisecond, RunTimeout: 10 * time.Second,
+	scheduler := Scheduler{Logf: t.Logf, Queue: q, Owner: "slow-init", TTL: 3 * time.Second, RenewEvery: 100 * time.Millisecond, RunTimeout: 10 * time.Second,
 		ModelsWithContext: func(c context.Context, _ string) (repodiag.Model, error) {
 			for {
 				var originalExpired bool
@@ -44,6 +44,7 @@ func TestPre20HeartbeatCoversSlowInitialization(t *testing.T) {
 				}
 			}
 		}}
+
 	scheduler.execute(ctx, jobs[0])
 	got, err := (PostgresStore{Pool: pool}).Load(ctx, run.RunID)
 	if err != nil || got.Status != Succeeded {

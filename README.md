@@ -9,6 +9,12 @@
 A Go agent runtime with PostgreSQL-backed scheduling, fenced checkpoints and
 recoverable, single-file code repair in managed Git Worktrees.
 
+## Current pilot update · 2026-10-20
+
+[Current implementation and verification](docs/pilot/STATUS.md) · [已完成成果与后续缺口](docs/pilot/IMPROVEMENT_OUTLINE.zh-CN.md)
+
+The update retains the existing durable execution protocol and adds scoped API identities, cancellation, execution-profile separation and shared model admission/accounting. A [historical live DeepSeek repair](evaldata/historical/day18-deepseek/README.md) is now preserved separately from the Day21 Mock results. It succeeded after one patch with recorded usage of 274 input / 94 output tokens; exact model snapshot/effort was not captured. Container sandbox execution remains unverified without an engine. See the linked status page for supported boundaries and current verification.
+
 ## Motivation
 
 **What should the next Worker do when the previous Worker changed a file but
@@ -215,7 +221,7 @@ env -u DEEPSEEK_API_KEY go vet ./...
 [CI](.github/workflows/ci.yml) reads the Go version from go.mod and provides
 format/vet/build, database-independent tests, full PostgreSQL integration
 tests and a full race suite. PostgreSQL jobs create both fixed database names,
-apply migrations 001–006, and reject SKIP. No model key is injected.
+apply migrations 001–008, and reject SKIP. No model key is injected.
 Check the actual [Actions runs](https://github.com/Loz888/durable-coding-agent-runtime-source/actions)
 for remote status; no static green status is asserted here. CI also checks the
 Day 21 Capture and reproduces the recorded evaluation report.
@@ -248,7 +254,7 @@ Its controlled Coding configuration targets math.go, with two rounds and a
 ## Limitations
 
 - Trusted Go repositories only: their tests execute with Worker OS privileges.
-  There is no untrusted-code Docker/VM sandbox.
+  The pilot container adapter is not yet an accepted untrusted-code boundary; see the current status page.
 - Coding repair targets one configured file, not arbitrary multi-file changes.
 - File Rename and SQL Commit are separate; Intent/SHA reconciliation covers
   the tested gap, not a distributed atomic transaction.

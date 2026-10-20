@@ -10,6 +10,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
+	"runtime-app/repair17"
 	"runtime-app/repair18"
 	"runtime-app/repair19"
 	"runtime-app/repair20"
@@ -17,9 +18,12 @@ import (
 
 // CodingHandler plugs into the EXISTING Scheduler.
 type CodingHandler struct {
-	Pool        *pgxpool.Pool
-	PatchStore  *repair19.Store
-	PatchSchema string
+	WrapProposer   func(context.Context, ClaimedRun, repair18.Proposer) (repair18.Proposer, error)
+	ExpectedCommit func(context.Context, ClaimedRun) (string, error)
+	VerifyGo       func(context.Context, string, time.Duration) (repair17.TestResult, error)
+	Pool           *pgxpool.Pool
+	PatchStore     *repair19.Store
+	PatchSchema    string
 
 	WorktreeBase string
 	File         string
@@ -47,6 +51,14 @@ func (h CodingHandler) Execute(
 		)
 	}
 
+	expectedCommit := ""
+	if h.ExpectedCommit != nil {
+		var e error
+		expectedCommit, e = h.ExpectedCommit(ctx, job)
+		if e != nil {
+			return zero, e
+		}
+	}
 	var model repair18.Proposer
 
 	switch job.Provider {
@@ -71,7 +83,17 @@ func (h CodingHandler) Execute(
 		model = h.Proposer
 	}
 
+	if h.WrapProposer != nil {
+		var e error
+		model, e = h.WrapProposer(ctx, job, model)
+		if e != nil {
+			return zero, e
+		}
+	}
+
 	agent := repair20.Agent{
+		ExpectedCommit: expectedCommit,
+		VerifyGo:       h.VerifyGo,
 		Ledger: repair20.PostgresLedger{
 			Store:  h.PatchStore,
 			Schema: h.PatchSchema,

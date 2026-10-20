@@ -1,0 +1,81 @@
+{
+  "checks": {
+    "migrations": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "format": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "full": {
+      "exit_code": 0,
+      "status": "PASS",
+      "tests": {
+        "pass": 234,
+        "fail": 0,
+        "skip": 0
+      },
+      "failures": []
+    },
+    "race": {
+      "exit_code": 0,
+      "status": "PASS",
+      "tests": {
+        "pass": 234,
+        "fail": 0,
+        "skip": 0
+      },
+      "failures": []
+    },
+    "vet": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "build": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "unit": {
+      "exit_code": 0,
+      "status": "PASS",
+      "tests": {
+        "pass": 134,
+        "fail": 0,
+        "skip": 0
+      },
+      "failures": []
+    },
+    "mock_demo": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "crash_demo": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "day21": {
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  },
+  "paid_calls": 0,
+  "environment": "isolated PostgreSQL16 cluster; two dedicated test databases",
+  "baseline_commit": "ba93bccf6f689885b8833024cbaa2b4d29e90ed9",
+  "status": "PASS",
+  "transport": "TCP/SCRAM; separate random restricted API fixture login",
+  "date": "2026-10-20",
+  "source_manifest": "../../docs/pilot/source-manifest.json",
+  "source_manifest_sha256": "54b689b7ac6b6e469e30d98097c51e21be69900c4d6fb25e59508be77c851d8d",
+  "configured_effort": "high",
+  "completed_historical_live": {
+    "sample": "../../evaldata/historical/day18-deepseek/provenance.json",
+    "repairs_succeeded": 1,
+    "samples": 1,
+    "exact_model_and_effort": "unknown; not a current pilot quality estimate"
+  },
+  "paid_calls_for_this_publication": 0,
+  "sandbox": "BLOCKED_NO_ENGINE: container policy/snapshot unit tests pass, actual engine isolation not validated",
+  "privacy": "working files and staged content scanned; GitHub noreply commit identity; CI-only placeholder passwords are not local credentials",
+  "remote_ci": "consult Actions for this publication commit"
+}

@@ -23,7 +23,15 @@ type ClaimedRun struct {
 }
 
 type Queue struct {
-	Pool *pgxpool.Pool
+	Pilot bool
+	Pool  *pgxpool.Pool
+}
+
+func (q Queue) executionProfile() string {
+	if q.Pilot {
+		return "internal-pilot"
+	}
+	return "trusted-local"
 }
 
 // Submit 原子创建 Agent Run 和 Revision 0。
@@ -36,7 +44,19 @@ func (q Queue) Submit(
 	if q.Pool == nil {
 		return errors.New("nil postgres pool")
 	}
+	tx, err := q.Pool.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx)
+	if err = q.SubmitTx(ctx, tx, s, priority); err != nil {
+		return err
+	}
+	return tx.Commit(ctx)
+}
 
+// SubmitTx reuses the queue protocol inside a caller-owned short transaction.
+func (q Queue) SubmitTx(ctx context.Context, tx pgx.Tx, s Snapshot, priority int) error {
 	if err := s.Validate(); err != nil {
 		return err
 	}
@@ -62,15 +82,6 @@ func (q Queue) Submit(
 		return err
 	}
 
-	tx, err := q.Pool.BeginTx(
-		ctx,
-		pgx.TxOptions{},
-	)
-	if err != nil {
-		return err
-	}
-	defer tx.Rollback(ctx)
-
 	tag, err := tx.Exec(
 		ctx,
 		`INSERT INTO day12.agent_runs
@@ -86,19 +97,19 @@ func (q Queue) Submit(
 			final_text,
 			queue_enabled,
 			priority,
-			available_at
+			available_at, execution_profile
 		)
 		VALUES (
 			$1, $2, $3, $4,
 			'running', 0, 0, 0, '',
-			TRUE, $5, clock_timestamp()
+			TRUE, $5, clock_timestamp(), $6
 		)
 		ON CONFLICT (run_id) DO NOTHING`,
 		s.RunID,
 		s.Repo,
 		s.Provider,
 		s.Goal,
-		priority,
+		priority, q.executionProfile(),
 	)
 	if err != nil {
 		return fmt.Errorf(
@@ -126,7 +137,7 @@ func (q Queue) Submit(
 		)
 	}
 
-	return tx.Commit(ctx)
+	return nil
 }
 
 // ClaimBatch 原子领取最多 n 个任务。
@@ -171,6 +182,7 @@ func (q Queue) ClaimBatch(
 			SELECT run_id
 			FROM day12.agent_runs
 			WHERE queue_enabled = TRUE
+              AND execution_profile = $4
 			  AND status = 'running'
 			  AND lease_epoch < max_attempts
 			  AND available_at <= clock_timestamp()
@@ -207,7 +219,7 @@ func (q Queue) ClaimBatch(
 			r.lease_until`,
 		n,
 		owner,
-		ttl.Microseconds(),
+		ttl.Microseconds(), q.executionProfile(),
 	)
 	if err != nil {
 		return nil, fmt.Errorf(

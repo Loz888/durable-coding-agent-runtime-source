@@ -14,19 +14,23 @@ import (
 
 // 模型只能提出数据，不能直接写文件。
 type Request struct {
-	Round      int
-	File       string
-	Source     string
-	TestOutput string
-	Feedback   string
+	SourceCommit string
+	SourceHash   string
+	Round        int
+	File         string
+	Source       string
+	TestOutput   string
+	Feedback     string
 }
 
 type Suggestion struct {
-	Old              string `json:"old"`
-	New              string `json:"new"`
-	Reason           string `json:"reason"`
-	PromptTokens     int    `json:"-"`
-	CompletionTokens int    `json:"-"`
+	UsageKnown        bool   `json:"usage_known"`
+	ProviderRequestID string `json:"provider_request_id,omitempty"`
+	Old               string `json:"old"`
+	New               string `json:"new"`
+	Reason            string `json:"reason"`
+	PromptTokens      int    `json:"-"`
+	CompletionTokens  int    `json:"-"`
 }
 
 type Proposer interface {

@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"runtime-app/internal/boundedlog"
 	"runtime-app/repair17"
 	"runtime-app/repair18"
 	"runtime-app/repair19"
@@ -55,12 +56,14 @@ type Ledger interface {
 }
 
 type Agent struct {
-	Ledger      Ledger
-	Model       repair18.Proposer
-	Base        string
-	File        string
-	MaxRounds   int
-	TestTimeout time.Duration
+	ExpectedCommit string
+	VerifyGo       func(context.Context, string, time.Duration) (repair17.TestResult, error)
+	Ledger         Ledger
+	Model          repair18.Proposer
+	Base           string
+	File           string
+	MaxRounds      int
+	TestTimeout    time.Duration
 }
 
 type Result struct {
@@ -107,6 +110,9 @@ func (a Agent) Run(
 		return out, err
 	}
 
+	if a.ExpectedCommit != "" && w.Commit != a.ExpectedCommit {
+		return out, errors.New("registered source commit mismatch")
+	}
 	if _, err = repair17.Inspect(
 		ctx,
 		w.Path,
@@ -188,7 +194,11 @@ func (a Agent) Run(
 		} else {
 			// Baseline test does not spend
 			// one Repair Round.
-			failure, err = repair17.VerifyGo(
+			verify := a.VerifyGo
+			if verify == nil {
+				verify = repair17.VerifyGo
+			}
+			failure, err = verify(
 				ctx,
 				w.Path,
 				a.TestTimeout,
@@ -242,9 +252,11 @@ func (a Agent) Run(
 		proposal, err := a.Model.Suggest(
 			ctx,
 			repair18.Request{
-				Round:  used + 1,
-				File:   a.File,
-				Source: string(raw),
+				SourceCommit: w.Commit,
+				SourceHash:   sha,
+				Round:        used + 1,
+				File:         a.File,
+				Source:       string(raw),
 
 				TestOutput: clip(
 					failure.Output, 8000,
@@ -298,10 +310,4 @@ func (a Agent) Run(
 	return out, err
 }
 
-func clip(s string, n int) string {
-	if len(s) > n {
-		return s[:n]
-	}
-
-	return s
-}
+func clip(s string, n int) string { return boundedlog.Clip(s, n) }

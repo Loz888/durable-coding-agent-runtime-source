@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/rand/v2"
 	"runtime-app/reliability15"
 	"runtime-app/repodiag"
 	"strings"
@@ -503,10 +504,21 @@ func (s *Scheduler) finishError(
 	}
 	cleanup, done := context.WithTimeout(context.Background(), 3*time.Second)
 	defer done()
+	base, maxDelay := time.Second, 30*time.Second
+	var delayed interface{ RetryAfter() time.Duration }
+	if errors.As(cause, &delayed) && delayed.RetryAfter() <= time.Hour {
+		if delayed.RetryAfter() > base {
+			base = delayed.RetryAfter()
+		}
+		base += time.Duration(rand.IntN(100)) * time.Millisecond
+		if base > maxDelay {
+			maxDelay = base
+		}
+	}
 	store, err := reliability15.NewStore(s.Queue.Pool, "day12")
 	if err == nil {
 		_, err = store.FinishFailure(cleanup, reliability15.RunRef{ID: job.RunID, Owner: job.Lease.Owner, Epoch: job.Lease.Epoch},
-			cause, "scheduler failure: "+string(kind), time.Second, 30*time.Second)
+			cause, "scheduler failure: "+string(kind), base, maxDelay)
 	}
 	if err != nil && !errors.Is(err, reliability15.ErrLeaseLost) && !errors.Is(err, reliability15.ErrNoAction) {
 		s.log("FINISH_ERROR run=%s err=%v", job.RunID, err)
