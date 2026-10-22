@@ -14,9 +14,10 @@ import (
 // Store extends the existing scheduler.
 // It does not claim or poll Agent Runs.
 type Store struct {
-	Pool         *pgxpool.Pool
-	schema       string
-	legacyEvents bool
+	Pool             *pgxpool.Pool
+	schema           string
+	legacyEvents     bool
+	completionColumn bool
 }
 
 var schemaPattern = regexp.MustCompile(
@@ -42,7 +43,12 @@ func NewStore(
 	if err != nil {
 		return nil, err
 	}
-	return &Store{Pool: pool, schema: schema, legacyEvents: legacy}, nil
+	var completion bool
+	err = pool.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM pg_attribute WHERE attrelid=to_regclass($1) AND attname='completion_pending' AND NOT attisdropped)`, schema+".agent_runs").Scan(&completion)
+	if err != nil {
+		return nil, err
+	}
+	return &Store{Pool: pool, schema: schema, legacyEvents: legacy, completionColumn: completion}, nil
 }
 
 func (s *Store) table(name string) string {
@@ -235,10 +241,14 @@ func (s *Store) SweepExhausted(
 	}
 	defer tx.Rollback(ctx)
 
+	completionFilter := ""
+	if s.completionColumn {
+		completionFilter = " AND completion_pending = false "
+	}
 	selectSQL := fmt.Sprintf(`
         SELECT run_id, lease_epoch, revision
         FROM %s
-        WHERE lease_epoch >= max_attempts
+        WHERE lease_epoch >= max_attempts %s
           AND (
               status='pending'
               OR (
@@ -249,7 +259,7 @@ func (s *Store) SweepExhausted(
         ORDER BY available_at, run_id
         FOR UPDATE SKIP LOCKED
         LIMIT $1
-    `, s.table("agent_runs"))
+    `, s.table("agent_runs"), completionFilter)
 
 	rows, err := tx.Query(
 		ctx, selectSQL, batch,

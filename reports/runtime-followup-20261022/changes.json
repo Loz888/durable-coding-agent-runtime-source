@@ -1,0 +1,165 @@
+{
+  "scope": "source changes relative to this follow-up start snapshot; excludes generated reports and showcase docs; previous uncommitted work retained",
+  "files": [
+    {
+      "path": "artifactstore/inventory.go",
+      "new_since_start_snapshot": true,
+      "sha256": "439603d66f99245ac9888221a6dc8c3ecacc8bc576c58f25adf5b08f33042576"
+    },
+    {
+      "path": "artifactstore/inventory_test.go",
+      "new_since_start_snapshot": true,
+      "sha256": "691995982924b9291074f3e244945beeea3ef2e50f4aa903b5ccb82e75d94541"
+    },
+    {
+      "path": "cmd/artifact-inventory/README.md",
+      "new_since_start_snapshot": true,
+      "sha256": "56b4c1835a0e6c0769238c6fae8d6c3f87daaf8cbb5f6b10bb2d55a2931b5c69"
+    },
+    {
+      "path": "cmd/artifact-inventory/main.go",
+      "new_since_start_snapshot": true,
+      "sha256": "a6952e4c1f11de82dd12e67955014a23337b5e9d2e9ef84ee7f7bd9e702f3590"
+    },
+    {
+      "path": "cmd/artifact-inventory/main_test.go",
+      "new_since_start_snapshot": true,
+      "sha256": "cd9c30be0691344b0beccede11ec5b041354a90f517aa53bbab2f6074f5afc96"
+    },
+    {
+      "path": "cmd/durable-benchmark/main.go",
+      "new_since_start_snapshot": false,
+      "sha256": "a454d73495e4cf20910104b7c6c3c32b505745c9456d82bd8025bd8d697b4dda"
+    },
+    {
+      "path": "cmd/durable-benchmark/main_test.go",
+      "new_since_start_snapshot": true,
+      "sha256": "b0c3ed1456335b8f252c3f70a397f604e8577c19c651313c290ae41b1144a492"
+    },
+    {
+      "path": "docs/demo-script.md",
+      "new_since_start_snapshot": false,
+      "sha256": "085aa8f060d0d639f4e5e6315ef46103ebc8578f2adad9c996d9440cfb0e4ace"
+    },
+    {
+      "path": "executor/sealed_docker_test.go",
+      "new_since_start_snapshot": true,
+      "sha256": "0608c298af1adb59a1fa947e36e6ba4c18d96619f11d92b2d34ab2f61ea0af91"
+    },
+    {
+      "path": "internal/goinput/policy.go",
+      "new_since_start_snapshot": true,
+      "sha256": "cc659ed6bd6e389ed29ceeb290628439548b74a667f943d2898eb7a6a97a31ee"
+    },
+    {
+      "path": "internal/goinput/policy_test.go",
+      "new_since_start_snapshot": true,
+      "sha256": "57f6226b9704c55493f269b6f139b29862e9e7af895d2e25678143238d6b23a4"
+    },
+    {
+      "path": "repair17/sealed.go",
+      "new_since_start_snapshot": false,
+      "sha256": "28ee6ee203bf124785b7023532439b36003a9bd874a372a21f3107f87e2331d6"
+    },
+    {
+      "path": "repair17/sealed_test.go",
+      "new_since_start_snapshot": false,
+      "sha256": "3221662d17fa3fe9d57c666df8076abbc71eff6f53b8dccd95a53474640afc3e"
+    },
+    {
+      "path": "repair17/verification.go",
+      "new_since_start_snapshot": false,
+      "sha256": "3e345ab97ba4cd0a5958522f41ba9d053bb8ff90c98537c748540cdc61ab6530"
+    },
+    {
+      "path": "runtimebench/benchmark.go",
+      "new_since_start_snapshot": false,
+      "sha256": "4295522e86fe0b03b6c9fc85ab6c61bea3880222e036cc1cadd9d2a53fc51f69"
+    },
+    {
+      "path": "runtimebench/benchmark_test.go",
+      "new_since_start_snapshot": false,
+      "sha256": "d1334c6a7f8fc27875eebb898cd0da7cfd4308b2020bf0f2f156aa3f949163c9"
+    },
+    {
+      "path": "runtimebench/bounds_test.go",
+      "new_since_start_snapshot": true,
+      "sha256": "8a1e9e002db315499c8afbd1aba3f1b925ae93bedf487349dfee3fd0ca8312ff"
+    },
+    {
+      "path": "scripts/clock_probe.py",
+      "new_since_start_snapshot": true,
+      "sha256": "684a407f15a36f3a5b77e37bdf7c5f900d8c4e2617cf6f8a309bcbf34b493c9d"
+    },
+    {
+      "path": "scripts/test_clock_probe.py",
+      "new_since_start_snapshot": true,
+      "sha256": "a9888e821d8e4c4699e3eb7782a782d0dfdb00da0be64abebb8f2b0ef9f65e5e"
+    },
+    {
+      "path": "README.md",
+      "new_since_start_snapshot": false,
+      "sha256": "19051ffaa7af2fc782116c20e3ebcf10b2f142a2c5bbd085872d3da80ba52530"
+    },
+    {
+      "path": "README.zh-CN.md",
+      "new_since_start_snapshot": false,
+      "sha256": "2fac29c8e4aa46bc34cf7e2d71b2f92720b0f42cd2f0eb183f6c14eb95870c7e"
+    },
+    {
+      "path": "cmd/day14-worker/main.go",
+      "new_since_start_snapshot": false,
+      "sha256": "315865f92039bf64bea6ba43d2eee0913c2ad0830365ac5058b3936c6a5c95bb"
+    },
+    {
+      "path": "docs/architecture.md",
+      "new_since_start_snapshot": false,
+      "sha256": "7c398d828dd41aa22268749c3b8c9d8b1377e07483fad4dc76d40397a3de0656"
+    },
+    {
+      "path": "docs/pilot/IMPROVEMENT_OUTLINE.zh-CN.md",
+      "new_since_start_snapshot": false,
+      "sha256": "490ae15ddcd005008303595f158ff2c8cdbca937701c1c8305e05d360a1f181d"
+    },
+    {
+      "path": "docs/review-20261020/IMPLEMENTATION.md",
+      "new_since_start_snapshot": false,
+      "sha256": "747e7af002791bd1f267e99b6d18fbf9c1f5795ba5612e64098d4153f26bc4f3"
+    },
+    {
+      "path": "docs/review-20261020/RESULTS.md",
+      "new_since_start_snapshot": false,
+      "sha256": "fdea93da72a8f1a7215ef88d5bd2e6263e713e384a2018fa6a1f974cb37436d4"
+    },
+    {
+      "path": "docs/validation.md",
+      "new_since_start_snapshot": false,
+      "sha256": "7dd68bb4b8091b77f7c14eb769bff09e05677535e646a994372cf3d9121aa3c9"
+    },
+    {
+      "path": "docs/zh-CN/architecture.md",
+      "new_since_start_snapshot": false,
+      "sha256": "22be3c9aa74944d94b57e9397af962113bd2c379e4bd688e521189c3624d6c0a"
+    },
+    {
+      "path": "docs/zh-CN/validation.md",
+      "new_since_start_snapshot": false,
+      "sha256": "64211c18657b5ab429f7a7474d3c8f6c5ec2247e12980beb9fad7b0d77ac1390"
+    },
+    {
+      "path": "executor/sandbox_linux.go",
+      "new_since_start_snapshot": false,
+      "sha256": "841e4678fa96486d995a3289024e0756b3834b5bf02209a668491d500e6af598"
+    },
+    {
+      "path": "executor/sandbox_linux_test.go",
+      "new_since_start_snapshot": false,
+      "sha256": "ec6012e0e370e9582bd16a2cb414d7d938985a82be5e2cd295d9ae86806ddba4"
+    },
+    {
+      "path": "scripts/test_unit.sh",
+      "new_since_start_snapshot": false,
+      "sha256": "6890ef89a7b88c06bdb2e2397bdbe80f72fa9b0971b1efd356cd057596897db3"
+    }
+  ]
+}

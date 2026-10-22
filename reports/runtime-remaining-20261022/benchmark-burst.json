@@ -1,0 +1,763 @@
+{
+  "scope": "owned isolated synthetic PostgreSQL workload; no LLM or production capacity claim",
+  "status": "PASS",
+  "tracing_enabled": false,
+  "trials": [
+    {
+      "trial": 1,
+      "result": {
+        "arrival_mode": "preloaded-burst",
+        "arrival_interval_ms": 0,
+        "actual_go_test_passes": 0,
+        "cache_policy": "Go build cache shared/warmable, test-result cache disabled (-count=1); no cache flushing",
+        "timing_method": "v2: Go monotonic intervals in one benchmark process; raw DB wall-clock measurements retained separately",
+        "db_wall_clock_anomalies": 0,
+        "database_queue_wait": {
+          "p50_ms": 3251.658,
+          "p95_ms": 5864.369,
+          "max_ms": 6143.446
+        },
+        "database_claim_to_terminal": {
+          "p50_ms": 23.337,
+          "p95_ms": 24.677,
+          "max_ms": 26.633
+        },
+        "database_created_to_terminal": {
+          "p50_ms": 3276.335,
+          "p95_ms": 5887.716,
+          "max_ms": 6166.497
+        },
+        "execution_errors": 0,
+        "tasks": 200,
+        "workers": 1,
+        "synthetic_delay_ms": 20,
+        "completed": 200,
+        "failed": 0,
+        "peak_active": 1,
+        "extra_claims": 0,
+        "submit_ms": 403.539554,
+        "drain_ms": 6171.547871,
+        "total_ms": 6575.103452,
+        "drain_tasks_per_second": 32.406780953575144,
+        "total_tasks_per_second": 30.417772352945175,
+        "submit_to_dispatch_monotonic": {
+          "p50_ms": 3254.740852,
+          "p95_ms": 5866.517007,
+          "max_ms": 6145.255164
+        },
+        "dispatch_to_commit_monotonic": {
+          "p50_ms": 23.594701,
+          "p95_ms": 25.724677,
+          "max_ms": 27.073985
+        },
+        "submit_to_commit_monotonic": {
+          "p50_ms": 3281.02292,
+          "p95_ms": 5890.231599,
+          "max_ms": 6168.597694
+        },
+        "go_version": "go1.27.1",
+        "os": "linux",
+        "architecture": "amd64",
+        "visible_cpus": 20,
+        "gomaxprocs": 20,
+        "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "pool_max_connections": 20,
+        "workload": "synthetic fixed-delay callback + real PG Queue/Scheduler/FencedStore; no model or go-test execution",
+        "owned_rows_cleaned": true
+      }
+    },
+    {
+      "trial": 2,
+      "result": {
+        "arrival_mode": "preloaded-burst",
+        "arrival_interval_ms": 0,
+        "actual_go_test_passes": 0,
+        "cache_policy": "Go build cache shared/warmable, test-result cache disabled (-count=1); no cache flushing",
+        "timing_method": "v2: Go monotonic intervals in one benchmark process; raw DB wall-clock measurements retained separately",
+        "db_wall_clock_anomalies": 0,
+        "database_queue_wait": {
+          "p50_ms": 3215.532,
+          "p95_ms": 5755.593,
+          "max_ms": 6033.218
+        },
+        "database_claim_to_terminal": {
+          "p50_ms": 23.439,
+          "p95_ms": 24.219,
+          "max_ms": 24.958
+        },
+        "database_created_to_terminal": {
+          "p50_ms": 3238.821,
+          "p95_ms": 5779.095,
+          "max_ms": 6058.143
+        },
+        "execution_errors": 0,
+        "tasks": 200,
+        "workers": 1,
+        "synthetic_delay_ms": 20,
+        "completed": 200,
+        "failed": 0,
+        "peak_active": 1,
+        "extra_claims": 0,
+        "submit_ms": 443.92011,
+        "drain_ms": 6061.562458,
+        "total_ms": 6505.489234,
+        "drain_tasks_per_second": 32.99479323784607,
+        "total_tasks_per_second": 30.743268154949654,
+        "submit_to_dispatch_monotonic": {
+          "p50_ms": 3217.385131,
+          "p95_ms": 5757.397291,
+          "max_ms": 6036.251498
+        },
+        "dispatch_to_commit_monotonic": {
+          "p50_ms": 23.761543,
+          "p95_ms": 24.503487,
+          "max_ms": 27.422991
+        },
+        "submit_to_commit_monotonic": {
+          "p50_ms": 3241.000016,
+          "p95_ms": 5782.005047,
+          "max_ms": 6060.226585
+        },
+        "go_version": "go1.27.1",
+        "os": "linux",
+        "architecture": "amd64",
+        "visible_cpus": 20,
+        "gomaxprocs": 20,
+        "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "pool_max_connections": 20,
+        "workload": "synthetic fixed-delay callback + real PG Queue/Scheduler/FencedStore; no model or go-test execution",
+        "owned_rows_cleaned": true
+      }
+    },
+    {
+      "trial": 3,
+      "result": {
+        "arrival_mode": "preloaded-burst",
+        "arrival_interval_ms": 0,
+        "actual_go_test_passes": 0,
+        "cache_policy": "Go build cache shared/warmable, test-result cache disabled (-count=1); no cache flushing",
+        "timing_method": "v2: Go monotonic intervals in one benchmark process; raw DB wall-clock measurements retained separately",
+        "db_wall_clock_anomalies": 0,
+        "database_queue_wait": {
+          "p50_ms": 3204.974,
+          "p95_ms": 5705.687,
+          "max_ms": 5983.301
+        },
+        "database_claim_to_terminal": {
+          "p50_ms": 23.297,
+          "p95_ms": 24.007,
+          "max_ms": 24.332
+        },
+        "database_created_to_terminal": {
+          "p50_ms": 3227.706,
+          "p95_ms": 5728.837,
+          "max_ms": 6006.881
+        },
+        "execution_errors": 0,
+        "tasks": 200,
+        "workers": 1,
+        "synthetic_delay_ms": 20,
+        "completed": 200,
+        "failed": 0,
+        "peak_active": 1,
+        "extra_claims": 0,
+        "submit_ms": 444.287449,
+        "drain_ms": 6012.363123,
+        "total_ms": 6456.655963,
+        "drain_tasks_per_second": 33.26479055047587,
+        "total_tasks_per_second": 30.97578702444487,
+        "submit_to_dispatch_monotonic": {
+          "p50_ms": 3206.709286,
+          "p95_ms": 5707.380637,
+          "max_ms": 5985.235754
+        },
+        "dispatch_to_commit_monotonic": {
+          "p50_ms": 23.665763,
+          "p95_ms": 24.313033,
+          "max_ms": 24.698208
+        },
+        "submit_to_commit_monotonic": {
+          "p50_ms": 3229.693096,
+          "p95_ms": 5731.38847,
+          "max_ms": 6009.097212
+        },
+        "go_version": "go1.27.1",
+        "os": "linux",
+        "architecture": "amd64",
+        "visible_cpus": 20,
+        "gomaxprocs": 20,
+        "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "pool_max_connections": 20,
+        "workload": "synthetic fixed-delay callback + real PG Queue/Scheduler/FencedStore; no model or go-test execution",
+        "owned_rows_cleaned": true
+      }
+    },
+    {
+      "trial": 1,
+      "result": {
+        "arrival_mode": "preloaded-burst",
+        "arrival_interval_ms": 0,
+        "actual_go_test_passes": 0,
+        "cache_policy": "Go build cache shared/warmable, test-result cache disabled (-count=1); no cache flushing",
+        "timing_method": "v2: Go monotonic intervals in one benchmark process; raw DB wall-clock measurements retained separately",
+        "db_wall_clock_anomalies": 0,
+        "database_queue_wait": {
+          "p50_ms": 730.39,
+          "p95_ms": 1330.042,
+          "max_ms": 1432.931
+        },
+        "database_claim_to_terminal": {
+          "p50_ms": 23.041,
+          "p95_ms": 24.006,
+          "max_ms": 28.448
+        },
+        "database_created_to_terminal": {
+          "p50_ms": 753.525,
+          "p95_ms": 1353.361,
+          "max_ms": 1456.185
+        },
+        "execution_errors": 0,
+        "tasks": 200,
+        "workers": 2,
+        "synthetic_delay_ms": 20,
+        "completed": 200,
+        "failed": 0,
+        "peak_active": 2,
+        "extra_claims": 0,
+        "submit_ms": 430.275923,
+        "drain_ms": 4182.041472,
+        "total_ms": 4612.325546,
+        "drain_tasks_per_second": 47.82353339608393,
+        "total_tasks_per_second": 43.362073644920464,
+        "submit_to_dispatch_monotonic": {
+          "p50_ms": 3025.901991,
+          "p95_ms": 4225.013266,
+          "max_ms": 4354.497726
+        },
+        "dispatch_to_commit_monotonic": {
+          "p50_ms": 23.283315,
+          "p95_ms": 24.313833,
+          "max_ms": 26.16261
+        },
+        "submit_to_commit_monotonic": {
+          "p50_ms": 3049.021766,
+          "p95_ms": 4247.948059,
+          "max_ms": 4378.100336
+        },
+        "go_version": "go1.27.1",
+        "os": "linux",
+        "architecture": "amd64",
+        "visible_cpus": 20,
+        "gomaxprocs": 20,
+        "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "pool_max_connections": 20,
+        "workload": "synthetic fixed-delay callback + real PG Queue/Scheduler/FencedStore; no model or go-test execution",
+        "owned_rows_cleaned": true
+      }
+    },
+    {
+      "trial": 2,
+      "result": {
+        "arrival_mode": "preloaded-burst",
+        "arrival_interval_ms": 0,
+        "actual_go_test_passes": 0,
+        "cache_policy": "Go build cache shared/warmable, test-result cache disabled (-count=1); no cache flushing",
+        "timing_method": "v2: Go monotonic intervals in one benchmark process; raw DB wall-clock measurements retained separately",
+        "db_wall_clock_anomalies": 0,
+        "database_queue_wait": {
+          "p50_ms": 1818.621,
+          "p95_ms": 2965.388,
+          "max_ms": 3093.208
+        },
+        "database_claim_to_terminal": {
+          "p50_ms": 23.193,
+          "p95_ms": 24.296,
+          "max_ms": 25.697
+        },
+        "database_created_to_terminal": {
+          "p50_ms": 1841.919,
+          "p95_ms": 2988.729,
+          "max_ms": 3115.897
+        },
+        "execution_errors": 0,
+        "tasks": 200,
+        "workers": 2,
+        "synthetic_delay_ms": 20,
+        "completed": 200,
+        "failed": 0,
+        "peak_active": 2,
+        "extra_claims": 0,
+        "submit_ms": 447.296097,
+        "drain_ms": 3121.235264,
+        "total_ms": 3568.537796,
+        "drain_tasks_per_second": 64.07719479104283,
+        "total_tasks_per_second": 56.0453640771807,
+        "submit_to_dispatch_monotonic": {
+          "p50_ms": 1820.81963,
+          "p95_ms": 2967.396705,
+          "max_ms": 3095.103202
+        },
+        "dispatch_to_commit_monotonic": {
+          "p50_ms": 23.424252,
+          "p95_ms": 27.232483,
+          "max_ms": 28.995908
+        },
+        "submit_to_commit_monotonic": {
+          "p50_ms": 1843.933651,
+          "p95_ms": 2990.851306,
+          "max_ms": 3118.001547
+        },
+        "go_version": "go1.27.1",
+        "os": "linux",
+        "architecture": "amd64",
+        "visible_cpus": 20,
+        "gomaxprocs": 20,
+        "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "pool_max_connections": 20,
+        "workload": "synthetic fixed-delay callback + real PG Queue/Scheduler/FencedStore; no model or go-test execution",
+        "owned_rows_cleaned": true
+      }
+    },
+    {
+      "trial": 3,
+      "result": {
+        "arrival_mode": "preloaded-burst",
+        "arrival_interval_ms": 0,
+        "actual_go_test_passes": 0,
+        "cache_policy": "Go build cache shared/warmable, test-result cache disabled (-count=1); no cache flushing",
+        "timing_method": "v2: Go monotonic intervals in one benchmark process; raw DB wall-clock measurements retained separately",
+        "db_wall_clock_anomalies": 0,
+        "database_queue_wait": {
+          "p50_ms": 1710.147,
+          "p95_ms": 2856.296,
+          "max_ms": 2984.104
+        },
+        "database_claim_to_terminal": {
+          "p50_ms": 23.048,
+          "p95_ms": 23.97,
+          "max_ms": 24.857
+        },
+        "database_created_to_terminal": {
+          "p50_ms": 1732.874,
+          "p95_ms": 2879.258,
+          "max_ms": 3006.667
+        },
+        "execution_errors": 0,
+        "tasks": 200,
+        "workers": 2,
+        "synthetic_delay_ms": 20,
+        "completed": 200,
+        "failed": 0,
+        "peak_active": 2,
+        "extra_claims": 0,
+        "submit_ms": 451.05621,
+        "drain_ms": 3011.398164,
+        "total_ms": 3462.458114,
+        "drain_tasks_per_second": 66.41433284741818,
+        "total_tasks_per_second": 57.762431606414516,
+        "submit_to_dispatch_monotonic": {
+          "p50_ms": 1711.974184,
+          "p95_ms": 2858.163788,
+          "max_ms": 2986.048156
+        },
+        "dispatch_to_commit_monotonic": {
+          "p50_ms": 23.271666,
+          "p95_ms": 24.193953,
+          "max_ms": 24.985579
+        },
+        "submit_to_commit_monotonic": {
+          "p50_ms": 1734.871931,
+          "p95_ms": 2881.524267,
+          "max_ms": 3009.097463
+        },
+        "go_version": "go1.27.1",
+        "os": "linux",
+        "architecture": "amd64",
+        "visible_cpus": 20,
+        "gomaxprocs": 20,
+        "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "pool_max_connections": 20,
+        "workload": "synthetic fixed-delay callback + real PG Queue/Scheduler/FencedStore; no model or go-test execution",
+        "owned_rows_cleaned": true
+      }
+    },
+    {
+      "trial": 1,
+      "result": {
+        "arrival_mode": "preloaded-burst",
+        "arrival_interval_ms": 0,
+        "actual_go_test_passes": 0,
+        "cache_policy": "Go build cache shared/warmable, test-result cache disabled (-count=1); no cache flushing",
+        "timing_method": "v2: Go monotonic intervals in one benchmark process; raw DB wall-clock measurements retained separately",
+        "db_wall_clock_anomalies": 0,
+        "database_queue_wait": {
+          "p50_ms": 1038.99,
+          "p95_ms": 1525.017,
+          "max_ms": 1583.172
+        },
+        "database_claim_to_terminal": {
+          "p50_ms": 22.937,
+          "p95_ms": 24.146,
+          "max_ms": 30.493
+        },
+        "database_created_to_terminal": {
+          "p50_ms": 1062.235,
+          "p95_ms": 1548.078,
+          "max_ms": 1605.328
+        },
+        "execution_errors": 0,
+        "tasks": 200,
+        "workers": 4,
+        "synthetic_delay_ms": 20,
+        "completed": 200,
+        "failed": 0,
+        "peak_active": 4,
+        "extra_claims": 0,
+        "submit_ms": 452.499866,
+        "drain_ms": 1611.826901,
+        "total_ms": 2064.332058,
+        "drain_tasks_per_second": 124.0828031074039,
+        "total_tasks_per_second": 96.88363808764724,
+        "submit_to_dispatch_monotonic": {
+          "p50_ms": 1040.489462,
+          "p95_ms": 1526.66486,
+          "max_ms": 1584.849502
+        },
+        "dispatch_to_commit_monotonic": {
+          "p50_ms": 23.43094,
+          "p95_ms": 26.279967,
+          "max_ms": 31.480695
+        },
+        "submit_to_commit_monotonic": {
+          "p50_ms": 1064.698118,
+          "p95_ms": 1549.963238,
+          "max_ms": 1607.135525
+        },
+        "go_version": "go1.27.1",
+        "os": "linux",
+        "architecture": "amd64",
+        "visible_cpus": 20,
+        "gomaxprocs": 20,
+        "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "pool_max_connections": 20,
+        "workload": "synthetic fixed-delay callback + real PG Queue/Scheduler/FencedStore; no model or go-test execution",
+        "owned_rows_cleaned": true
+      }
+    },
+    {
+      "trial": 2,
+      "result": {
+        "arrival_mode": "preloaded-burst",
+        "arrival_interval_ms": 0,
+        "actual_go_test_passes": 0,
+        "cache_policy": "Go build cache shared/warmable, test-result cache disabled (-count=1); no cache flushing",
+        "timing_method": "v2: Go monotonic intervals in one benchmark process; raw DB wall-clock measurements retained separately",
+        "db_wall_clock_anomalies": 0,
+        "database_queue_wait": {
+          "p50_ms": 1025.898,
+          "p95_ms": 1518.04,
+          "max_ms": 1573.851
+        },
+        "database_claim_to_terminal": {
+          "p50_ms": 23.149,
+          "p95_ms": 24.829,
+          "max_ms": 29.171
+        },
+        "database_created_to_terminal": {
+          "p50_ms": 1049.149,
+          "p95_ms": 1540.988,
+          "max_ms": 1597.533
+        },
+        "execution_errors": 0,
+        "tasks": 200,
+        "workers": 4,
+        "synthetic_delay_ms": 20,
+        "completed": 200,
+        "failed": 0,
+        "peak_active": 4,
+        "extra_claims": 0,
+        "submit_ms": 438.12448,
+        "drain_ms": 1601.718843,
+        "total_ms": 2039.850847,
+        "drain_tasks_per_second": 124.86585949466787,
+        "total_tasks_per_second": 98.04638427076135,
+        "submit_to_dispatch_monotonic": {
+          "p50_ms": 1027.705871,
+          "p95_ms": 1519.835086,
+          "max_ms": 1575.787431
+        },
+        "dispatch_to_commit_monotonic": {
+          "p50_ms": 23.536206,
+          "p95_ms": 25.712565,
+          "max_ms": 29.385935
+        },
+        "submit_to_commit_monotonic": {
+          "p50_ms": 1051.271227,
+          "p95_ms": 1544.139808,
+          "max_ms": 1599.475218
+        },
+        "go_version": "go1.27.1",
+        "os": "linux",
+        "architecture": "amd64",
+        "visible_cpus": 20,
+        "gomaxprocs": 20,
+        "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "pool_max_connections": 20,
+        "workload": "synthetic fixed-delay callback + real PG Queue/Scheduler/FencedStore; no model or go-test execution",
+        "owned_rows_cleaned": true
+      }
+    },
+    {
+      "trial": 3,
+      "result": {
+        "arrival_mode": "preloaded-burst",
+        "arrival_interval_ms": 0,
+        "actual_go_test_passes": 0,
+        "cache_policy": "Go build cache shared/warmable, test-result cache disabled (-count=1); no cache flushing",
+        "timing_method": "v2: Go monotonic intervals in one benchmark process; raw DB wall-clock measurements retained separately",
+        "db_wall_clock_anomalies": 0,
+        "database_queue_wait": {
+          "p50_ms": 979.612,
+          "p95_ms": 1474.196,
+          "max_ms": 1533.671
+        },
+        "database_claim_to_terminal": {
+          "p50_ms": 22.959,
+          "p95_ms": 23.936,
+          "max_ms": 24.471
+        },
+        "database_created_to_terminal": {
+          "p50_ms": 1003.114,
+          "p95_ms": 1497.142,
+          "max_ms": 1556.47
+        },
+        "execution_errors": 0,
+        "tasks": 200,
+        "workers": 4,
+        "synthetic_delay_ms": 20,
+        "completed": 200,
+        "failed": 0,
+        "peak_active": 4,
+        "extra_claims": 0,
+        "submit_ms": 428.307259,
+        "drain_ms": 1561.498778,
+        "total_ms": 1989.810129,
+        "drain_tasks_per_second": 128.08207269695347,
+        "total_tasks_per_second": 100.51210268012461,
+        "submit_to_dispatch_monotonic": {
+          "p50_ms": 981.805421,
+          "p95_ms": 1476.1255,
+          "max_ms": 1535.631272
+        },
+        "dispatch_to_commit_monotonic": {
+          "p50_ms": 23.430049,
+          "p95_ms": 24.991025,
+          "max_ms": 26.349797
+        },
+        "submit_to_commit_monotonic": {
+          "p50_ms": 1005.248724,
+          "p95_ms": 1499.059367,
+          "max_ms": 1558.483223
+        },
+        "go_version": "go1.27.1",
+        "os": "linux",
+        "architecture": "amd64",
+        "visible_cpus": 20,
+        "gomaxprocs": 20,
+        "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "pool_max_connections": 20,
+        "workload": "synthetic fixed-delay callback + real PG Queue/Scheduler/FencedStore; no model or go-test execution",
+        "owned_rows_cleaned": true
+      }
+    },
+    {
+      "trial": 1,
+      "result": {
+        "arrival_mode": "preloaded-burst",
+        "arrival_interval_ms": 0,
+        "actual_go_test_passes": 0,
+        "cache_policy": "Go build cache shared/warmable, test-result cache disabled (-count=1); no cache flushing",
+        "timing_method": "v2: Go monotonic intervals in one benchmark process; raw DB wall-clock measurements retained separately",
+        "db_wall_clock_anomalies": 0,
+        "database_queue_wait": {
+          "p50_ms": 637.794,
+          "p95_ms": 806.585,
+          "max_ms": 825.394
+        },
+        "database_claim_to_terminal": {
+          "p50_ms": 23.2,
+          "p95_ms": 24.218,
+          "max_ms": 31.355
+        },
+        "database_created_to_terminal": {
+          "p50_ms": 661.183,
+          "p95_ms": 828.984,
+          "max_ms": 848.617
+        },
+        "execution_errors": 0,
+        "tasks": 200,
+        "workers": 8,
+        "synthetic_delay_ms": 20,
+        "completed": 200,
+        "failed": 0,
+        "peak_active": 8,
+        "extra_claims": 0,
+        "submit_ms": 438.15854,
+        "drain_ms": 851.334918,
+        "total_ms": 1289.500498,
+        "drain_tasks_per_second": 234.92516960287537,
+        "total_tasks_per_second": 155.09881563457913,
+        "submit_to_dispatch_monotonic": {
+          "p50_ms": 639.555519,
+          "p95_ms": 808.342646,
+          "max_ms": 827.140546
+        },
+        "dispatch_to_commit_monotonic": {
+          "p50_ms": 24.418744,
+          "p95_ms": 25.942256,
+          "max_ms": 32.770069
+        },
+        "submit_to_commit_monotonic": {
+          "p50_ms": 664.900425,
+          "p95_ms": 832.515995,
+          "max_ms": 850.982688
+        },
+        "go_version": "go1.27.1",
+        "os": "linux",
+        "architecture": "amd64",
+        "visible_cpus": 20,
+        "gomaxprocs": 20,
+        "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "pool_max_connections": 20,
+        "workload": "synthetic fixed-delay callback + real PG Queue/Scheduler/FencedStore; no model or go-test execution",
+        "owned_rows_cleaned": true
+      }
+    },
+    {
+      "trial": 2,
+      "result": {
+        "arrival_mode": "preloaded-burst",
+        "arrival_interval_ms": 0,
+        "actual_go_test_passes": 0,
+        "cache_policy": "Go build cache shared/warmable, test-result cache disabled (-count=1); no cache flushing",
+        "timing_method": "v2: Go monotonic intervals in one benchmark process; raw DB wall-clock measurements retained separately",
+        "db_wall_clock_anomalies": 0,
+        "database_queue_wait": {
+          "p50_ms": 633,
+          "p95_ms": 808.044,
+          "max_ms": 833.055
+        },
+        "database_claim_to_terminal": {
+          "p50_ms": 23.033,
+          "p95_ms": 24.09,
+          "max_ms": 24.684
+        },
+        "database_created_to_terminal": {
+          "p50_ms": 655.474,
+          "p95_ms": 831.928,
+          "max_ms": 856.541
+        },
+        "execution_errors": 0,
+        "tasks": 200,
+        "workers": 8,
+        "synthetic_delay_ms": 20,
+        "completed": 200,
+        "failed": 0,
+        "peak_active": 8,
+        "extra_claims": 0,
+        "submit_ms": 435.260358,
+        "drain_ms": 861.650841,
+        "total_ms": 1296.919405,
+        "drain_tasks_per_second": 232.11258027426447,
+        "total_tasks_per_second": 154.21158726513156,
+        "submit_to_dispatch_monotonic": {
+          "p50_ms": 634.971589,
+          "p95_ms": 810.390801,
+          "max_ms": 835.1311
+        },
+        "dispatch_to_commit_monotonic": {
+          "p50_ms": 24.499684,
+          "p95_ms": 26.263316,
+          "max_ms": 26.44495
+        },
+        "submit_to_commit_monotonic": {
+          "p50_ms": 657.426502,
+          "p95_ms": 835.485283,
+          "max_ms": 858.755618
+        },
+        "go_version": "go1.27.1",
+        "os": "linux",
+        "architecture": "amd64",
+        "visible_cpus": 20,
+        "gomaxprocs": 20,
+        "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "pool_max_connections": 20,
+        "workload": "synthetic fixed-delay callback + real PG Queue/Scheduler/FencedStore; no model or go-test execution",
+        "owned_rows_cleaned": true
+      }
+    },
+    {
+      "trial": 3,
+      "result": {
+        "arrival_mode": "preloaded-burst",
+        "arrival_interval_ms": 0,
+        "actual_go_test_passes": 0,
+        "cache_policy": "Go build cache shared/warmable, test-result cache disabled (-count=1); no cache flushing",
+        "timing_method": "v2: Go monotonic intervals in one benchmark process; raw DB wall-clock measurements retained separately",
+        "db_wall_clock_anomalies": 0,
+        "database_queue_wait": {
+          "p50_ms": 658.37,
+          "p95_ms": 881.226,
+          "max_ms": 903.973
+        },
+        "database_claim_to_terminal": {
+          "p50_ms": 23.771,
+          "p95_ms": 27.534,
+          "max_ms": 28.938
+        },
+        "database_created_to_terminal": {
+          "p50_ms": 680.87,
+          "p95_ms": 904.457,
+          "max_ms": 926.471
+        },
+        "execution_errors": 0,
+        "tasks": 200,
+        "workers": 8,
+        "synthetic_delay_ms": 20,
+        "completed": 200,
+        "failed": 0,
+        "peak_active": 8,
+        "extra_claims": 0,
+        "submit_ms": 443.266746,
+        "drain_ms": 920.569699,
+        "total_ms": 1363.844585,
+        "drain_tasks_per_second": 217.25677069021148,
+        "total_tasks_per_second": 146.64427472137524,
+        "submit_to_dispatch_monotonic": {
+          "p50_ms": 659.938116,
+          "p95_ms": 882.946199,
+          "max_ms": 905.771646
+        },
+        "dispatch_to_commit_monotonic": {
+          "p50_ms": 25.491393,
+          "p95_ms": 27.535256,
+          "max_ms": 30.638377
+        },
+        "submit_to_commit_monotonic": {
+          "p50_ms": 684.883742,
+          "p95_ms": 906.41976,
+          "max_ms": 929.160009
+        },
+        "go_version": "go1.27.1",
+        "os": "linux",
+        "architecture": "amd64",
+        "visible_cpus": 20,
+        "gomaxprocs": 20,
+        "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+        "pool_max_connections": 20,
+        "workload": "synthetic fixed-delay callback + real PG Queue/Scheduler/FencedStore; no model or go-test execution",
+        "owned_rows_cleaned": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "scope": "synthetic fresh database, independent local PG cluster; not a production backup or physical-host recovery",
+  "status": "PASS",
+  "cleanup": true,
+  "postgres_version": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+  "restored_rows": 2,
+  "reader_select": true,
+  "reader_insert_refused": true,
+  "role_privileges_restored": true,
+  "dump_sha256": "637fd6c76beba18b5a984c0a70f2d688b0c7b40d0a3ddb2c4c51c9d83affe8a0",
+  "roles_sha256": "b4b97925cd23cdbb20f59efb598fe93617ccc1120fd058ee0f3aa7558329ded6"
+}

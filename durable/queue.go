@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"go.opentelemetry.io/otel/attribute"
+	"runtime-app/observability"
 	"strings"
 	"time"
 
@@ -14,12 +16,14 @@ import (
 
 // ClaimedRun 包含 Agent 元数据和当前执行权。
 type ClaimedRun struct {
-	RunID      string
-	Repo       string
-	Provider   string
-	Goal       string
-	RetryCount int
-	Lease      Lease
+	RunID       string
+	Repo        string
+	Provider    string
+	Goal        string
+	RetryCount  int
+	Lease       Lease
+	TraceParent string
+	TraceState  string
 }
 
 type Queue struct {
@@ -40,7 +44,9 @@ func (q Queue) Submit(
 	ctx context.Context,
 	s Snapshot,
 	priority int,
-) error {
+) (err error) {
+	ctx, span := observability.StartOperation(ctx, "queue.submit", attribute.String("run.id", s.RunID))
+	defer func() { observability.FinishOperation(span, err) }()
 	if q.Pool == nil {
 		return errors.New("nil postgres pool")
 	}
@@ -56,7 +62,9 @@ func (q Queue) Submit(
 }
 
 // SubmitTx reuses the queue protocol inside a caller-owned short transaction.
-func (q Queue) SubmitTx(ctx context.Context, tx pgx.Tx, s Snapshot, priority int) error {
+func (q Queue) SubmitTx(ctx context.Context, tx pgx.Tx, s Snapshot, priority int) (err error) {
+	ctx, span := observability.StartOperation(ctx, "queue.submit_tx", attribute.String("run.id", s.RunID))
+	defer func() { observability.FinishOperation(span, err) }()
 	if err := s.Validate(); err != nil {
 		return err
 	}
@@ -137,6 +145,12 @@ func (q Queue) SubmitTx(ctx context.Context, tx pgx.Tx, s Snapshot, priority int
 		)
 	}
 
+	parent, state := observability.TraceCarrier(ctx)
+	if parent != "" {
+		if _, err = tx.Exec(ctx, "UPDATE day12.agent_runs SET trace_parent=$2,trace_state=$3 WHERE run_id=$1", s.RunID, parent, state); err != nil {
+			return fmt.Errorf("persist tracing context (migration 012 required): %w", err)
+		}
+	}
 	return nil
 }
 
@@ -149,7 +163,9 @@ func (q Queue) ClaimBatch(
 	owner string,
 	n int,
 	ttl time.Duration,
-) ([]ClaimedRun, error) {
+) (claimed []ClaimedRun, err error) {
+	ctx, span := observability.StartOperation(ctx, "queue.claim", attribute.Int("claim.requested", n))
+	defer func() { observability.FinishOperation(span, err) }()
 	if q.Pool == nil {
 		return nil, errors.New(
 			"nil postgres pool",
@@ -216,7 +232,9 @@ func (q Queue) ClaimBatch(
 			r.retry_count,
 			r.lease_owner,
 			r.lease_epoch,
-			r.lease_until`,
+			r.lease_until,
+ COALESCE(to_jsonb(r)->>'trace_parent',''),
+ COALESCE(to_jsonb(r)->>'trace_state','')`,
 		n,
 		owner,
 		ttl.Microseconds(), q.executionProfile(),
@@ -247,6 +265,8 @@ func (q Queue) ClaimBatch(
 			&job.Lease.Owner,
 			&job.Lease.Epoch,
 			&job.Lease.Until,
+			&job.TraceParent,
+			&job.TraceState,
 		)
 		if err != nil {
 			return nil, err

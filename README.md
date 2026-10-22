@@ -2,12 +2,61 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
+<!-- publication-note-20261022 -->
+> This publication includes the validated upgrades below. “Local/uncommitted/not pushed” statements are retained acceptance-time snapshots; use repository commits and Actions for publication and CI status. Two synthetic test DSNs were changed to explicit placeholders before publication, preserving decoding and error-redaction assertions; related offline checks were rerun.
+
+
+<!-- runtime-followup:start -->
+## 2026-10-22 follow-up: sealed sandbox inputs and measured evidence
+
+The shared metadata-only input planner now generates fixed offline commands for standalone, sealed-vendor and bounded workspace snapshots. Worker verification policy v4 includes the input mode. Four real Docker scenarios passed (vendor/workspace success and actual assertion failure), preserving non-root, read-only, offline execution and no host fallback.
+
+A read-only artifact inventory passed five controlled categories without changing files or references. Two reference observations never authorize deletion; coordinated artifact GC remains unimplemented. Twelve additional synthetic trials completed **12,003 tasks, zero failures and zero extra claims**, including 35-second callbacks against an initial 30-second lease, pool limits 4/20 and approximately 107-second paced trials. Six negative database wall durations remain recorded; these are not production capacity, long-term soak or model throughput results.
+
+One frozen real upstream go-humanize regression failed on its parent and passed with the known upstream fix inside offline containers. **Model calls: 0.** Runtime ingestion, representative real-defect evaluation and independent human review remain unverified. A read-only probe accounting for scheduling uncertainty still observed three OS and three PostgreSQL backsteps over 90 seconds; the time service remains unchanged pending the separate A/B authorization.
+
+[Follow-up evidence](reports/runtime-followup-20261022/README.md)
+Full regression and race: **407 PASS / 0 FAIL / 0 SKIP each**. The database-independent entry passed 206 Go events and 7 Python tests; event counts include parents/subtests. Local changes only: no commit, push, or new paid call.
+<!-- runtime-followup:end -->
+
+
+> Local monitoring reproduced OS and PostgreSQL wall-clock backsteps. A system-wide WSL time-sync A/B is awaiting explicit approval; it has not been applied. Primary benchmark timing is monotonic.
+
+> Previous batch full/race: 338 PASS each; ten recovery repeats: 220 PASS; unit entrypoint: 153 PASS. Zero FAIL/SKIP. Real Docker/fenced container recovery passed. See source reports/runtime-remaining-20261022. Events include parent/subtests; no commit/push.
+
+
+## Local upgrade · 2026-10-22 (unpublished)
+
+This section describes the current working tree; older dated “pending/BLOCKED” statements are historical. No commit, push or remote-CI result is implied.
+
+Implemented bounded multi-file patches (up to 8 allowlisted existing Go files per repair round), persisted logical model responses with conservative unknown-outcome handling, real Docker confinement and an independent scoped orphan reaper, OTLP/metrics/local alert acceptance, paced/real-Go-test benchmark workloads, and content-addressed portable Worktree recovery. Two isolated host containers plus a separate authenticated artifact service passed actual A-container SIGKILL, natural lease expiration and a real Epoch2 ClaimBatch takeover. This remains one physical computer, with no physical-host/power-loss claim.
+
+The frozen 12-task synthetic live evaluation made **11 actual requests**, **3382 input / 4201 output tokens**: 9 fresh repairs and one response-recovery control passed holdout assertions; an immutable failure control failed as expected; an already-passing baseline made zero requests. Mode: High, requested/returned alias `deepseek-flash`. The peak cache-miss estimate is **$0.0060558**, not an invoice, against this run's separately authorized $2 cap. These simple manually constructed tasks do not measure general repository repair accuracy.
+
+Explicit sealed input policies capture offline vendor inputs or root-contained workspace modules, with shared fixed-command planning for trusted-local and sandbox execution. Terminal Worktrees can be inspected/dry-run and retired with identity/state checks and a persisted deletion intent. A separate fresh local PostgreSQL cluster restored synthetic data and read-only role permissions.
+
+Portable recovery requires a previously published artifact and durable patch history. Disk loss before the first publication and unobserved model responses are not automatically recovered.
+
+Remaining unverified: a second physical host, network partition/power loss, arbitrary hostile repositories, representative real-world defects and human review, production soak/capacity, and the cause of two historical negative DB wall-clock durations. Monotonic benchmark timing does not remove the Lease clock assumption.
+
+
+> **Local extension batch, 2026-10-21:** real-PG synthetic throughput, opt-in OpenTelemetry tracing and a 20-case scripted/independent-oracle evaluation are implemented locally. Apply migrations 001–012 before enabling tracing. Actual container isolation remains blocked; multi-file and cross-host recovery are not implemented. See [implementation and scope](docs/review-20261020/IMPLEMENTATION.md#2026-10-21-扩展批次1观测持久队列基准与离线评测) and the latest dated [results](docs/review-20261020/RESULTS.md). These local changes are not published.
+
+
 [Documentation showcase](https://github.com/Loz888/durable-coding-agent-runtime-showcase)
 
 ## Project overview
 
 A Go agent runtime with PostgreSQL-backed scheduling, fenced checkpoints and
-recoverable, single-file code repair in managed Git Worktrees.
+recoverable, bounded multi-file code repair in managed Git Worktrees.
+
+[本地可复现演示](docs/demo-script.md) · [能力与证据索引](docs/review-20261020/IMPLEMENTATION.md) · [本轮复验记录](reports/review-20261020/local-walkthrough.json)
+
+## 本地工程收口 · 2026-10-21 / Local completion and verification
+
+候选全树快照、验证输入摘要与受限证据收尾已接入现有 Store/Scheduler。最后一次 Claim 后的 verified_pass 可在完整输入仍匹配时直接收尾，不增加 Claim/Epoch、修复轮数或模型请求；旧 Owner 仍被拒绝。当前验证范围是标准库依赖的独立 Go 模块，外部依赖/replace、workspace、vendor、链接等明确拒绝；不因此扩大代码修复范围。
+
+先应用增量迁移 **010/011**，停用旧 Worker 后升级；历史缺摘要记录必须在有效执行授权下重验，不能追认旧 PASS。下方 10 月 20 日数字是历史快照，本轮结果见[验收说明](docs/review-20261020/RESULTS.md)和[演示](docs/demo-script.md)。本次修改仅在本地，未推送；模型继续 High，没有新增 Live 调用。
 
 ## System review fixes · 2026-10-20
 
@@ -235,7 +284,7 @@ env -u DEEPSEEK_API_KEY go vet ./...
 [CI](.github/workflows/ci.yml) reads the Go version from go.mod and provides
 format/vet/build, database-independent tests, full PostgreSQL integration
 tests and a full race suite. PostgreSQL jobs create both fixed database names,
-apply migrations 001–009, and reject SKIP. No model key is injected.
+apply migrations 001–011, and reject SKIP. No model key is injected.
 Check the actual [Actions runs](https://github.com/Loz888/durable-coding-agent-runtime-source/actions)
 for remote status; no static green status is asserted here. CI also checks the
 Day 21 Capture and reproduces the recorded evaluation report.
@@ -267,26 +316,13 @@ Its controlled Coding configuration targets math.go, with two rounds and a
 
 ## Limitations
 
-- Trusted Go repositories only: their tests execute with Worker OS privileges.
-  The pilot container adapter is not yet an accepted untrusted-code boundary; see the current status page.
-- Coding repair targets one configured file, not arbitrary multi-file changes.
-- File Rename and SQL Commit are separate; Intent/SHA reconciliation covers
-  the tested gap, not a distributed atomic transaction.
-- No arbitrary-external-effect exactly-once guarantee. Diagnosis tools can
-  replay when their output checkpoint was not committed.
-- Recovery assumes the same valid local Worktree; multi-host transport and
-  reconstruction are not implemented.
-- Lease times use the database wall clock; choose adequate TTL and keep host
-  time synchronized.
-- Legacy identity-less Worktree bindings need explicit audit/migration.
-- A legacy model factory without Context cannot safely be force-stopped if it
-  never returns; use the optional context-aware factory for slow initialization.
+- Up to 8 allowlisted existing non-test Go files; no arbitrary large-repository repair or file creation/deletion.
+- Real Docker boundaries were exercised; trusted-local/sealed-input policies remain trusted host execution.
+- Portable recovery needs a matching clean clone, database and private artifacts; independent containers were tested, a second physical host/power loss was not.
+- SQL, file Rename and artifact upload are separate durability boundaries. Unknown model outcomes/charges and external side effects have no Exactly-once claim.
+- Synthetic live cases are not representative repository repair accuracy; Lease decisions still rely on the DB wall clock.
+
 
 ## Roadmap
 
-Multi-file Patch, sandbox isolation, broader repair evaluation, OpenTelemetry,
-measured Worker-throughput benchmarks and multi-host Worktree recovery remain
-future work.
-
-简要说明：这是一个关注执行授权、持久化和崩溃恢复的 Go Agent 工程。
-Mock 与故障 Demo 无需真实模型密钥。源码仓库已公开，尚未选择软件 License。
+See the current 2026-10-22 scope above. Next evidence requires a second physical host, representative open-source defects with human review, longer load tests and clock diagnostics.

@@ -17,6 +17,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"runtime-app/internal/boundedlog"
+	"runtime-app/internal/goinput"
 	"runtime-app/task"
 	"strings"
 	"syscall"
@@ -26,17 +27,20 @@ import (
 // GoSandbox runs a fixed command against a read-only candidate copy. All writable
 // container storage is size-limited tmpfs. It never falls back to the host.
 type GoSandbox struct {
-	Image    string
-	Root     string
-	Timeout  time.Duration
-	MaxBytes int64
-	MaxFiles int
+	// InputPolicy selects a fixed offline command, never arbitrary caller arguments.
+	InputPolicy  string
+	CleanupGrace time.Duration
+	Image        string
+	Root         string
+	Timeout      time.Duration
+	MaxBytes     int64
+	MaxFiles     int
 }
 
 var imageDigest = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9./:_-]*@sha256:[0-9a-f]{64}$`)
 
 func (s GoSandbox) Validate() error {
-	if !imageDigest.MatchString(s.Image) || !filepath.IsAbs(s.Root) || s.Timeout <= 0 || s.Timeout > 5*time.Minute || s.MaxBytes < 1 || s.MaxBytes > 64<<20 || s.MaxFiles < 1 || s.MaxFiles > 10000 {
+	if !goinput.ValidPolicy(s.InputPolicy) || s.CleanupGrace < 0 || s.CleanupGrace > time.Minute || !imageDigest.MatchString(s.Image) || !filepath.IsAbs(s.Root) || s.Timeout <= 0 || s.Timeout > 5*time.Minute || s.MaxBytes < 1 || s.MaxBytes > 64<<20 || s.MaxFiles < 1 || s.MaxFiles > 10000 {
 		return errors.New("invalid sandbox server policy")
 	}
 	return nil
@@ -52,19 +56,36 @@ func (s GoSandbox) Probe(ctx context.Context) error {
 	}
 	return nil
 }
-func (s GoSandbox) arguments(name, path string) []string {
-	return []string{"run", "--pull=never", "--name", name, "--label", "io.agent-runtime.sandbox=owned-v1", "--label", "io.agent-runtime.expires=" + fmt.Sprint(time.Now().Add(s.Timeout+time.Minute).Unix()),
+func (s GoSandbox) arguments(name, path string, goArgs []string) []string {
+	workspace := "off"
+	if s.InputPolicy == goinput.SealedWorkspace {
+		workspace = "/src/go.work"
+	}
+	return append([]string{"run", "--pull=never", "--name", name, "--label", "io.agent-runtime.sandbox=owned-v1", "--label", "io.agent-runtime.expires=" + fmt.Sprint(time.Now().Add(s.Timeout+s.cleanupGrace()).Unix()),
+		"--label", "io.agent-runtime.root=" + HashRoot(s.Root),
+		"--label", "io.agent-runtime.snapshot=" + filepath.Base(path),
 		"--network=none", "--user=65532:65532", "--cap-drop=ALL", "--security-opt=no-new-privileges:true",
 		"--read-only", "--cpus=1", "--memory=512m", "--memory-swap=512m", "--pids-limit=64", "--ulimit=nofile=128:128", "--ulimit=fsize=33554432:33554432",
 		"--tmpfs=/tmp:rw,exec,nosuid,nodev,size=268435456,mode=1777",
 		"--mount", "type=bind,src=" + path + ",dst=/src,readonly", "--workdir=/src",
-		"--env=HOME=/tmp", "--env=GOCACHE=/tmp/cache", "--env=GOPATH=/tmp/gopath", "--env=GOWORK=off", "--env=GOTOOLCHAIN=local", "--env=GOPROXY=off", "--env=GOSUMDB=off", "--env=CGO_ENABLED=0",
-		s.Image, "go", "test", "-count=1", "./..."}
+		"--env=HOME=/tmp", "--env=GOCACHE=/tmp/cache", "--env=GOPATH=/tmp/gopath", "--env=GOWORK=" + workspace, "--env=GOENV=off", "--env=GOFLAGS=", "--env=GOTOOLCHAIN=local", "--env=GOPROXY=off", "--env=GOSUMDB=off", "--env=CGO_ENABLED=0",
+		s.Image, "go"}, goArgs...)
 }
 
 // Snapshot rejects every symlink/hardlink/special file and limits total input.
 // No archive extraction or user-defined mounts, images, environment or commands exist.
+// HashRoot identifies one operator-owned snapshot root without exporting its path.
+func HashRoot(root string) string {
+	sum := sha256.Sum256([]byte(root))
+	return hex.EncodeToString(sum[:])
+}
+
 func (s GoSandbox) snapshot(source, target string) (string, error) {
+	// The host parent remains private (0700); the bind-mounted root must be
+	// readable by UID65532. Files remain read-only and the mount is readonly.
+	if err := os.Chmod(target, 0755); err != nil {
+		return "", err
+	}
 	h := sha256.New()
 	var total int64
 	count := 0
@@ -150,12 +171,22 @@ func (s GoSandbox) Execute(ctx context.Context, t task.Task) (Output, error) {
 	if err != nil || root != s.Root {
 		return out, errors.New("sandbox root must be an existing canonical directory")
 	}
+	parent, err := os.Stat(root)
+	if err != nil || parent.Mode().Perm()&0077 != 0 {
+		return out, errors.New("sandbox snapshot root must be private (0700)")
+	}
 	dir, err := os.MkdirTemp(root, "candidate-")
 	if err != nil {
 		return out, err
 	}
 	defer os.RemoveAll(dir)
 	tree, err := s.snapshot(t.Payload, dir)
+	if err != nil {
+		return out, err
+	}
+	// Plan only after copying: no command reads mutable candidate metadata, and no
+	// candidate code runs on the host. The planner only uses mod/work edit -json.
+	goArgs, err := goinput.TestCommand(ctx, dir, s.InputPolicy)
 	if err != nil {
 		return out, err
 	}
@@ -172,7 +203,7 @@ func (s GoSandbox) Execute(ctx context.Context, t task.Task) (Output, error) {
 		defer done()
 		_ = exec.CommandContext(cleanup, "docker", "rm", "-f", name).Run()
 	}()
-	cmd := exec.CommandContext(runCtx, "docker", s.arguments(name, dir)...)
+	cmd := exec.CommandContext(runCtx, "docker", s.arguments(name, dir, goArgs)...)
 	output := boundedlog.New(65536)
 	cmd.Stdout = output
 	cmd.Stderr = output
@@ -192,7 +223,7 @@ func (s GoSandbox) Execute(ctx context.Context, t task.Task) (Output, error) {
 	}
 	out.ExitCode = state.ExitCode
 	out.Stdout = output.String()
-	evidence, _ := json.Marshal(map[string]any{"candidate_tree_sha256": tree, "image": s.Image, "command": []string{"go", "test", "-count=1", "./..."}, "oom": state.OOMKilled, "duration_ms": time.Since(started).Milliseconds(), "supervisor_exit": state.ExitCode})
+	evidence, _ := json.Marshal(map[string]any{"candidate_tree_sha256": tree, "image": s.Image, "command": append([]string{"go"}, goArgs...), "input_policy": s.InputPolicy, "oom": state.OOMKilled, "duration_ms": time.Since(started).Milliseconds(), "supervisor_exit": state.ExitCode})
 	out.Stderr = string(evidence)
 	if runCtx.Err() != nil {
 		return out, runCtx.Err()

@@ -171,7 +171,8 @@ func newLab(
             lease_owner text,
             lease_epoch bigint NOT NULL,
             status text NOT NULL,
-            lease_until timestamptz NOT NULL
+            lease_until timestamptz NOT NULL,
+            completion_pending boolean NOT NULL DEFAULT false
         )`,
 	)
 
@@ -221,6 +222,7 @@ func newLab(
             diff text NOT NULL DEFAULT '',
             test_output text NOT NULL DEFAULT '',
             test_exit_code integer,
+            verification_input_digest text NOT NULL DEFAULT '',
 
             created_at timestamptz
                 DEFAULT clock_timestamp(),

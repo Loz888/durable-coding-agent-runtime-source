@@ -1,0 +1,7 @@
+{
+  "status": "BLOCKED",
+  "reason": "Docker CLI/engine unavailable; install Docker Desktop and enable WSL integration",
+  "cases": null,
+  "owned_containers_remaining": 0,
+  "scope": "real-container compile, confinement and deadline/cleanup acceptance; no worker-SIGKILL reaper or hostile-kernel escape proof"
+}

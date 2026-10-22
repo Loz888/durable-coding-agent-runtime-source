@@ -1,0 +1,62 @@
+{
+  "read_only": true,
+  "declared_schema_count": 1,
+  "scope": "caller_declared_schemas_only",
+  "reference_completeness_proven": false,
+  "deletion_allowed": false,
+  "age_used_for_eligibility": false,
+  "warning": "Two read-only reference observations are not a consistent cross-store snapshot, a proof of complete schema coverage, or permission to delete. Uploads may publish references later. File ages are not deletion evidence.",
+  "categories": {
+    "changed_during_scan": {
+      "files": 0,
+      "bytes": 0
+    },
+    "currently_unreferenced": {
+      "files": 1,
+      "bytes": 32
+    },
+    "invalid_content": {
+      "files": 1,
+      "bytes": 26
+    },
+    "nonregular": {
+      "files": 0,
+      "bytes": 0
+    },
+    "reference_appeared_during_scan": {
+      "files": 0,
+      "bytes": 0
+    },
+    "reference_disappeared_during_scan": {
+      "files": 0,
+      "bytes": 0
+    },
+    "referenced": {
+      "files": 1,
+      "bytes": 30
+    },
+    "symlink": {
+      "files": 1,
+      "bytes": 0
+    },
+    "unmanaged_name": {
+      "files": 1,
+      "bytes": 24
+    },
+    "unreadable": {
+      "files": 0,
+      "bytes": 0
+    }
+  },
+  "references": {
+    "before": 1,
+    "after": 1,
+    "appeared_during_scan": 0,
+    "disappeared_during_scan": 0,
+    "observed_without_valid_file": 0
+  },
+  "actual_postgres_cli_verified": true,
+  "owned_artifact_files_unchanged": true,
+  "owned_reference_row_unchanged": true,
+  "paid_calls": 0
+}

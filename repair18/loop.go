@@ -13,7 +13,20 @@ import (
 )
 
 // 模型只能提出数据，不能直接写文件。
+type SourceFile struct {
+	File   string `json:"file"`
+	SHA256 string `json:"sha256"`
+	Source string `json:"source"`
+}
+type Change struct {
+	File string `json:"file"`
+	Old  string `json:"old"`
+	New  string `json:"new"`
+}
 type Request struct {
+	Files         []SourceFile `json:"files,omitempty"`
+	ContextDigest string       `json:"context_digest,omitempty"`
+
 	SourceCommit string
 	SourceHash   string
 	Round        int
@@ -24,13 +37,15 @@ type Request struct {
 }
 
 type Suggestion struct {
-	UsageKnown        bool   `json:"usage_known"`
-	ProviderRequestID string `json:"provider_request_id,omitempty"`
-	Old               string `json:"old"`
-	New               string `json:"new"`
-	Reason            string `json:"reason"`
-	PromptTokens      int    `json:"-"`
-	CompletionTokens  int    `json:"-"`
+	ProviderModel     string   `json:"provider_model,omitempty"`
+	Changes           []Change `json:"changes,omitempty"`
+	UsageKnown        bool     `json:"usage_known"`
+	ProviderRequestID string   `json:"provider_request_id,omitempty"`
+	Old               string   `json:"old"`
+	New               string   `json:"new"`
+	Reason            string   `json:"reason"`
+	PromptTokens      int      `json:"-"`
+	CompletionTokens  int      `json:"-"`
 }
 
 type Proposer interface {

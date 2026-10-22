@@ -101,11 +101,19 @@ func (p PostgresStore) Load(
 		)
 	}
 
+	return loadSnapshot(ctx, p.Pool, runID)
+}
+
+type snapshotQuery interface {
+	QueryRow(context.Context, string, ...any) pgx.Row
+}
+
+func loadSnapshot(ctx context.Context, db snapshotQuery, runID string) (Snapshot, error) {
 	var s Snapshot
 	var history []byte
 	var diagnosis []byte
 
-	err := p.Pool.QueryRow(
+	err := db.QueryRow(
 		ctx,
 		`SELECT
 			r.run_id,

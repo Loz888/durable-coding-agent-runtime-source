@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"net/http"
 	"net/http/httptest"
@@ -46,6 +47,24 @@ func fixture(t *testing.T) (*pgxpool.Pool, durable.Lease, string) {
 			t.Fatal(e)
 		}
 	}
+
+	// The dedicated DB can retain prior paid-experiment evidence. Own only this
+	// fixture's admission settings under LockQueue, then restore the exact row.
+	var previousGlobal, previousTeam int
+	priorErr := pool.QueryRow(ctx, "SELECT global_limit,team_limit FROM pilot.model_limits WHERE provider_model='deepseek:deepseek-flash'").Scan(&previousGlobal, &previousTeam)
+	if priorErr != nil && !errors.Is(priorErr, pgx.ErrNoRows) {
+		t.Fatal(priorErr)
+	}
+	if _, e := pool.Exec(ctx, "INSERT INTO pilot.model_limits(provider_model,global_limit,team_limit) VALUES('deepseek:deepseek-flash',2,2) ON CONFLICT(provider_model) DO UPDATE SET global_limit=2,team_limit=2"); e != nil {
+		t.Fatal(e)
+	}
+	t.Cleanup(func() {
+		if errors.Is(priorErr, pgx.ErrNoRows) {
+			_, _ = pool.Exec(context.Background(), "DELETE FROM pilot.model_limits WHERE provider_model='deepseek:deepseek-flash'")
+		} else {
+			_, _ = pool.Exec(context.Background(), "UPDATE pilot.model_limits SET global_limit=$1,team_limit=$2 WHERE provider_model='deepseek:deepseek-flash'", previousGlobal, previousTeam)
+		}
+	})
 	id := fmt.Sprintf("budget-%d-%d", os.Getpid(), time.Now().UnixNano())
 	q := durable.Queue{Pool: pool}
 	err = q.Submit(ctx, durable.Snapshot{RunID: id, Repo: "/controlled-no-execution", Provider: "coding:mock", Goal: "synthetic gate", Status: durable.Running, History: []json.RawMessage{json.RawMessage(`{"role":"user","content":"synthetic gate"}`)}}, 0)

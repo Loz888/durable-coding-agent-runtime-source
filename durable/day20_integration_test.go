@@ -137,6 +137,7 @@ func day20Schema(
             diff text NOT NULL DEFAULT '',
             test_output text NOT NULL DEFAULT '',
             test_exit_code integer,
+            verification_input_digest text NOT NULL DEFAULT '',
             created_at timestamptz
                 DEFAULT clock_timestamp(),
             updated_at timestamptz
@@ -682,6 +683,8 @@ func TestDay20RealSIGKILLBeforeCheckpoint(
 		)
 	}
 
+	t.Logf("DEMO phase=claimed worker=A epoch=%d", a.Lease.Epoch)
+
 	// The parent may have resolved its DSN from .env.test. Keep the child
 	// independent of an exported variable so this path remains covered in CI.
 	t.Setenv("DAY12_TEST_DATABASE_URL", "")
@@ -749,6 +752,8 @@ func TestDay20RealSIGKILLBeforeCheckpoint(
 		)
 	}
 
+	t.Log("DEMO phase=crashed signal=SIGKILL patch=verified_pass")
+
 	// But the final Agent Checkpoint did not.
 	cp, err := (PostgresStore{
 		Pool: pool,
@@ -765,6 +770,8 @@ func TestDay20RealSIGKILLBeforeCheckpoint(
 			cp, err,
 		)
 	}
+
+	t.Log("DEMO phase=checkpoint status=running final_commit=absent")
 
 	// Force expiry only for this test Run.
 	_, err = pool.Exec(
@@ -789,6 +796,8 @@ func TestDay20RealSIGKILLBeforeCheckpoint(
 		run.RunID,
 		"day20-crash-b",
 	)
+
+	t.Logf("DEMO phase=takeover worker=B epoch=%d method=real_ClaimBatch", b.Lease.Epoch)
 
 	// If recovery calls the model, this will fail.
 	h := CodingHandler{
@@ -826,4 +835,5 @@ func TestDay20RealSIGKILLBeforeCheckpoint(
 			used, err,
 		)
 	}
+	t.Logf("DEMO phase=final status=%s verdict=%s revision=%d rounds_used=%d recovery_model_calls=0", final.Status, final.OutcomeVerdict, final.Revision, used)
 }

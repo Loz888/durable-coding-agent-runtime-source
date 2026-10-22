@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime-app/observability"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -17,6 +18,8 @@ import (
 )
 
 func main() {
+	traceFile := flag.String("trace-file", "", "new private OpenTelemetry NDJSON file; empty disables export")
+	otlpEndpoint := flag.String("otlp-endpoint", "", "optional loopback OTLP base URL; default disabled")
 	id := flag.String(
 		"id", "",
 		"new unique run ID (required)",
@@ -46,6 +49,15 @@ func main() {
 	)
 
 	flag.Parse()
+	closeTrace, traceErr := observability.ConfigureTelemetry(*traceFile, *otlpEndpoint, "runtime-submit")
+	if traceErr != nil {
+		log.Fatal(traceErr)
+	}
+	defer func() {
+		if e := closeTrace(); e != nil {
+			log.Print("trace shutdown failed")
+		}
+	}()
 
 	if *id == "" || *repo == "" {
 		log.Fatal("-id and -repo required")

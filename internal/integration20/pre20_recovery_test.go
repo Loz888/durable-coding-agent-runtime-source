@@ -120,14 +120,15 @@ func TestPre20SIGKILLRecoveryMatrix(t *testing.T) {
 			ctx := context.Background()
 			// Count verification side effects in the trusted fixture to prove that
 			// replay of a persisted verdict does not run Go tests again.
-			testSource := `package example
+			counter := filepath.Join(t.TempDir(), "verify-runs.txt")
+			testSource := fmt.Sprintf(`package example
 import ("testing";"os")
 func TestDivide(t *testing.T){
- f,err:=os.OpenFile("verify-runs.txt",os.O_CREATE|os.O_APPEND|os.O_WRONLY,0600)
+ f,err:=os.OpenFile(%q,os.O_CREATE|os.O_APPEND|os.O_WRONLY,0600)
  if err!=nil {t.Fatal(err)};defer f.Close();f.WriteString("run\n")
  if Divide(12,3)!=4 {t.Fatal("bad divide")}
 }
-`
+`, counter)
 			if err := os.WriteFile(filepath.Join(w.Path, "math_test.go"), []byte(testSource), 0600); err != nil {
 				t.Fatal(err)
 			}
@@ -175,7 +176,7 @@ func TestDivide(t *testing.T){
 			if err = child.Wait(); err == nil {
 				t.Fatal("child was not killed")
 			}
-			before, _ := os.ReadFile(filepath.Join(w.Path, "verify-runs.txt"))
+			before, _ := os.ReadFile(counter)
 			b := nextPatchOwner(t, s, id)
 			if b.Epoch != claim.Lease.Epoch+1 {
 				t.Fatal("epoch did not advance")
@@ -208,7 +209,7 @@ func TestDivide(t *testing.T){
 			if err != nil || result.Passed != (stage != "verified_fail") {
 				t.Fatalf("recovered verify %+v %v", result, err)
 			}
-			after, _ := os.ReadFile(filepath.Join(w.Path, "verify-runs.txt"))
+			after, _ := os.ReadFile(counter)
 			if strings.HasPrefix(stage, "verified_") && string(before) != string(after) {
 				t.Fatal("cached verdict reran verification")
 			}

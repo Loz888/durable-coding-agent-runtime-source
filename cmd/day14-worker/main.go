@@ -10,13 +10,16 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"runtime-app/observability"
 	"strings"
 	"syscall"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
+	"encoding/json"
 	"path/filepath"
+	"runtime-app/artifactstore"
 	"runtime-app/durable"
 	"runtime-app/executor"
 	"runtime-app/modelbudget"
@@ -28,6 +31,15 @@ import (
 )
 
 func main() {
+	traceFile := flag.String("trace-file", "", "new private OpenTelemetry NDJSON file; empty disables export")
+	otlpEndpoint := flag.String("otlp-endpoint", "", "optional loopback OTLP base URL; default disabled")
+	codingFiles := flag.String("files", "math.go", "comma-separated allowlist of 1..8 existing non-test Go files")
+	inputPolicy := flag.String("input-policy", "", "optional bounded offline sealed-vendor-v1 or sealed-workspace-v1")
+	artifactDir := flag.String("artifact-dir", "", "optional private content-addressed artifact directory; migration 015 required")
+	artifactURL := flag.String("artifact-url", "", "optional HTTPS artifact service; ARTIFACT_TOKEN read from environment")
+	artifactLabHTTP := flag.Bool("artifact-isolated-http", false, "allow HTTP only on an operator-isolated lab network")
+	repoMapPath := flag.String("repo-map", "", "optional local JSON map from submitted logical repository ID/path to host-local clean clone")
+	responseCache := flag.Bool("model-response-cache", true, "persist logical model responses; requires migration 014")
 	liveBudget := flag.Int64("live-budget-nanousd", 0, "explicit experiment cap in USD nanounits, 0 disables paid pilot requests; maximum 2000000000")
 	profile := flag.String("profile", "trusted-local", "trusted-local or internal-pilot; pilot requires Docker and a pinned image")
 	sandboxImage := flag.String("sandbox-image", "", "operator pinned image@sha256:digest")
@@ -87,6 +99,20 @@ func main() {
 	worktreeBase := flag.String("worktree-base", base, "base directory for managed coding Worktrees")
 
 	flag.Parse()
+	closeTrace, traceErr := observability.ConfigureTelemetry(*traceFile, *otlpEndpoint, "runtime-worker")
+	if traceErr != nil {
+		log.Fatal(traceErr)
+	}
+	defer func() {
+		if e := closeTrace(); e != nil {
+			log.Print("trace shutdown failed")
+		}
+	}()
+	resolvedBase, err := canonicalWorktreeBase(*worktreeBase)
+	if err != nil {
+		log.Fatal("invalid worktree base: ", err)
+	}
+	*worktreeBase = resolvedBase
 
 	// 每个进程启动时创建唯一 Session Token。
 	var token [16]byte
@@ -192,10 +218,35 @@ func main() {
 		log.Fatal(err)
 	}
 
+	if !repair17.ValidInputPolicy(*inputPolicy) {
+		log.Fatal("unknown sealed input policy")
+	}
+	patchStore.InputPolicy = *inputPolicy
+	if *artifactDir != "" && *artifactURL != "" {
+		log.Fatal("select artifact-dir or artifact-url")
+	}
+	if *artifactDir != "" {
+		patchStore.Artifacts, err = artifactstore.NewDisk(*artifactDir)
+	}
+	if *artifactURL != "" {
+		patchStore.Artifacts, err = artifactstore.NewRemote(*artifactURL, os.Getenv("ARTIFACT_TOKEN"), *artifactLabHTTP)
+	}
+	if err != nil {
+		log.Fatal("artifact configuration rejected")
+	}
+	var repoMap map[string]string
+	if *repoMapPath != "" {
+		raw, e := os.ReadFile(*repoMapPath)
+		if e != nil || len(raw) > 65536 || json.Unmarshal(raw, &repoMap) != nil {
+			log.Fatal("invalid local repository map")
+		}
+	}
 	handler := durable.CodingHandler{
-		Pool:        pool,
-		PatchStore:  patchStore,
-		PatchSchema: "day19",
+		ResponseCache: *responseCache,
+		Files:         strings.Split(*codingFiles, ","),
+		Pool:          pool,
+		PatchStore:    patchStore,
+		PatchSchema:   "day19",
 
 		WorktreeBase: *worktreeBase,
 
@@ -203,6 +254,15 @@ func main() {
 
 		MaxRounds:   2,
 		TestTimeout: 30 * time.Second,
+	}
+	if repoMap != nil {
+		handler.ResolveRepo = func(c context.Context, job durable.ClaimedRun) (string, error) {
+			path, ok := repoMap[job.Repo]
+			if !ok || !filepath.IsAbs(path) {
+				return "", errors.New("repository is not mapped on this host")
+			}
+			return path, nil
+		}
 	}
 	if *profile == "internal-pilot" {
 		canonical, err := filepath.Abs(*sandboxRoot)
@@ -212,13 +272,34 @@ func main() {
 		if err = os.MkdirAll(canonical, 0700); err != nil {
 			log.Fatal("sandbox root unavailable")
 		}
-		policy := executor.GoSandbox{Image: *sandboxImage, Root: canonical, Timeout: *timeout, MaxBytes: 64 << 20, MaxFiles: 10000}
+		policy := executor.GoSandbox{InputPolicy: *inputPolicy, Image: *sandboxImage, Root: canonical, Timeout: *timeout, MaxBytes: 64 << 20, MaxFiles: 10000}
 		check, done := context.WithTimeout(ctx, 5*time.Second)
 		err = policy.Probe(check)
 		done()
 		if err != nil {
 			log.Fatal("pinned sandbox engine/image unavailable; refusing host fallback")
 		}
+		// A separate sandbox-reap supervisor covers the period when this Worker is dead.
+		// Startup/periodic passes also reconcile expired resources after this Worker returns.
+		go func() {
+			ticker := time.NewTicker(15 * time.Second)
+			defer ticker.Stop()
+			for {
+				check, cancel := context.WithTimeout(ctx, 10*time.Second)
+				result, e := policy.ReapExpired(check)
+				cancel()
+				if e != nil && ctx.Err() == nil {
+					log.Print("sandbox reaper inspection failed")
+				} else if result.Removed > 0 {
+					log.Printf("sandbox expired resources removed=%d", result.Removed)
+				}
+				select {
+				case <-ctx.Done():
+					return
+				case <-ticker.C:
+				}
+			}
+		}()
 		verify := func(c context.Context, path string, limit time.Duration) (repair17.TestResult, error) {
 			execution := policy
 			execution.Timeout = limit
@@ -226,34 +307,16 @@ func main() {
 			output, e := execution.Execute(c, task.Task{Command: "go-test", Payload: path})
 			return repair17.TestResult{Passed: e == nil && output.ExitCode == 0, ExitCode: output.ExitCode, DurationMS: time.Since(started).Milliseconds(), Output: output.Stdout + "\n" + output.Stderr}, e
 		}
+		patchStore.VerificationPolicy = fmt.Sprintf("sandbox-go-v4:sealed-input:%s:owned-orphan-reaper:%s:cpu=1:memory=512m:pids=64:network=none:bytes=%d:files=%d", policy.InputPolicy, policy.Image, policy.MaxBytes, policy.MaxFiles)
 		patchStore.VerifyGo = verify
 		handler.VerifyGo = verify
-		handler.ExpectedCommit = func(c context.Context, job durable.ClaimedRun) (string, error) {
-			if job.Provider != "coding:mock" && !(job.Provider == "coding:deepseek" && *liveBudget > 0 && *liveBudget <= 2000000000) {
-				return "", errors.New("pilot paid providers disabled until durable governance acceptance")
-			}
-			var commit string
-			e := pool.QueryRow(c, "SELECT source_commit FROM pilot.runs WHERE run_id=$1", job.RunID).Scan(&commit)
-			if e != nil {
-				return "", errors.New("pilot requires authenticated registered submission")
-			}
-			return commit, nil
-		}
-		handler.WrapProposer = func(c context.Context, job durable.ClaimedRun, next repair18.Proposer) (repair18.Proposer, error) {
-			if job.Provider != "coding:deepseek" {
-				return next, nil
-			}
-			var team string
-			if e := pool.QueryRow(c, "SELECT team FROM pilot.runs WHERE run_id=$1", job.RunID).Scan(&team); e != nil {
-				return nil, errors.New("missing trusted team")
-			}
-			return modelbudget.Proposer{Pool: pool, Next: next, RunID: job.RunID, Owner: job.Lease.Owner, Epoch: job.Lease.Epoch, Policy: modelbudget.Policy{Experiment: "pilot-runtime-20261019", Team: team, BudgetNano: *liveBudget, GlobalLimit: 2, TeamLimit: 1, MaxRunCalls: 4, MaxProjectCalls: 200, Timeout: 75 * time.Second, UncertainFor: 120 * time.Second}}, nil
-		}
+		configurePilotAdmission(&handler, pool, *liveBudget)
 		scheduler.Models = func(string) (repodiag.Model, error) { return nil, errors.New("pilot diagnosis host tools disabled") }
 	} else if *profile != "trusted-local" {
 		log.Fatal("unknown deployment profile")
 	}
 	scheduler.CodingRun = handler.Execute
+	scheduler.FinalizeCoding = handler.FinalizeExhausted
 
 	// 只有显式指定 -pause-after 才启用故障注入。
 	if *pauseAfter >= 0 {
@@ -295,4 +358,40 @@ func main() {
 	}
 
 	log.Print("WORKER_STOPPED")
+}
+
+// Normalize the default relative CLI path once, before any managed-worktree binding.
+func canonicalWorktreeBase(value string) (string, error) {
+	if strings.TrimSpace(value) == "" {
+		return "", errors.New("worktree base must not be empty")
+	}
+	return filepath.Abs(value)
+}
+
+// Registered identity is also required by evidence-only completion. Paid admission
+// applies only when Execute constructs a proposer, never when inspecting saved proof.
+func configurePilotAdmission(handler *durable.CodingHandler, pool *pgxpool.Pool, liveBudget int64) {
+	handler.ExpectedCommit = func(c context.Context, job durable.ClaimedRun) (string, error) {
+		if job.Provider != "coding:mock" && job.Provider != "coding:deepseek" {
+			return "", errors.New("unsupported pilot coding provider")
+		}
+		var commit string
+		if e := pool.QueryRow(c, "SELECT source_commit FROM pilot.runs WHERE run_id=$1", job.RunID).Scan(&commit); e != nil || commit == "" {
+			return "", errors.New("pilot requires authenticated registered submission")
+		}
+		return commit, nil
+	}
+	handler.WrapProposer = func(c context.Context, job durable.ClaimedRun, next repair18.Proposer) (repair18.Proposer, error) {
+		if job.Provider == "coding:mock" {
+			return next, nil
+		}
+		if job.Provider != "coding:deepseek" || liveBudget <= 0 || liveBudget > 2000000000 {
+			return nil, errors.New("pilot paid providers disabled until durable governance acceptance")
+		}
+		var team string
+		if e := pool.QueryRow(c, "SELECT team FROM pilot.runs WHERE run_id=$1", job.RunID).Scan(&team); e != nil {
+			return nil, errors.New("missing trusted team")
+		}
+		return modelbudget.Proposer{Pool: pool, Next: next, RunID: job.RunID, Owner: job.Lease.Owner, Epoch: job.Lease.Epoch, Policy: modelbudget.Policy{Experiment: "pilot-runtime-20261019", Team: team, BudgetNano: liveBudget, GlobalLimit: 2, TeamLimit: 1, MaxRunCalls: 4, MaxProjectCalls: 200, Timeout: 75 * time.Second, UncertainFor: 120 * time.Second}}, nil
+	}
 }

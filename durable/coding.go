@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"go.opentelemetry.io/otel/attribute"
 	"os"
+	"runtime-app/observability"
 	"strings"
 	"time"
 
@@ -18,6 +20,9 @@ import (
 
 // CodingHandler plugs into the EXISTING Scheduler.
 type CodingHandler struct {
+	ResolveRepo    func(context.Context, ClaimedRun) (string, error)
+	ResponseCache  bool
+	Files          []string
 	WrapProposer   func(context.Context, ClaimedRun, repair18.Proposer) (repair18.Proposer, error)
 	ExpectedCommit func(context.Context, ClaimedRun) (string, error)
 	VerifyGo       func(context.Context, string, time.Duration) (repair17.TestResult, error)
@@ -40,7 +45,12 @@ type CodingHandler struct {
 func (h CodingHandler) Execute(
 	ctx context.Context,
 	job ClaimedRun,
-) (Snapshot, error) {
+) (traced Snapshot, err error) {
+	ctx, span := observability.StartOperation(ctx, "coding.execute", attribute.String("run.id", job.RunID), attribute.Int64("lease.epoch", job.Lease.Epoch))
+	defer func() {
+		span.SetAttributes(attribute.String("run.status", string(traced.Status)))
+		observability.FinishOperation(span, err)
+	}()
 
 	var zero Snapshot
 
@@ -92,6 +102,9 @@ func (h CodingHandler) Execute(
 	}
 
 	agent := repair20.Agent{
+		ResponseCache:  h.ResponseCache,
+		InputPolicy:    h.PatchStore.InputPolicy,
+		Files:          h.Files,
 		ExpectedCommit: expectedCommit,
 		VerifyGo:       h.VerifyGo,
 		Ledger: repair20.PostgresLedger{
@@ -106,6 +119,14 @@ func (h CodingHandler) Execute(
 		TestTimeout: h.TestTimeout,
 	}
 
+	source := job.Repo
+	if h.ResolveRepo != nil {
+		var e error
+		source, e = h.ResolveRepo(ctx, job)
+		if e != nil {
+			return zero, e
+		}
+	}
 	outcome, err := agent.Run(
 		ctx,
 		repair19.Ref{
@@ -113,12 +134,17 @@ func (h CodingHandler) Execute(
 			Owner: job.Lease.Owner,
 			Epoch: job.Lease.Epoch,
 		},
-		job.Repo,
+		source,
 	)
 	if err != nil {
 		return zero, err
 	}
 
+	if h.PatchStore.Artifacts != nil && outcome.LastPatch != "" {
+		if _, e := h.PatchStore.PublishPortable(ctx, repair19.Ref{ID: job.RunID, Owner: job.Lease.Owner, Epoch: job.Lease.Epoch}); e != nil {
+			return zero, e
+		}
+	}
 	// Used exclusively by crash tests.
 	if h.BeforeCheckpoint != nil {
 		h.BeforeCheckpoint()
@@ -185,4 +211,25 @@ func IsCodingProvider(provider string) bool {
 		provider,
 		"coding:",
 	)
+}
+
+// Completion may only refer to configured targets; the full input digest still binds unchanged files.
+func (h CodingHandler) acceptsFiles(files []string) bool {
+	targets := h.Files
+	if len(targets) == 0 {
+		targets = []string{h.File}
+	}
+	if len(files) == 0 {
+		return false
+	}
+	allowed := map[string]bool{}
+	for _, f := range targets {
+		allowed[f] = true
+	}
+	for _, f := range files {
+		if !allowed[f] {
+			return false
+		}
+	}
+	return true
 }

@@ -4,8 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
-	"path/filepath"
 	"time"
 
 	"runtime-app/internal/boundedlog"
@@ -56,6 +54,9 @@ type Ledger interface {
 }
 
 type Agent struct {
+	InputPolicy    string
+	ResponseCache  bool
+	Files          []string
 	ExpectedCommit string
 	VerifyGo       func(context.Context, string, time.Duration) (repair17.TestResult, error)
 	Ledger         Ledger
@@ -84,6 +85,15 @@ func (a Agent) Run(
 	source string,
 ) (Result, error) {
 	out := Result{RunID: ref.ID}
+	targets, targetErr := a.targets()
+	if targetErr != nil {
+		return out, targetErr
+	}
+	if !repair17.ValidInputPolicy(a.InputPolicy) {
+		return out, errors.New("unknown sealed input policy")
+	}
+	a.File = targets[0]
+	a.Files = targets
 
 	if a.Ledger == nil ||
 		a.Model == nil ||
@@ -197,6 +207,11 @@ func (a Agent) Run(
 			verify := a.VerifyGo
 			if verify == nil {
 				verify = repair17.VerifyGo
+				if a.InputPolicy != "" {
+					verify = func(c context.Context, path string, t time.Duration) (repair17.TestResult, error) {
+						return repair17.VerifyWithPolicy(c, path, a.InputPolicy, t)
+					}
+				}
 			}
 			failure, err = verify(
 				ctx,
@@ -226,46 +241,34 @@ func (a Agent) Run(
 			break
 		}
 
-		// Model must see CURRENT source.
-		sha, err := repair17.Inspect(
-			ctx,
-			w.Path,
-			a.File,
-		)
+		request, err := a.currentRequest(ctx, w, used+1, failure)
 		if err != nil {
 			return out, err
 		}
-
-		raw, err := os.ReadFile(
-			filepath.Join(w.Path, a.File),
-		)
+		var proposal repair18.Suggestion
+		if a.ResponseCache {
+			cache, ok := a.Ledger.(interface {
+				Propose(context.Context, repair19.Ref, repair18.Request, repair18.Proposer, time.Duration) (repair18.Suggestion, error)
+			})
+			if !ok {
+				return out, errors.New("ledger does not support durable model responses")
+			}
+			policy := "logical-model-context-v1"
+			if a.InputPolicy != "" {
+				policy = a.InputPolicy + ":" + policy
+			}
+			request.ContextDigest, err = repair17.VerificationDigest(ctx, w.Path, policy, a.TestTimeout)
+			if err != nil {
+				return out, err
+			}
+			proposal, err = cache.Propose(ctx, ref, request, a.Model, a.TestTimeout)
+		} else {
+			proposal, err = a.Model.Suggest(ctx, request)
+		}
 		if err != nil {
 			return out, err
 		}
-
-		if len(raw) > 16*1024 {
-			return out, errors.New(
-				"source exceeds Day20 prompt limit",
-			)
-		}
-
-		proposal, err := a.Model.Suggest(
-			ctx,
-			repair18.Request{
-				SourceCommit: w.Commit,
-				SourceHash:   sha,
-				Round:        used + 1,
-				File:         a.File,
-				Source:       string(raw),
-
-				TestOutput: clip(
-					failure.Output, 8000,
-				),
-
-				Feedback: "Fix CURRENT source. " +
-					"Use the latest test evidence.",
-			},
-		)
+		patches, err := proposalPatches(request, proposal)
 		if err != nil {
 			return out, err
 		}
@@ -276,17 +279,15 @@ func (a Agent) Run(
 			used+1,
 		)
 
-		_, err = a.Ledger.Prepare(
-			ctx,
-			ref,
-			patchID,
-			repair17.Patch{
-				Path:           a.File,
-				ExpectedSHA256: sha,
-				Old:            proposal.Old,
-				New:            proposal.New,
-			},
-		)
+		if len(patches) == 1 {
+			_, err = a.Ledger.Prepare(ctx, ref, patchID, patches[0])
+		} else if batch, ok := a.Ledger.(interface {
+			PrepareBatch(context.Context, repair19.Ref, string, []repair17.Patch) (repair19.Intent, error)
+		}); ok {
+			_, err = batch.PrepareBatch(ctx, ref, patchID, patches)
+		} else {
+			return out, errors.New("ledger does not support multi-file intents")
+		}
 		if err != nil {
 			return out, err
 		}

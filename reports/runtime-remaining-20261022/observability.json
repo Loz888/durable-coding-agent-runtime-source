@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "trace_id": "0a1bb5554f64a52803279cdddf27f355",
+  "jaeger_trace_count": 1,
+  "jaeger_spans": 3,
+  "operations": [
+    "demo.execution",
+    "demo.verify",
+    "demo.verify"
+  ],
+  "metric_results": [
+    {
+      "metric": {
+        "__name__": "runtime_operation_errors_total",
+        "exported_job": "runtime-observe-demo",
+        "instance": "collector:9464",
+        "job": "agent-runtime",
+        "operation": "demo.verify",
+        "otel_scope_name": "runtime-app/durable",
+        "service_name": "runtime-observe-demo"
+      },
+      "value": [
+        1792635025.158,
+        "1"
+      ]
+    }
+  ],
+  "alert": "RuntimeOperationErrorObserved",
+  "alert_state": "firing",
+  "controlled_negative": true,
+  "external_recipients": 0,
+  "model_calls": 0,
+  "scope": "real local OTLP Collector -> Jaeger + Prometheus, not distributed production service observation"
+}

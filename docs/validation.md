@@ -2,6 +2,13 @@
 
 [English](validation.md) | [简体中文](zh-CN/validation.md) | [Home](../README.md)
 
+<!-- runtime-followup:start -->
+## 2026-10-22 follow-up
+
+Follow-up full/race each 407/0/0; offline entry 206 Go events plus 7 Python tests. Twelve new synthetic trials completed 12,003 tasks. The real upstream seed is an expected-failure/known-fix control, with zero model calls. Clock backsteps remain unresolved. [续批证据](review-20261020/RESULTS.md)
+<!-- runtime-followup:end -->
+
+
 ## Latest review evidence · 2026-10-20
 
 Full and race suites each pass 260 test/subtest events; database-independent suites pass 138, with no failed or skipped tests. CI at 645c88e passes the existing PostgreSQL, crash and Capture entrypoints. See [results and scope](review-20261020/RESULTS.md), [local evidence](../reports/review-20261020/verification.json) and [exact remote runs](../reports/review-20261020/remote-ci.json). No new coverage percentages or paid-model measurements are inferred from these checks.

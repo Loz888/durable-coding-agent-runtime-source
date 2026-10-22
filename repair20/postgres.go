@@ -64,7 +64,11 @@ func (p PostgresLedger) Ensure(
 	// Already registered: do NOT create
 	// a new Worktree after takeover.
 	if exists {
-		return p.Store.BoundWorktree(ctx, r)
+		w, e := p.Store.BoundWorktree(ctx, r)
+		if p.Store.Artifacts != nil && (e != nil || w.Path != filepath.Join(base, r.ID)) {
+			return p.Store.RestorePublished(ctx, r, source, base, max)
+		}
+		return w, e
 	}
 
 	root, err := filepath.Abs(source)

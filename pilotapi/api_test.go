@@ -5,6 +5,8 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"net/http"
 	"net/http/httptest"
@@ -13,6 +15,9 @@ import (
 	"path/filepath"
 	"runtime-app/durable"
 	"runtime-app/internal/testdb"
+	"runtime-app/reliability15"
+	"runtime-app/repair17"
+	"runtime-app/repair19"
 	"strings"
 	"testing"
 	"time"
@@ -230,5 +235,122 @@ func TestRequestAndQueueLimits(t *testing.T) {
 	in.IdempotencyKey = "one"
 	if w := call(h, "POST", "/v1/runs", a, in); w.Code != 202 {
 		t.Fatal("replay rejected at capacity", w.Code)
+	}
+}
+
+func TestInterviewAuthenticatedCancelRacesEvidenceOnlyCompletion(t *testing.T) {
+	s, _, token, _, admin := fixture(t)
+	ctx := context.Background()
+	repo := s.Repositories["repo"]
+	for file, body := range map[string]string{"go.mod": "module fixture\ngo 1.23\n", "math.go": "package fixture\nfunc Divide(a,b int)int{return a*b}\n", "math_test.go": "package fixture\nimport \"testing\"\nfunc TestDivide(t *testing.T){if Divide(12,3)!=4{t.Fatal(\"bad\")}}\n"} {
+		if e := os.WriteFile(filepath.Join(repo.Path, file), []byte(body), 0600); e != nil {
+			t.Fatal(e)
+		}
+	}
+	for _, args := range [][]string{{"add", "."}, {"-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "controlled repair fixture"}} {
+		if out, e := exec.Command("git", append([]string{"-C", repo.Path}, args...)...).CombinedOutput(); e != nil {
+			t.Fatalf("fixture commit %s %v", out, e)
+		}
+	}
+	raw, e := exec.Command("git", "-C", repo.Path, "rev-parse", "HEAD").Output()
+	if e != nil {
+		t.Fatal(e)
+	}
+	repo.Commit = strings.TrimSpace(string(raw))
+	s.Repositories["repo"] = repo
+	handler, e := s.Handler(ctx)
+	if e != nil {
+		t.Fatal(e)
+	}
+	response := call(handler, "POST", "/v1/runs", token, submission{Repository: "repo", Commit: repo.Commit, Provider: "coding:mock", Goal: "controlled repair", IdempotencyKey: "cancel-completion"})
+	if response.Code != 202 {
+		t.Fatal(response.Code, response.Body.String())
+	}
+	var row struct {
+		RunID string `json:"run_id"`
+	}
+	if e = json.Unmarshal(response.Body.Bytes(), &row); e != nil || row.RunID == "" {
+		t.Fatal(e)
+	}
+	id := row.RunID
+	if _, e = admin.Exec(ctx, "UPDATE day12.agent_runs SET max_attempts=1 WHERE run_id=$1", id); e != nil {
+		t.Fatal(e)
+	}
+	queue := durable.Queue{Pool: admin, Pilot: true}
+	jobs, e := queue.ClaimBatch(ctx, "cancel-completion-owner", 1, 30*time.Second)
+	if e != nil || len(jobs) != 1 || jobs[0].RunID != id {
+		t.Fatalf("real ClaimBatch %+v %v", jobs, e)
+	}
+	base := t.TempDir()
+	w, e := repair17.Prepare(ctx, repo.Path, base, id)
+	if e != nil {
+		t.Fatal(e)
+	}
+	ps, e := repair19.NewStore(admin, "day12", "day19")
+	if e != nil {
+		t.Fatal(e)
+	}
+	t.Cleanup(func() {
+		admin.Exec(context.Background(), "DELETE FROM day19.patch_ops WHERE run_id=$1", id)
+		admin.Exec(context.Background(), "DELETE FROM day19.repair_runs WHERE run_id=$1", id)
+	})
+	ref := repair19.Ref{ID: id, Owner: jobs[0].Lease.Owner, Epoch: jobs[0].Lease.Epoch}
+	if e = ps.Register(ctx, ref, w.Path, 2); e != nil {
+		t.Fatal(e)
+	}
+	hash, e := repair17.Inspect(ctx, w.Path, "math.go")
+	if e != nil {
+		t.Fatal(e)
+	}
+	if _, e = ps.Prepare(ctx, ref, "p1", repair17.Patch{Path: "math.go", ExpectedSHA256: hash, Old: "return a*b", New: "return a/b"}); e != nil {
+		t.Fatal(e)
+	}
+	if _, e = ps.ApplyOrRecover(ctx, ref, "p1", nil); e != nil {
+		t.Fatal(e)
+	}
+	if out, e := ps.Verify(ctx, ref, "p1", 10*time.Second); e != nil || !out.Passed {
+		t.Fatal(out, e)
+	}
+	if _, e = admin.Exec(ctx, "UPDATE day12.agent_runs SET lease_until=clock_timestamp()-interval '1 second' WHERE run_id=$1", id); e != nil {
+		t.Fatal(e)
+	}
+	coding := durable.CodingHandler{Pool: admin, PatchStore: ps, PatchSchema: "day19", WorktreeBase: base, File: "math.go", MaxRounds: 2, TestTimeout: 10 * time.Second}
+	start := make(chan struct{})
+	done := make(chan error, 3)
+	go func() { <-start; _, e := coding.FinalizeExhausted(ctx, queue, 10); done <- e }()
+	go func() {
+		<-start
+		r := call(handler, "POST", "/v1/runs/"+id+"/cancel", token, nil)
+		if r.Code != 200 {
+			done <- fmt.Errorf("cancel HTTP %d", r.Code)
+		} else {
+			done <- nil
+		}
+	}()
+	go func() {
+		<-start
+		store, e := reliability15.NewStore(admin, "day12")
+		if e == nil {
+			_, e = store.SweepExhausted(ctx, 100)
+		}
+		done <- e
+	}()
+	close(start)
+	for i := 0; i < 3; i++ {
+		if e = <-done; e != nil {
+			t.Fatal(e)
+		}
+	}
+	var status string
+	var epoch, revision int64
+	var requested bool
+	if e = admin.QueryRow(ctx, "SELECT status,lease_epoch,revision,cancel_requested FROM day12.agent_runs JOIN pilot.runs USING(run_id) WHERE run_id=$1", id).Scan(&status, &epoch, &revision, &requested); e != nil {
+		t.Fatal(e)
+	}
+	if epoch != 1 || (status == "succeeded" && (requested || revision != 1)) || (status == "failed" && (!requested || revision != 0)) || (status != "succeeded" && status != "failed") {
+		t.Fatalf("cancel/completion inconsistency %s epoch=%d revision=%d cancelled=%t", status, epoch, revision, requested)
+	}
+	if _, e = ps.Verify(ctx, ref, "p1", time.Second); !errors.Is(e, repair19.ErrLeaseLost) {
+		t.Fatalf("old owner accepted %v", e)
 	}
 }

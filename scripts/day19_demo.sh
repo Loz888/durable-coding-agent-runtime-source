@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS day19_lab.agent_runs (
     lease_owner text,
     lease_epoch bigint NOT NULL,
     status text NOT NULL,
-    lease_until timestamptz NOT NULL
+    lease_until timestamptz NOT NULL,
+    completion_pending boolean NOT NULL DEFAULT false
 );
 SQL
 
@@ -36,6 +37,11 @@ sed \
   migrations/005_durable_patch.sql \
   | psql "$DAY12_TEST_DATABASE_URL" \
       -X -v ON_ERROR_STOP=1
+
+# Additive lab compatibility; existing rows are not restamped as verified.
+psql "$DAY12_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1 -c "ALTER TABLE day19_lab.agent_runs ADD COLUMN IF NOT EXISTS completion_pending boolean NOT NULL DEFAULT false"
+sed 's/day19\./day19_lab./g' migrations/010_verification_input.sql |
+  psql "$DAY12_TEST_DATABASE_URL" -X -v ON_ERROR_STOP=1
 
 # Apply the worktree identity extension in the same isolated lab schema.
 sed 's/day19\./day19_lab./g' migrations/006_repair_binding.sql |

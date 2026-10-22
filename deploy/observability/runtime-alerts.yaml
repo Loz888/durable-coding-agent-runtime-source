@@ -1,0 +1,11 @@
+groups:
+  - name: runtime-local
+    rules:
+      - alert: RuntimeOperationErrorObserved
+        expr: sum(increase(runtime_operation_errors_total[2m])) > 0
+        for: 0s
+        labels:
+          severity: warning
+          scope: local-demo
+        annotations:
+          summary: Runtime operation error increased in the local observation window

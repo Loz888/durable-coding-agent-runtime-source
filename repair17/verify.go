@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 	"runtime-app/internal/boundedlog"
 	"time"
 )
@@ -30,6 +31,14 @@ func VerifyGo(
 		return result, err
 	}
 
+	return runGoTests(ctx, w.Path, timeout)
+}
+
+func runGoTests(ctx context.Context, directory string, timeout time.Duration) (TestResult, error) {
+	return runTestCommand(ctx, directory, timeout, []string{"test", "-count=1", "./..."}, trustedGoTestEnv())
+}
+func runTestCommand(ctx context.Context, directory string, timeout time.Duration, args, env []string) (TestResult, error) {
+	var result TestResult
 	if timeout <= 0 ||
 		timeout > 5*time.Minute {
 		return result, fmt.Errorf(
@@ -45,14 +54,12 @@ func VerifyGo(
 	cmd := exec.CommandContext(
 		testCtx,
 		"go",
-		"test",
-		"-count=1",
-		"./...",
+		args...,
 	)
 
-	cmd.Dir = w.Path
+	cmd.Dir = directory
 
-	cmd.Env = trustedGoTestEnv()
+	cmd.Env = env
 
 	cmd.WaitDelay = 2 * time.Second
 
@@ -125,5 +132,10 @@ func trustedGoTestEnv() []string {
 		"GOTOOLCHAIN=local",
 		"GOPROXY=off",
 		"GOSUMDB=off",
+		"GOENV=off",
+		"GOFLAGS=",
+		"CGO_ENABLED=0",
+		"GOOS="+runtime.GOOS,
+		"GOARCH="+runtime.GOARCH,
 	)
 }

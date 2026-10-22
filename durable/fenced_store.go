@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"go.opentelemetry.io/otel/attribute"
+	"runtime-app/observability"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -49,10 +51,17 @@ func (f FencedStore) Load(
 // 3. Lease Owner
 // 4. Lease Epoch
 // 5. Lease 是否仍然有效
-func (f FencedStore) Save(
+func (f FencedStore) Save(ctx context.Context, s Snapshot, expected int64) (err error) {
+	ctx, span := observability.StartOperation(ctx, "checkpoint.save", attribute.String("run.id", s.RunID), attribute.Int64("checkpoint.revision", s.Revision), attribute.Int64("lease.epoch", f.Lease.Epoch))
+	defer func() { observability.FinishOperation(span, err) }()
+	return f.save(ctx, s, expected, nil)
+}
+
+func (f FencedStore) save(
 	ctx context.Context,
 	s Snapshot,
 	expected int64,
+	outer pgx.Tx,
 ) error {
 	if f.Pool == nil {
 		return errors.New("nil postgres pool")
@@ -88,19 +97,21 @@ func (f FencedStore) Save(
 		verdict = "not_evaluated"
 	}
 
-	tx, err := f.Pool.BeginTx(
-		ctx,
-		pgx.TxOptions{},
-	)
-	if err != nil {
-		return err
+	tx := outer
+	own := tx == nil
+	if own {
+		tx, err = f.Pool.BeginTx(ctx, pgx.TxOptions{})
+		if err != nil {
+			return err
+		}
+		defer tx.Rollback(ctx)
 	}
-	defer tx.Rollback(ctx)
 
 	tag, err := tx.Exec(ctx, `
 		UPDATE day12.agent_runs
 		SET
 			status = $1,
+            completion_pending = CASE WHEN $1 IN ('succeeded','failed') THEN false ELSE completion_pending END,
 			revision = $2,
 			turns = $3,
 			calls = $4,
@@ -161,5 +172,8 @@ func (f FencedStore) Save(
 		)
 	}
 
-	return tx.Commit(ctx)
+	if own {
+		return tx.Commit(ctx)
+	}
+	return nil
 }

@@ -4,14 +4,18 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"go.opentelemetry.io/otel/attribute"
 	"os"
 	"path/filepath"
 	"regexp"
+	"runtime-app/observability"
+	"strings"
 	"time"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
+	"runtime-app/artifactstore"
 	"runtime-app/repair17"
 )
 
@@ -31,18 +35,26 @@ type Ref struct {
 }
 
 type Store struct {
-	VerifyGo func(context.Context, string, time.Duration) (repair17.TestResult, error)
-	Pool     *pgxpool.Pool
-	queue    string
-	patch    string
+	InputPolicy string
+	Artifacts   artifactstore.Store
+	// Fault injection only; production leaves nil. No secrets are passed to hooks.
+	ProposalHook func(stage string)
+
+	// Required stable identity for custom verifiers (for example pinned container image/policy).
+	VerificationPolicy string
+	VerifyGo           func(context.Context, string, time.Duration) (repair17.TestResult, error)
+	Pool               *pgxpool.Pool
+	queue              string
+	patch              string
 }
 
 type Intent struct {
-	ID     string `json:"patch_id"`
-	File   string `json:"file"`
-	Before string `json:"before_sha"`
-	After  string `json:"after_sha"`
-	State  string `json:"state"`
+	Files  []FileChange `json:"files,omitempty"`
+	ID     string       `json:"patch_id"`
+	File   string       `json:"file"`
+	Before string       `json:"before_sha"`
+	After  string       `json:"after_sha"`
+	State  string       `json:"state"`
 }
 
 type Outcome struct {
@@ -279,7 +291,12 @@ func (s *Store) Prepare(
 	r Ref,
 	patchID string,
 	p repair17.Patch,
-) (Intent, error) {
+) (traced Intent, err error) {
+	ctx, span := observability.StartOperation(ctx, "patch.prepare", attribute.String("run.id", r.ID), attribute.Int64("lease.epoch", r.Epoch))
+	defer func() {
+		span.SetAttributes(attribute.String("patch.state", traced.State))
+		observability.FinishOperation(span, err)
+	}()
 
 	var out Intent
 
@@ -373,13 +390,11 @@ func (s *Store) Prepare(
 		return out, fmt.Errorf("%w: recover the existing patch before preparing another", ErrConflict)
 	}
 	// A failed verdict permits a new intent only on the known post-patch bytes.
-	var previousAfter string
-	err = tx.QueryRow(ctx, fmt.Sprintf(`SELECT after_sha FROM %s WHERE run_id=$1 AND file_path=$2
- ORDER BY round_number DESC,created_at DESC,patch_id DESC LIMIT 1`, s.tbl("patch_ops")), r.ID, p.Path).Scan(&previousAfter)
-	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+	prior, exists, err := s.previousAfter(ctx, tx, r.ID, p.Path)
+	if err != nil {
 		return out, err
 	}
-	if err == nil && previousAfter != p.ExpectedSHA256 {
+	if exists && prior != p.ExpectedSHA256 {
 		return out, ErrConflict
 	}
 	sha, err := repair17.Inspect(
@@ -469,172 +484,11 @@ func (s *Store) ApplyOrRecover(
 	r Ref,
 	patchID string,
 	afterRename func(),
-) (Outcome, error) {
+) (traced Outcome, err error) {
+	ctx, span := observability.StartOperation(ctx, "patch.apply", attribute.String("run.id", r.ID), attribute.Int64("lease.epoch", r.Epoch))
+	defer func() { observability.FinishOperation(span, err) }()
 
-	var o Outcome
-
-	tx, err := s.Pool.Begin(ctx)
-	if err != nil {
-		return o, err
-	}
-	defer tx.Rollback(ctx)
-
-	if err = s.lockLease(ctx, tx, r); err != nil {
-		return o, err
-	}
-
-	worktree, _, _, err := s.binding(
-		ctx, tx, r.ID,
-	)
-	if err != nil {
-		return o, err
-	}
-
-	var old, newStr, state string
-
-	q := fmt.Sprintf(
-		`SELECT file_path,before_sha,after_sha,
-                state,old_fragment,new_fragment
-         FROM %s
-         WHERE run_id=$1 AND patch_id=$2
-         FOR UPDATE`,
-		s.tbl("patch_ops"),
-	)
-
-	err = tx.QueryRow(
-		ctx, q, r.ID, patchID,
-	).Scan(
-		&o.File,
-		&o.Before,
-		&o.After,
-		&state,
-		&old,
-		&newStr,
-	)
-	if err != nil {
-		return o, err
-	}
-
-	w, err := repair17.OpenManaged(
-		ctx, worktree,
-	)
-	if err != nil {
-		return o, err
-	}
-
-	if w.RunID != r.ID {
-		return o, ErrConflict
-	}
-
-	current, err := repair17.Inspect(
-		ctx,
-		worktree,
-		o.File,
-	)
-	if err != nil {
-		return o, err
-	}
-
-	action := Decide(
-		current,
-		o.Before,
-		o.After,
-	)
-
-	if action == Conflict {
-		return o, ErrConflict
-	}
-
-	if action == ApplyNow {
-
-		if state != "prepared" {
-			return o, ErrConflict
-		}
-
-		_, err = repair17.ApplyGuarded(
-			ctx,
-			worktree,
-			repair17.Patch{
-				Path:           o.File,
-				ExpectedSHA256: o.Before,
-				Old:            old,
-				New:            newStr,
-			},
-			func(c context.Context) error { return s.lockLease(c, tx, r) },
-		)
-		if err != nil {
-			return o, err
-		}
-
-		// Test-only fault injection point:
-		// the file is already modified,
-		// but DB Result has not been committed.
-		if afterRename != nil {
-			afterRename()
-		}
-	}
-
-	// If CurrentSHA == AfterSHA,
-	// do not apply the Patch again.
-	diff, err := repair17.Diff(
-		ctx,
-		worktree,
-	)
-	if err != nil {
-		return o, err
-	}
-
-	if len(diff) > 128*1024 {
-		return o, fmt.Errorf(
-			"diff too large",
-		)
-	}
-
-	if err = s.lockLease(ctx, tx, r); err != nil {
-		return o, err
-	}
-	_, err = tx.Exec(
-		ctx,
-		fmt.Sprintf(
-			`UPDATE %s
-             SET
-               state=CASE
-                 WHEN state='prepared'
-                 THEN 'applied'
-                 ELSE state
-               END,
-               result_epoch=$3,
-               result_owner=$4,
-               diff=$5,
-               updated_at=clock_timestamp()
-             WHERE run_id=$1 AND patch_id=$2`,
-			s.tbl("patch_ops"),
-		),
-		r.ID,
-		patchID,
-		r.Epoch,
-		r.Owner,
-		diff,
-	)
-	if err != nil {
-		return o, err
-	}
-
-	if err = tx.Commit(ctx); err != nil {
-		return o, err
-	}
-
-	o.ID = patchID
-	o.State = state
-
-	if state == "prepared" {
-		o.State = "applied"
-	}
-
-	o.Action = action
-	o.Diff = diff
-
-	return o, nil
+	return s.applyBatch(ctx, r, patchID, afterRename)
 }
 
 // Run tests outside the database transaction.
@@ -644,7 +498,12 @@ func (s *Store) Verify(
 	r Ref,
 	patchID string,
 	timeout time.Duration,
-) (repair17.TestResult, error) {
+) (traced repair17.TestResult, err error) {
+	ctx, span := observability.StartOperation(ctx, "patch.verify", attribute.String("run.id", r.ID), attribute.Int64("lease.epoch", r.Epoch))
+	defer func() {
+		span.SetAttributes(attribute.Bool("verification.passed", traced.Passed), attribute.Int("verification.exit_code", traced.ExitCode))
+		observability.FinishOperation(span, err)
+	}()
 
 	var empty repair17.TestResult
 
@@ -666,12 +525,12 @@ func (s *Store) Verify(
 		return empty, err
 	}
 
-	var file, after, state string
+	var file, after, state, storedDigest string
 
 	err = tx.QueryRow(
 		ctx,
 		fmt.Sprintf(
-			`SELECT file_path,after_sha,state,test_output,COALESCE(test_exit_code,-1)
+			`SELECT file_path,after_sha,state,test_output,COALESCE(test_exit_code,-1),verification_input_digest
              FROM %s
              WHERE run_id=$1 AND patch_id=$2`,
 			s.tbl("patch_ops"),
@@ -682,7 +541,7 @@ func (s *Store) Verify(
 		&file,
 		&after,
 		&state,
-		&empty.Output, &empty.ExitCode,
+		&empty.Output, &empty.ExitCode, &storedDigest,
 	)
 	if err != nil {
 		tx.Rollback(ctx)
@@ -694,7 +553,27 @@ func (s *Store) Verify(
 		tx.Rollback(ctx)
 		return empty, ErrConflict
 	}
-	if state == "verified_pass" || state == "verified_fail" {
+	if _, err = s.membersAtAfter(ctx, tx, r.ID, patchID, path); err != nil {
+		tx.Rollback(ctx)
+		return empty, err
+	}
+	policy := s.VerificationPolicy
+	if s.VerifyGo != nil && policy == "" {
+		tx.Rollback(ctx)
+		return empty, errors.New("custom verifier requires a stable VerificationPolicy")
+	}
+	if policy == "" {
+		policy = "trusted-go-snapshot-v1"
+	}
+	policy = s.inputPolicy(policy)
+	input, err := repair17.CaptureVerification(ctx, path, policy, timeout)
+	if err != nil {
+		tx.Rollback(ctx)
+		return empty, err
+	}
+	defer input.Close()
+	verified := state == "verified_pass" || state == "verified_fail"
+	if verified && storedDigest != "" && storedDigest == input.Digest {
 		empty.Passed = state == "verified_pass"
 		if err = s.lockLease(ctx, tx, r); err != nil {
 			tx.Rollback(ctx)
@@ -702,26 +581,36 @@ func (s *Store) Verify(
 		}
 		return empty, tx.Commit(ctx)
 	}
+	if state != "applied" && !verified {
+		tx.Rollback(ctx)
+		return empty, ErrConflict
+	}
 	if err = tx.Commit(ctx); err != nil {
 		return empty, err
 	}
-
-	if state != "applied" {
-		return empty, ErrConflict
+	// A legacy or stale verdict is re-executed under current live authorization.
+	// Never backfill a new digest onto an old verdict without running tests.
+	var test repair17.TestResult
+	if s.VerifyGo == nil {
+		test, err = input.Verify(ctx, timeout)
+	} else {
+		test, err = s.VerifyGo(ctx, input.Path, timeout)
 	}
-
-	// The DB transaction is no longer held.
-	verify := s.VerifyGo
-	if verify == nil {
-		verify = repair17.VerifyGo
-	}
-	test, err := verify(
-		ctx,
-		path,
-		timeout,
-	)
 	if err != nil {
 		return test, err
+	}
+	if test.Passed && test.ExitCode != 0 {
+		return test, errors.New("inconsistent verifier exit status")
+	}
+	if err = input.Unchanged(ctx); err != nil {
+		return test, err
+	}
+	currentDigest, err := repair17.VerificationDigest(ctx, path, s.inputPolicyOnce(policy), timeout)
+	if err != nil {
+		return test, err
+	}
+	if currentDigest != input.Digest {
+		return test, ErrConflict
 	}
 
 	tx, err = s.Pool.Begin(ctx)
@@ -749,6 +638,16 @@ func (s *Store) Verify(
 		return test, ErrConflict
 	}
 
+	if _, err = s.membersAtAfter(ctx, tx, r.ID, patchID, path); err != nil {
+		return test, err
+	}
+	currentDigest, err = repair17.VerificationDigest(ctx, path, s.inputPolicyOnce(policy), timeout)
+	if err != nil {
+		return test, err
+	}
+	if currentDigest != input.Digest {
+		return test, ErrConflict
+	}
 	targetState := "verified_fail"
 
 	if test.Passed {
@@ -771,17 +670,18 @@ func (s *Store) Verify(
                state=$3,
                test_output=$4,
                test_exit_code=$5,
+               verification_input_digest=$6,
                updated_at=clock_timestamp()
              WHERE run_id=$1
                AND patch_id=$2
-               AND state='applied'`,
+               AND state=$7 AND verification_input_digest=$8`,
 			s.tbl("patch_ops"),
 		),
 		r.ID,
 		patchID,
 		targetState,
 		output,
-		test.ExitCode,
+		test.ExitCode, input.Digest, state, storedDigest,
 	)
 	if err != nil {
 		return test, err
@@ -791,6 +691,9 @@ func (s *Store) Verify(
 		return test, ErrConflict
 	}
 
+	if err = s.markCompletion(ctx, tx, r, test.Passed); err != nil {
+		return test, err
+	}
 	return test, tx.Commit(ctx)
 }
 
@@ -917,4 +820,82 @@ func (s *Store) BoundWorktree(ctx context.Context, r Ref) (repair17.Workspace, e
 		return w, err
 	}
 	return w, tx.Commit(ctx)
+}
+
+// The marker only schedules evidence inspection; it is never sufficient proof.
+func (s *Store) markCompletion(ctx context.Context, tx pgx.Tx, r Ref, passed bool) error {
+	_, err := tx.Exec(ctx, fmt.Sprintf(`UPDATE %s.agent_runs AS r SET completion_pending=($2 AND COALESCE(to_jsonb(r)->>'provider','') LIKE 'coding:%%') WHERE run_id=$1`, s.queue), r.ID, passed)
+	return err
+}
+
+type CompletionProof struct {
+	Files                                       []string
+	PatchID, File, Path, Source, Commit, Digest string
+	Rounds, Max                                 int
+}
+
+// VerifiedCompletion is read-only proof inspection inside the caller's locked Run
+// transaction. It grants neither a lease nor tool/model execution permission.
+func (s *Store) VerifiedCompletion(ctx context.Context, tx pgx.Tx, id string, timeout time.Duration) (CompletionProof, error) {
+	var proof CompletionProof
+	path, used, max, err := s.binding(ctx, tx, id)
+	if err != nil {
+		return proof, err
+	}
+	var after, state, digest string
+	var exit int
+	var round int
+	err = tx.QueryRow(ctx, fmt.Sprintf(`SELECT patch_id,file_path,after_sha,state,verification_input_digest,COALESCE(test_exit_code,-1),round_number FROM %s WHERE run_id=$1 ORDER BY round_number DESC LIMIT 1 FOR UPDATE`, s.tbl("patch_ops")), id).Scan(&proof.PatchID, &proof.File, &after, &state, &digest, &exit, &round)
+	if err != nil {
+		return proof, err
+	}
+	if state != "verified_pass" || digest == "" || exit != 0 || round != used || used < 1 || used > max {
+		return proof, ErrConflict
+	}
+	sha, err := repair17.Inspect(ctx, path, proof.File)
+	if err != nil || sha != after {
+		return proof, ErrConflict
+	}
+	members, err := s.membersAtAfter(ctx, tx, id, proof.PatchID, path)
+	if err != nil {
+		return proof, err
+	}
+	for _, member := range members {
+		proof.Files = append(proof.Files, member.File)
+	}
+	policy := s.VerificationPolicy
+	if s.VerifyGo != nil && policy == "" {
+		return proof, ErrConflict
+	}
+	if policy == "" {
+		policy = "trusted-go-snapshot-v1"
+	}
+	current, err := repair17.VerificationDigest(ctx, path, s.inputPolicyOnce(policy), timeout)
+	if err != nil || current != digest {
+		return proof, ErrConflict
+	}
+	w, err := repair17.OpenManaged(ctx, path)
+	if err != nil {
+		return proof, ErrConflict
+	}
+	proof.Path = path
+	proof.Source = w.Source
+	proof.Commit = w.Commit
+	proof.Digest = digest
+	proof.Rounds = used
+	proof.Max = max
+	return proof, nil
+}
+
+func (s *Store) inputPolicy(policy string) string {
+	if s.InputPolicy != "" {
+		return s.InputPolicy + ":" + policy
+	}
+	return policy
+}
+func (s *Store) inputPolicyOnce(policy string) string {
+	if s.InputPolicy != "" && !strings.HasPrefix(policy, s.InputPolicy+":") {
+		return s.inputPolicy(policy)
+	}
+	return policy
 }

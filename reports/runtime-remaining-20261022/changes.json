@@ -1,0 +1,494 @@
+{
+  "scope": "this run vs initial uncommitted snapshot; generated reports separate",
+  "files": [
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "README.md",
+      "initially_dirty": true,
+      "sha256": "19051ffaa7af2fc782116c20e3ebcf10b2f142a2c5bbd085872d3da80ba52530"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "README.zh-CN.md",
+      "initially_dirty": true,
+      "sha256": "2fac29c8e4aa46bc34cf7e2d71b2f92720b0f42cd2f0eb183f6c14eb95870c7e"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "artifactstore/store.go",
+      "initially_dirty": false,
+      "sha256": "35bccc81a920559b9f194bbded0a8312b0a587a66c782c1d6978ca84dd5bed99"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "artifactstore/store_test.go",
+      "initially_dirty": false,
+      "sha256": "9c65cd924a911f30d00a1608ea19609ed8567563098cc7367c1dfdb4ddbd966e"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "cmd/artifact-server/main.go",
+      "initially_dirty": false,
+      "sha256": "663748d745ce47701ce9fe47a011ef5aa110075d87067eed72bc55979dc647c5"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "cmd/day14-submit/main.go",
+      "initially_dirty": true,
+      "sha256": "eed23867ffaf10bf8f9dbcc8c352c3c61b4b00b0f2cfcb1889f6b2183e5117c4"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "cmd/day14-worker/main.go",
+      "initially_dirty": true,
+      "sha256": "315865f92039bf64bea6ba43d2eee0913c2ad0830365ac5058b3936c6a5c95bb"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "cmd/durable-benchmark/main.go",
+      "initially_dirty": true,
+      "sha256": "a454d73495e4cf20910104b7c6c3c32b505745c9456d82bd8025bd8d697b4dda"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "cmd/live-repair-eval/main.go",
+      "initially_dirty": false,
+      "sha256": "af07fa0c3cc027356de44a2526328041d7fd5768f22d5a2d8fc05a432b654dbd"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "cmd/pilot-api/main.go",
+      "initially_dirty": true,
+      "sha256": "3dd9d2ce421768ca20fddd68c559c8d42c12932f80ce5566caa2b83ddf5d0939"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "cmd/repair-eval/main.go",
+      "initially_dirty": true,
+      "sha256": "f6f0da1648cf969fa172e2a09274abbb637c1f265b35de5279d598c385e7d5fc"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "cmd/sandbox-accept/main.go",
+      "initially_dirty": true,
+      "sha256": "e734691b2b4c01126551a11aed137ec03e3bf9cab140231860797ed5d80b78e6"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "cmd/sandbox-accept/orphan.go",
+      "initially_dirty": false,
+      "sha256": "0147c10b744c57d99400baca021e6f7e4d6311c87b56809ea9fef116d5ef8776"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "cmd/sandbox-reap/main.go",
+      "initially_dirty": false,
+      "sha256": "0e96b52798cb165173db8b6bfa52dd105a6e00715cf93c534230573e18f3873a"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "cmd/telemetry-demo/main.go",
+      "initially_dirty": false,
+      "sha256": "0e9c4a5da105894df4bac8bd708fe3041fbd4bb4100c58797220a3bf024e16c3"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "cmd/worktree-retire/main.go",
+      "initially_dirty": false,
+      "sha256": "d6b879b6fca351cb3888735937fc9941831e7ea997844ce14f1685c5e447a55d"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "deploy/observability/collector.yaml",
+      "initially_dirty": false,
+      "sha256": "feb20df6c1d4c820f3ccc2a9da740b388fa4b9f49a60ac1184304402f4e9b6d1"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "deploy/observability/compose.yaml",
+      "initially_dirty": false,
+      "sha256": "d0dcecf671f0856e274f99e747a852b8ee169286d9ed1a99a8c1cde43b412e3b"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "deploy/observability/prometheus.yaml",
+      "initially_dirty": false,
+      "sha256": "fedf280a6514bb29e7c0329e10eb26a0911195cd6efbd0f7b3887e1e6ca16826"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "deploy/observability/runtime-alerts.yaml",
+      "initially_dirty": false,
+      "sha256": "7c710ae9a325fce6597d14c136d200b29cc5bd744349301fc968cb807ce00f63"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "docs/architecture.md",
+      "initially_dirty": true,
+      "sha256": "7c398d828dd41aa22268749c3b8c9d8b1377e07483fad4dc76d40397a3de0656"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "docs/demo-script.md",
+      "initially_dirty": true,
+      "sha256": "085aa8f060d0d639f4e5e6315ef46103ebc8578f2adad9c996d9440cfb0e4ace"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "docs/pilot/IMPROVEMENT_OUTLINE.zh-CN.md",
+      "initially_dirty": true,
+      "sha256": "490ae15ddcd005008303595f158ff2c8cdbca937701c1c8305e05d360a1f181d"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "docs/review-20261020/IMPLEMENTATION.md",
+      "initially_dirty": true,
+      "sha256": "747e7af002791bd1f267e99b6d18fbf9c1f5795ba5612e64098d4153f26bc4f3"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "docs/review-20261020/RESULTS.md",
+      "initially_dirty": true,
+      "sha256": "fdea93da72a8f1a7215ef88d5bd2e6263e713e384a2018fa6a1f974cb37436d4"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "docs/zh-CN/architecture.md",
+      "initially_dirty": true,
+      "sha256": "22be3c9aa74944d94b57e9397af962113bd2c379e4bd688e521189c3624d6c0a"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "docs/zh-CN/validation.md",
+      "initially_dirty": false,
+      "sha256": "64211c18657b5ab429f7a7474d3c8f6c5ec2247e12980beb9fad7b0d77ac1390"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "durable/coding.go",
+      "initially_dirty": true,
+      "sha256": "8e8ebf36cc6cf497fa1c97449f8b9d23049f7914587661ffc9478edf6f590845"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "durable/completion.go",
+      "initially_dirty": true,
+      "sha256": "f00f3c1f704ba375d42101e10053cc8968f98b37321b062bd2f3c48349fb8a6c"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "evaldata/runtime-remaining-20261021/cases.json",
+      "initially_dirty": false,
+      "sha256": "b3376e63e8ed6738e185b9bdd5e82c98214214a062770c6ce3826611323df3e4"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "executor/reaper_linux.go",
+      "initially_dirty": false,
+      "sha256": "88c91c25ad71ba2aed8b34c82e7402991070dce854ee81534594f5fbc0388a9b"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "executor/sandbox_linux.go",
+      "initially_dirty": true,
+      "sha256": "841e4678fa96486d995a3289024e0756b3834b5bf02209a668491d500e6af598"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "go.mod",
+      "initially_dirty": true,
+      "sha256": "656e46aa8e629a4fc824c0b9b80a3c877f335d92d0951c495eb7e011a0fc4439"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "go.sum",
+      "initially_dirty": true,
+      "sha256": "fbb48834416ea38877fba82cc67928b6725441668918dba591afc4def4ce51d8"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "internal/integration20/fixtures_test.go",
+      "initially_dirty": true,
+      "sha256": "b65f561a40d32a609341bd12bf1416a5cbc79fa37012fc1ef39eee0852645fc3"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "internal/integration20/multifile_test.go",
+      "initially_dirty": false,
+      "sha256": "9375971e710aba2401895abff15bdb3af5c2bafd8197a4cd646fa9bdb34d8b9b"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "internal/integration20/portable_container_test.go",
+      "initially_dirty": false,
+      "sha256": "23eba2bd8743638bd4f9fbff1ad707004a375fb249ba898226ef8f5c8fa4866d"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "internal/integration20/portable_test.go",
+      "initially_dirty": false,
+      "sha256": "3cea10ab55b653319ecd7f5ff86beeefdac0cc531b8c38eb6aaca07c10672638"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "internal/integration20/proposal_recovery_test.go",
+      "initially_dirty": false,
+      "sha256": "71fc29b56d96244ded27778f8da1c1e1252d84311ef5d65d0fc0d4567c1173c2"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "internal/integration20/retention_test.go",
+      "initially_dirty": false,
+      "sha256": "dffb9c11b674be2d364720f48138cec773c4c6e492750cd9b0527e2bee3eec4d"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "migrations/013_multifile_patch.sql",
+      "initially_dirty": false,
+      "sha256": "998276f3e33cabd9f069e1c1ffaf7cc23d999310bbd342129f45368125a5698f"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "migrations/014_model_response_cache.sql",
+      "initially_dirty": false,
+      "sha256": "921aacf93dc542464f61f8e9a275f32628fbea730e6edcab96746ce7d8f1a0a7"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "migrations/015_portable_worktree.sql",
+      "initially_dirty": false,
+      "sha256": "df934b19086709591b25d815d903947fb6ebf14e4c29c38ac8e3467f8a8a2f33"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "migrations/016_worktree_retention.sql",
+      "initially_dirty": false,
+      "sha256": "bc70088f63ba305fca35c9c1480460f2ad373d3ff76006ca2ced4af7392c52a9"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "modelbudget/proposer.go",
+      "initially_dirty": false,
+      "sha256": "f70253c22a483786df72d203a25659d45e1865669059d0d15b1c422015ceabc7"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "modelbudget/proposer_test.go",
+      "initially_dirty": false,
+      "sha256": "0657e4d5bccf8ada4ef21986f0a06d1fa93797b1f34ae1c857d38adb371a0996"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "observability/otlp.go",
+      "initially_dirty": false,
+      "sha256": "3fd65920897e02bfd199406dd326aa37c54d22bda38e8f7d31b9758bec158bea"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "observability/otlp_test.go",
+      "initially_dirty": false,
+      "sha256": "565972dc7ce001f4e8187d60126b0a25bd98f5169bc2ba28bb66dbb2758240ca"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "observability/tracing.go",
+      "initially_dirty": true,
+      "sha256": "46d939fcc995acb1923c847f554681a96ec939ce9516f2d223ed8d83e43c1aa6"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair17/portable.go",
+      "initially_dirty": false,
+      "sha256": "6aff9456021062494d1be8701c3c724ab0c0a7bdca61322f751a32f1079d3fc5"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair17/retire.go",
+      "initially_dirty": false,
+      "sha256": "14eb8b4007a3d6e3b270308c202e302b89e06f9a54c44b1255f602e53cec12f5"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair17/sealed.go",
+      "initially_dirty": false,
+      "sha256": "28ee6ee203bf124785b7023532439b36003a9bd874a372a21f3107f87e2331d6"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair17/sealed_test.go",
+      "initially_dirty": false,
+      "sha256": "3221662d17fa3fe9d57c666df8076abbc71eff6f53b8dccd95a53474640afc3e"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair17/verification.go",
+      "initially_dirty": true,
+      "sha256": "3e345ab97ba4cd0a5958522f41ba9d053bb8ff90c98537c748540cdc61ab6530"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair17/verify.go",
+      "initially_dirty": true,
+      "sha256": "c9ceb1fc4456c27ba720c112f35b39d7984bff300be4f7f5770ea82667db7784"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair18/deepseek.go",
+      "initially_dirty": false,
+      "sha256": "6374e45843a331b5f31f1b22c560e02ef47b1c961c6dfcfdffdabc88051abb3a"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair18/identity.go",
+      "initially_dirty": false,
+      "sha256": "8adf0b9176e8a83b53967209608c575451556ab0f334baf4389904db4e3509bd"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair18/loop.go",
+      "initially_dirty": false,
+      "sha256": "755b2807e69081eca3b0456411bc089b2cd56534bd9009abc1f28c02f0902758"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair19/batch.go",
+      "initially_dirty": false,
+      "sha256": "ac1f6073e6ef0be124a86dcb0227223fe9c3b59ee7e1e2ad8a50622d2bf2f6f4"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair19/portable.go",
+      "initially_dirty": false,
+      "sha256": "286a909229f59fdd47c959d9ae9ce81bf9f489eb11aeb8c2365532a80a887c01"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair19/proposal.go",
+      "initially_dirty": false,
+      "sha256": "07b6516afdab8030dfab80a118fb458915c8ede362b8a5782d52dd0f091b14df"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair19/retention.go",
+      "initially_dirty": false,
+      "sha256": "e97f0c7361929a44df1eed76e420c071bdb40c1e88fd883003481e744b28be16"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair19/store.go",
+      "initially_dirty": true,
+      "sha256": "148a9659ad38621f7a21577c48e1372ace532a5cad6f49123f7354bc0b00d3fb"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair20/multifile.go",
+      "initially_dirty": false,
+      "sha256": "595cec5f10a93320af4b05018070f46a7191338827ab950e4d00e9c792858150"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair20/postgres.go",
+      "initially_dirty": false,
+      "sha256": "3e010f5766ee1d53e7d5d8c78f8a59c5011d01795c659af3056d97384a86ed2b"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repair20/runner.go",
+      "initially_dirty": false,
+      "sha256": "63814e213126f3116afe222d06719f0b489d73a5e88a727ff09cb52a2341c57e"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "repaireval/live.go",
+      "initially_dirty": false,
+      "sha256": "b9efdd019376e37195e59e795943ec44ee72a15ec4153a5788bd1fbcb19b4fae"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "runtimebench/benchmark.go",
+      "initially_dirty": true,
+      "sha256": "4295522e86fe0b03b6c9fc85ab6c61bea3880222e036cc1cadd9d2a53fc51f69"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "runtimebench/benchmark_test.go",
+      "initially_dirty": true,
+      "sha256": "d1334c6a7f8fc27875eebb898cd0da7cfd4308b2020bf0f2f156aa3f949163c9"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "scripts/observability_local.py",
+      "initially_dirty": false,
+      "sha256": "d55f30b9b33861a65d99211e5a78d0f15adb697a2f00204d1255bace8fd7025d"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "scripts/postgres_restore_accept.py",
+      "initially_dirty": false,
+      "sha256": "4b22967c7ad81630c105d019a7e8202a9dd438358d288f64b09ce1236e24a84e"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "scripts/runtime_remaining_accept.sh",
+      "initially_dirty": false,
+      "sha256": "4a6bf000bf5f09ba1023c09ef9a6406cdb421045ac366cdfcfb4a33946c42203"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-source",
+      "path": "scripts/test_unit.sh",
+      "initially_dirty": false,
+      "sha256": "6890ef89a7b88c06bdb2e2397bdbe80f72fa9b0971b1efd356cd057596897db3"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-showcase",
+      "path": "README.md",
+      "initially_dirty": true,
+      "sha256": "54d3f4d6b28753710f03528c0c35328aa855ccbd087f458de38c3f8db3c1dc25"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-showcase",
+      "path": "README.zh-CN.md",
+      "initially_dirty": true,
+      "sha256": "92ccef32635369feef39aa5a39d3773b0d10d42e2fb716071283c7e1e5ce20cb"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-showcase",
+      "path": "docs/architecture.md",
+      "initially_dirty": true,
+      "sha256": "c7dd0a5d70115695560c458f4668e2750194ec219bbd83d4db15853b49897caf"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-showcase",
+      "path": "docs/validation.md",
+      "initially_dirty": true,
+      "sha256": "c0a3b996bf98641f34b6281a7adec6ce9315eafbe32586cfa7abe3323872697d"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-showcase",
+      "path": "docs/zh-CN/architecture.md",
+      "initially_dirty": true,
+      "sha256": "3bf3543ba8db210e9678a6b4c4dc0ca53b58b67f5035dd09f281d29e03e178b0"
+    },
+    {
+      "repo": "durable-coding-agent-runtime-showcase",
+      "path": "docs/zh-CN/validation.md",
+      "initially_dirty": true,
+      "sha256": "2756c0476ede68b332a4f6179dd6602fd00bb99e9ee13836354373fbc6a1288e"
+    }
+  ],
+  "initial_dirty_files_unchanged": 44,
+  "generated_reports": [
+    "README.md",
+    "benchmark-burst.json",
+    "benchmark-go-test.json",
+    "benchmark-stream.json",
+    "benchmark-summary.json",
+    "changes.json",
+    "clock-observation.json",
+    "database-restore.json",
+    "live-evaluation.json",
+    "observability.json",
+    "sandbox.json",
+    "verification.json"
+  ]
+}

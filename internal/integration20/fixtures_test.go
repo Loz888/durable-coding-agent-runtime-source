@@ -68,7 +68,7 @@ func newPatchLab(t *testing.T) *patchLab {
 	})
 	// Exercise the existing schema rather than duplicating Patch Store DDL.
 	// Only the isolated schema name changes; day12 and formal day19 stay intact.
-	for _, name := range []string{"005_durable_patch.sql", "006_repair_binding.sql"} {
+	for _, name := range []string{"005_durable_patch.sql", "006_repair_binding.sql", "010_verification_input.sql", "013_multifile_patch.sql", "014_model_response_cache.sql", "015_portable_worktree.sql", "016_worktree_retention.sql"} {
 		migration, err := os.ReadFile(filepath.Join("..", "..", "migrations", name))
 		if err != nil {
 			t.Fatal(err)

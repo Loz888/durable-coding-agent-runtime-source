@@ -1,0 +1,56 @@
+services:
+  jaeger:
+    image: ${JAEGER_IMAGE:?pinned Jaeger digest required}
+    pull_policy: never
+    user: "65532:65532"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 256m
+    pids_limit: 64
+    cpus: 1
+    tmpfs: ["/tmp:rw,nosuid,nodev,size=67108864,mode=1777"]
+    ports:
+      - target: 16686
+        published: "0"
+        host_ip: 127.0.0.1
+  collector:
+    image: ${COLLECTOR_IMAGE:?pinned Collector digest required}
+    pull_policy: never
+    command: [--config=/etc/otelcol/config.yaml]
+    user: "65532:65532"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 128m
+    pids_limit: 64
+    cpus: 1
+    tmpfs: ["/tmp:rw,nosuid,nodev,size=33554432,mode=1777"]
+    volumes: [./collector.yaml:/etc/otelcol/config.yaml:ro]
+    ports:
+      - target: 4318
+        published: "0"
+        host_ip: 127.0.0.1
+  prometheus:
+    image: ${PROMETHEUS_IMAGE:?pinned Prometheus digest required}
+    pull_policy: never
+    command: [--config.file=/etc/prometheus/prometheus.yaml, --storage.tsdb.path=/prometheus, --storage.tsdb.retention.time=2h]
+    user: "65532:65532"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 256m
+    pids_limit: 64
+    cpus: 1
+    tmpfs: ["/tmp:rw,nosuid,nodev,size=33554432,mode=1777", "/prometheus:rw,nosuid,nodev,size=134217728,mode=1777"]
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - ./runtime-alerts.yaml:/etc/prometheus/runtime-alerts.yaml:ro
+    ports:
+      - target: 9090
+        published: "0"
+        host_ip: 127.0.0.1
+networks:
+  default:
+    # Explicit loopback port bindings provide host access; sandbox jobs use network=none.
+    driver: bridge

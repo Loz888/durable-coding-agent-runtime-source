@@ -207,3 +207,5 @@ func (p Proposer) Suggest(ctx context.Context, in repair18.Request) (repair18.Su
 	}
 	return out, nil
 }
+
+func (p Proposer) PolicyIdentity() string { return repair18.ProposalIdentity(p.Next) }

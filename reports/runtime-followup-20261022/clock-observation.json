@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "status": "ANOMALY",
+  "scope": "read-only observation; does not adjust clocks, services, SQL rows or lease settings",
+  "interpretation": "No observed step does not prove future clock stability or identify a time service as the cause.",
+  "duration_monotonic_seconds": 90.000707,
+  "threshold_ms": 100,
+  "postgres_uncertainty": "successive midpoint estimates include half of each request round-trip in the detection bound",
+  "system": {
+    "samples": 8589,
+    "backward_steps": 3,
+    "forward_steps": 0,
+    "max_sample_gap_ms": 12.304541,
+    "events": [
+      {
+        "sample": 1790,
+        "direction": "backward",
+        "previous_wall_ns": 1792653482870514545,
+        "current_wall_ns": 1792653480388975961,
+        "monotonic_delta_ms": 10.148731,
+        "wall_delta_ms": -2481.538584,
+        "adjustment_ms": -2491.687315,
+        "detection_bound_ms": 100.00058
+      },
+      {
+        "sample": 4908,
+        "direction": "backward",
+        "previous_wall_ns": 1792653512890151985,
+        "current_wall_ns": 1792653510390401317,
+        "monotonic_delta_ms": 10.447762,
+        "wall_delta_ms": -2499.750668,
+        "adjustment_ms": -2510.19843,
+        "detection_bound_ms": 100.001864
+      },
+      {
+        "sample": 7998,
+        "direction": "backward",
+        "previous_wall_ns": 1792653542903265696,
+        "current_wall_ns": 1792653540400294789,
+        "monotonic_delta_ms": 10.334984,
+        "wall_delta_ms": -2502.970907,
+        "adjustment_ms": -2513.305891,
+        "detection_bound_ms": 100.000835
+      }
+    ],
+    "events_omitted": 0
+  },
+  "postgres": {
+    "samples": 88,
+    "backward_steps": 3,
+    "forward_steps": 0,
+    "max_sample_gap_ms": 1062.429876,
+    "events": [
+      {
+        "sample": 20,
+        "direction": "backward",
+        "previous_wall_ns": 1792653482663248000,
+        "current_wall_ns": 1792653481199770000,
+        "monotonic_delta_ms": 1028.58202,
+        "wall_delta_ms": -1463.478,
+        "adjustment_ms": -2492.06002,
+        "detection_bound_ms": 128.259908
+      },
+      {
+        "sample": 51,
+        "direction": "backward",
+        "previous_wall_ns": 1792653512120727000,
+        "current_wall_ns": 1792653510637123000,
+        "monotonic_delta_ms": 1025.929455,
+        "wall_delta_ms": -1483.604,
+        "adjustment_ms": -2509.533455,
+        "detection_bound_ms": 125.603969
+      },
+      {
+        "sample": 83,
+        "direction": "backward",
+        "previous_wall_ns": 1792653542616281000,
+        "current_wall_ns": 1792653541158836000,
+        "monotonic_delta_ms": 1056.645953,
+        "wall_delta_ms": -1457.445,
+        "adjustment_ms": -2514.090953,
+        "detection_bound_ms": 126.831116
+      }
+    ],
+    "events_omitted": 0
+  },
+  "sample_failures": 0
+}

@@ -11,17 +11,29 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"runtime-app/observability"
 	"runtime-app/pilotapi"
 	"syscall"
 	"time"
 )
 
 func main() {
+	traceFile := flag.String("trace-file", "", "new private OpenTelemetry NDJSON file; empty disables export")
+	otlpEndpoint := flag.String("otlp-endpoint", "", "optional loopback OTLP base URL; default disabled")
 	paid := flag.Bool("enable-paid", false, "allow registered DeepSeek submissions; worker must also have an explicit governed budget")
 	address := flag.String("listen", "127.0.0.1:8090", "loopback gateway; terminate TLS at an explicitly approved proxy")
 	registrations := flag.String("repositories", "", "operator-owned JSON repository registrations")
 	capacity := flag.Int("max-queued", 100, "maximum unfinished queued runs across this database")
 	flag.Parse()
+	closeTrace, traceErr := observability.ConfigureTelemetry(*traceFile, *otlpEndpoint, "runtime-api")
+	if traceErr != nil {
+		log.Fatal(traceErr)
+	}
+	defer func() {
+		if e := closeTrace(); e != nil {
+			log.Print("trace shutdown failed")
+		}
+	}()
 	host, _, err := net.SplitHostPort(*address)
 	if err != nil || !net.ParseIP(host).IsLoopback() {
 		log.Fatal("loopback listen address required")

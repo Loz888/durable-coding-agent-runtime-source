@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-20",
+  "baseline_commit": "fdbfacbb77a4fcf0af118a5f22e8393e7160130e",
+  "identity": "baseline plus the content hashes below; local changes are not claimed as a published commit",
+  "source_fingerprints": {
+    "durable/day20_integration_test.go": "08fe53ec6099cdae77d2f2f1da8187b99a8db8156712451d7d38222cc1e97213"
+  },
+  "scope": "Owned isolated PostgreSQL16, fixed dedicated test DBs, Go1.27.1; original cluster untouched",
+  "tests": {
+    "full": {
+      "pass": 260,
+      "fail": 0,
+      "skip": 0
+    },
+    "race": {
+      "pass": 260,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "checks": {
+    "migrations": "PASS",
+    "mock-demo": "PASS",
+    "sigkill-demo": "PASS",
+    "vet": "PASS",
+    "format": "PASS"
+  },
+  "paid_calls": 0,
+  "notes": [
+    "Parent/subtest events are counted; no production/SLA claim",
+    "SIGKILL test driver uses existing Queue/CodingHandler, not a full daemon restart/load test"
+  ],
+  "observed_events": [
+    "phase=claimed worker=A epoch=1",
+    "phase=crashed signal=SIGKILL patch=verified_pass",
+    "phase=checkpoint status=running final_commit=absent",
+    "phase=takeover worker=B epoch=2 method=real_ClaimBatch",
+    "phase=final status=succeeded verdict=tests_passed revision=1 rounds_used=1 recovery_model_calls=0"
+  ]
+}

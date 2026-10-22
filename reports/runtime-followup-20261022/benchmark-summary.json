@@ -1,0 +1,152 @@
+{
+  "scope": "bounded synthetic callback measurements; monotonic primary timings; no model, production capacity or long-term soak claim",
+  "groups": [
+    {
+      "group": "bench-slow-over-ttl",
+      "status": "PASS",
+      "trials": 3,
+      "total_tasks": 3,
+      "completed": 3,
+      "failed": 0,
+      "extra_claims": 0,
+      "median_total_tasks_s": 0.02855220045912909,
+      "total_ms_range": [
+        35023.500891,
+        35028.827513
+      ],
+      "median_empty_acquire_wait_ms": 0,
+      "empty_acquire_wait_ms_range": [
+        0,
+        12.056141
+      ],
+      "empty_acquires": [
+        4,
+        0,
+        0
+      ],
+      "canceled_acquires": [
+        0,
+        0,
+        0
+      ],
+      "db_wall_clock_anomalies": [
+        0,
+        0,
+        0
+      ],
+      "cleanup": true,
+      "pool_idle_end": true
+    },
+    {
+      "group": "bench-pool4",
+      "status": "PASS",
+      "trials": 3,
+      "total_tasks": 3000,
+      "completed": 3000,
+      "failed": 0,
+      "extra_claims": 0,
+      "median_total_tasks_s": 142.5773727701354,
+      "total_ms_range": [
+        6970.378759,
+        7238.24247
+      ],
+      "median_empty_acquire_wait_ms": 6162.465941,
+      "empty_acquire_wait_ms_range": [
+        6081.535121,
+        6990.774208
+      ],
+      "empty_acquires": [
+        2722,
+        2616,
+        2583
+      ],
+      "canceled_acquires": [
+        0,
+        0,
+        0
+      ],
+      "db_wall_clock_anomalies": [
+        1,
+        0,
+        0
+      ],
+      "cleanup": true,
+      "pool_idle_end": true
+    },
+    {
+      "group": "bench-pool20",
+      "status": "PASS",
+      "trials": 3,
+      "total_tasks": 3000,
+      "completed": 3000,
+      "failed": 0,
+      "extra_claims": 0,
+      "median_total_tasks_s": 157.28222250931086,
+      "total_ms_range": [
+        6204.500041,
+        6375.364995
+      ],
+      "median_empty_acquire_wait_ms": 0,
+      "empty_acquire_wait_ms_range": [
+        0,
+        46.362013
+      ],
+      "empty_acquires": [
+        10,
+        0,
+        0
+      ],
+      "canceled_acquires": [
+        0,
+        0,
+        0
+      ],
+      "db_wall_clock_anomalies": [
+        0,
+        4,
+        0
+      ],
+      "cleanup": true,
+      "pool_idle_end": true
+    },
+    {
+      "group": "bench-stream100",
+      "status": "PASS",
+      "trials": 3,
+      "total_tasks": 6000,
+      "completed": 6000,
+      "failed": 0,
+      "extra_claims": 0,
+      "median_total_tasks_s": 18.650820664538685,
+      "total_ms_range": [
+        107034.85059,
+        107340.330072
+      ],
+      "median_empty_acquire_wait_ms": 0,
+      "empty_acquire_wait_ms_range": [
+        0,
+        7.569148
+      ],
+      "empty_acquires": [
+        3,
+        0,
+        0
+      ],
+      "canceled_acquires": [
+        0,
+        0,
+        0
+      ],
+      "db_wall_clock_anomalies": [
+        1,
+        0,
+        0
+      ],
+      "cleanup": true,
+      "pool_idle_end": true
+    }
+  ],
+  "total_tasks": 12003,
+  "trials": 12,
+  "binary_sha256": "75f7b32f256c897fccca532e7beb9c053b4a8d61a280a39554243da000b1f05a"
+}

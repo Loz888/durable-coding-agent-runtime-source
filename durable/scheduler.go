@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"go.opentelemetry.io/otel/attribute"
 	"math/rand/v2"
+	"runtime-app/observability"
 	"runtime-app/reliability15"
 	"runtime-app/repodiag"
 	"strings"
@@ -19,7 +21,8 @@ type ModelFactory func(
 
 // Scheduler 自动领取并运行 Agent Run。
 type Scheduler struct {
-	Queue Queue
+	FinalizeCoding func(context.Context, Queue, int) (int, error)
+	Queue          Queue
 
 	// 每个 Worker 进程使用唯一的 Session Token。
 	Owner string
@@ -145,6 +148,13 @@ func (s *Scheduler) Run(
 			if maintenance == nil {
 				maintenance, maintenanceErr = reliability15.NewStore(s.Queue.Pool, "day12")
 			}
+			if maintenanceErr == nil && s.FinalizeCoding != nil {
+				var n int
+				n, maintenanceErr = s.FinalizeCoding(sweepCtx, s.Queue, 100)
+				if n > 0 {
+					s.log("FINALIZE_CODING count=%d", n)
+				}
+			}
 			if maintenanceErr == nil {
 				var count int
 				count, maintenanceErr = maintenance.SweepExhausted(sweepCtx, 100)
@@ -240,6 +250,10 @@ func (s *Scheduler) execute(
 	parent context.Context,
 	job ClaimedRun,
 ) {
+	parent = observability.RestoreTrace(parent, job.TraceParent, job.TraceState)
+	parent, span := observability.StartOperation(parent, "worker.execute", attribute.String("run.id", job.RunID), attribute.Int64("lease.epoch", job.Lease.Epoch))
+	defer span.End()
+
 	s.log(
 		"CLAIMED run=%s epoch=%d revision=load owner=%s",
 		job.RunID,

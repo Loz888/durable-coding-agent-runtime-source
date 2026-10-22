@@ -8,11 +8,13 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"go.opentelemetry.io/otel/attribute"
 	"io"
 	"net/http"
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"runtime-app/observability"
 	"strconv"
 	"strings"
 	"time"
@@ -264,7 +266,14 @@ func (s *Server) serve(w http.ResponseWriter, r *http.Request) {
 	}
 	reply(w, 404, map[string]string{"error": "not found"})
 }
-func (s *Server) submit(ctx context.Context, who Identity, in submission, repo Repository) (string, bool, error) {
+func (s *Server) submit(ctx context.Context, who Identity, in submission, repo Repository) (resultID string, replayed bool, err error) {
+	ctx, span := observability.StartOperation(ctx, "api.submit")
+	defer func() {
+		if resultID != "" {
+			span.SetAttributes(attribute.String("run.id", resultID))
+		}
+		observability.FinishOperation(span, err)
+	}()
 	tx, err := s.Pool.Begin(ctx)
 	if err != nil {
 		return "", false, err
